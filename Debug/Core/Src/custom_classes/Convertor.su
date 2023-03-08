@@ -1,0 +1,13 @@
+../Core/Src/custom_classes/Convertor.cpp:3:1:Convertor::Convertor(SBUS*, Initializer*, Components*)	24	static
+../Core/Src/custom_classes/Convertor.cpp:11:6:void Convertor::testLED()	16	static
+../Core/Src/custom_classes/Convertor.cpp:17:6:void Convertor::testSelector()	16	static
+../Core/Src/custom_classes/Convertor.cpp:22:6:void Convertor::getADC()	16	static
+../Core/Src/custom_classes/Convertor.cpp:31:6:void Convertor::updateLED()	24	static
+../Core/Src/custom_classes/Convertor.cpp:57:6:void Convertor::actuatorControl(int16_t, TIM_HandleTypeDef*, uint32_t, uint32_t)	24	static
+../Core/Src/custom_classes/Convertor.cpp:72:6:void Convertor::updateSelector()	40	static
+../Core/Src/custom_classes/Convertor.cpp:91:6:void Convertor::updatePushMotor()	32	static
+../Core/Src/custom_classes/Convertor.cpp:106:6:void Convertor::updateFluidMotor()	16	static
+../Core/Src/custom_classes/Convertor.cpp:113:9:int16_t Convertor::get_selectorPWM()	16	static
+../Core/Src/custom_classes/Convertor.cpp:121:6:void Convertor::process()	16	static
+../Core/Src/custom_classes/Convertor.cpp:131:10:uint16_t Convertor::get_LEDPWM()	16	static
+../Core/Src/custom_classes/Convertor.cpp:136:9:int16_t Convertor::get_selector_position()	16	static

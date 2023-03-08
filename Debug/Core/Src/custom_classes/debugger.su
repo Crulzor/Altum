@@ -1,0 +1,3 @@
+../Core/Src/custom_classes/debugger.cpp:3:1:Debugger::Debugger(SBUS*, Convertor*)	24	static
+../Core/Src/custom_classes/debugger.cpp:11:6:void Debugger::displayDebugInfo()	16	static
+../Core/Src/custom_classes/debugger.cpp:52:6:void Debugger::displaySBUS_channels()	24	static
