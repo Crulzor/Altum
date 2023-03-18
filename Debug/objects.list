@@ -1,5 +1,6 @@
 "./Core/Src/custom_classes/Convertor.o"
 "./Core/Src/custom_classes/Initializer.o"
+"./Core/Src/custom_classes/MavlinkControl.o"
 "./Core/Src/custom_classes/SBUS.o"
 "./Core/Src/custom_classes/components.o"
 "./Core/Src/custom_classes/debugger.o"

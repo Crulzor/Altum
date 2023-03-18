@@ -3,7 +3,6 @@
 
 #include "stm32g4xx_hal.h"
 
-
 extern DMA_HandleTypeDef hdma_adc1;
 extern DMA_HandleTypeDef hdma_adc2;
 extern DMA_HandleTypeDef hdma_adc5;

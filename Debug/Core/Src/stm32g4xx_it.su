@@ -12,5 +12,6 @@
 ../Core/Src/stm32g4xx_it.c:247:6:DMA1_Channel3_IRQHandler	8	static
 ../Core/Src/stm32g4xx_it.c:261:6:DMA1_Channel4_IRQHandler	8	static
 ../Core/Src/stm32g4xx_it.c:275:6:USB_LP_IRQHandler	8	static
-../Core/Src/stm32g4xx_it.c:289:6:USART2_IRQHandler	8	static
-../Core/Src/stm32g4xx_it.c:303:6:DMA2_Channel1_IRQHandler	8	static
+../Core/Src/stm32g4xx_it.c:289:6:USART1_IRQHandler	8	static
+../Core/Src/stm32g4xx_it.c:303:6:USART2_IRQHandler	8	static
+../Core/Src/stm32g4xx_it.c:317:6:DMA2_Channel1_IRQHandler	8	static

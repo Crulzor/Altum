@@ -17,11 +17,7 @@ void Initializer::init_Configs(void){
 
 	this->initDMA();
 
-
-	this->initUSART_1();
-
 	this->initTIM_1();
-	this->initUSART_2();
 
 	this->initTIM_2();
 
@@ -30,6 +26,8 @@ void Initializer::init_Configs(void){
 	this->initTIM_8();
 	this->initTIM_16();
 	this->initTIM_20();
+	this->initUSART_1();
+	this->initUSART_2();
 
 
     MX_USB_Device_Init();
@@ -43,7 +41,8 @@ void Initializer::init_Configs(void){
 
 void Initializer::initTIM_1(void){
 
-	  TIM_HandleTypeDef htim1;
+	  __HAL_RCC_TIM1_CLK_ENABLE();
+
 	  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
 	  TIM_MasterConfigTypeDef sMasterConfig = {0};
 	  TIM_OC_InitTypeDef sConfigOC = {0};
@@ -120,11 +119,22 @@ void Initializer::initTIM_1(void){
 	  HAL_TIM_MspPostInit(&htim1);
 
 
+	  //uitleg van chatGPT over verschil met normale PWM start functie:
+
+	  /* function, HAL_TIMEx_PWMN_Start(), is used for timers that support complementary PWM outputs.
+	   * Complementary outputs are two output signals that are 180 degrees out of phase with each other.
+	   * These signals are used to drive a full-bridge inverter, which is a common configuration for driving
+	   * motor loads. In this case, the function starts the	   *  timer channel's complementary output
+	   *  (marked as "PWMN" in the function name) for the specified timer. */
+
+
+		HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+
+
 }
 
 void Initializer::initTIM_2(void){
 
-	  TIM_HandleTypeDef htim2;
 	  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
 	  TIM_MasterConfigTypeDef sMasterConfig = {0};
 
@@ -165,7 +175,9 @@ void Initializer::initTIM_2(void){
 
 void Initializer::initTIM_3(void){
 
-	  TIM_HandleTypeDef htim3;
+	  __HAL_RCC_TIM3_CLK_ENABLE();  // Enable the TIM3 clock
+
+
 	  TIM_MasterConfigTypeDef sMasterConfig = {0};
 	  TIM_OC_InitTypeDef sConfigOC = {0};
 
@@ -212,6 +224,9 @@ void Initializer::initTIM_3(void){
 
 	  /* USER CODE END TIM3_Init 2 */
 	  HAL_TIM_MspPostInit(&htim3);
+	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+
 
 
 }
@@ -439,6 +454,10 @@ void Initializer::initTIM_16(void){
 	  /* USER CODE END TIM16_Init 2 */
 	  HAL_TIM_MspPostInit(&htim16);
 	  HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+	  //set to zero...
+	  __HAL_TIM_SET_COMPARE(&htim16, TIM_CHANNEL_1, 0);
+
+
 
 
 
@@ -753,19 +772,30 @@ TIM_HandleTypeDef* Initializer::get_LED_Timer(void){
 
 	return &htim16;
 
-
 }
 
-TIM_HandleTypeDef* Initializer::get_Selector_Timer(void){
+TIM_HandleTypeDef* Initializer::get_selector_Timer(void){
 
 	return &htim8;
 }
 
-TIM_HandleTypeDef* Initializer::get_PushMotor_Timer(void){
+TIM_HandleTypeDef* Initializer::get_pushMotor_Timer(void){
 
 	return &htim4;
 }
 
+
+TIM_HandleTypeDef* Initializer::get_fluidMotor_Timer(void){
+
+	return &htim3;
+
+}
+
+TIM_HandleTypeDef* Initializer::get_cleanerMotor_Timer(void){
+
+	return &htim1;
+
+}
 
 
 void Initializer::Error_Handler(void){

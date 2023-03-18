@@ -1,0 +1,26 @@
+../Core/Inc/../../Mavlink_v2/common/../checksum.h:35:20:void crc_accumulate(uint8_t, uint16_t*)	24	static
+../Core/Inc/../../Mavlink_v2/common/../checksum.h:52:20:void crc_init(uint16_t*)	16	static
+../Core/Inc/../../Mavlink_v2/common/../checksum.h:65:24:uint16_t crc_calculate(const uint8_t*, uint16_t)	24	static
+../Core/Inc/../../Mavlink_v2/common/../checksum.h:85:20:void crc_accumulate_buffer(uint16_t*, const char*, uint16_t)	32	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_sha256.h:91:21:void mavlink_sha256_init(mavlink_sha256_ctx*)	16	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_sha256.h:105:20:void mavlink_sha256_calc(mavlink_sha256_ctx*, uint32_t*)	320	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_sha256.h:152:21:void mavlink_sha256_update(mavlink_sha256_ctx*, const void*, uint32_t)	120	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_sha256.h:192:21:void mavlink_sha256_final_48(mavlink_sha256_ctx*, uint8_t*)	104	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:23:34:mavlink_status_t* mavlink_get_channel_status(uint8_t)	16	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:73:24:uint8_t mavlink_sign_packet(mavlink_signing_t*, uint8_t*, const uint8_t*, uint8_t, const uint8_t*, uint8_t, const uint8_t*)	144	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:111:24:uint8_t _mav_trim_payload(const char*, uint8_t)	16	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:223:25:uint16_t mavlink_finalize_message_buffer(mavlink_message_t*, uint8_t, uint8_t, mavlink_status_t*, uint8_t, uint8_t, uint8_t)	80	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:292:25:uint16_t mavlink_finalize_message_chan(mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)	40	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:302:25:uint16_t mavlink_finalize_message(mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)	32	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:445:25:uint16_t mavlink_msg_to_send_buffer(uint8_t*, const mavlink_message_t*)	32	static
+../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h:66:24:uint16_t mavlink_msg_heartbeat_pack(uint8_t, uint8_t, mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t)	40	static
+../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h:146:24:uint16_t mavlink_msg_heartbeat_encode(uint8_t, uint8_t, mavlink_message_t*, const mavlink_heartbeat_t*)	56	static
+c:\st\stm32cubeide_1.11.2\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003\tools\bin\../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/include/c++/10.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
+../Core/Src/custom_classes/MavlinkControl.h:73:8:constexpr MavlinkControl::mavlink_header_t::mavlink_header_t()	16	static
+../Core/Src/custom_classes/MavlinkControl.cpp:3:1:MavlinkControl::MavlinkControl()	16	static
+../Core/Src/custom_classes/MavlinkControl.cpp:5:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*)	16	static
+../Core/Src/custom_classes/MavlinkControl.cpp:14:6:void MavlinkControl::update()	16	static
+../Core/Src/custom_classes/MavlinkControl.cpp:33:6:void MavlinkControl::processReceivedBuffer()	16	static
+../Core/Src/custom_classes/MavlinkControl.cpp:64:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	16	static
+../Core/Src/custom_classes/MavlinkControl.cpp:72:6:void MavlinkControl::heartbeat()	32	static
+../Core/Src/custom_classes/MavlinkControl.cpp:91:6:void MavlinkControl::onReceiveEvent(UART_HandleTypeDef*)	16	static

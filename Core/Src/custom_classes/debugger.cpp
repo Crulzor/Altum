@@ -1,9 +1,10 @@
 #include "debugger.h"
 
-Debugger::Debugger(SBUS *sbus, Convertor *convertor){
+Debugger::Debugger(SBUS *sbus, MavlinkControl* mavlink, Convertor *convertor){
 
 	this->_sbus = sbus;
 	this->_convertor = convertor;
+	this->_mavlink = mavlink;
 
 }
 
@@ -25,17 +26,27 @@ void Debugger::displayDebugInfo(void){
 
 		printf("Right joystick X: %f \r\n", this->_sbus->getRightX());
 
-		printf("LedPWM: %d\r\n", this->_convertor->get_LEDPWM());
+		printf("Jogwheel: %f \r\n", this->_sbus->getJogWheel());
 
+
+		printf("LedPWM: %d\r\n", this->_convertor->get_LEDPWM());
 		printf("selectorPWM: %d\r\n", this->_convertor->get_selectorPWM());
+		printf("push motor PWM: %d \r\n", this->_convertor->get_pushPWM());
+		printf("fluid motor PWM: %d \r\n", this->_convertor->get_fluidPWM());
+		printf("cleaner motor PWM: %d \r\n", this->_convertor->get_cleanerMotorPWM());
 		printf("\r\n");
 
-		printf("Selector position %d \r\n", this->_convertor->get_selector_position());
+		printf("selector position %d \r\n", this->_convertor->get_selector_position());
+		printf("fluid position %d \r\n", this->_convertor->get_fluidPosition());
+		printf("push position %d \r\n", this->_convertor->get_pushPosition());
+
+		printf("\r\n");
 
 
-
-
-
+		printf("led current:  %d \r\n", this->_convertor->get_LEDCurrent());
+		printf("fluid actuator current: %d \r\n", this->_convertor->get_fluidCurrent());
+		printf("push motor current: %d \r\n", this->_convertor->get_pushCurrent());
+		printf("selector motor current: %d \r\n", this->_convertor->get_selectorCurrent());
 
 
 		printf("\r\n");
@@ -58,8 +69,50 @@ void Debugger::displaySBUS_channels(void){
 			printf("SBUS channel: %d \r\n", i);
 			printf("value: %d \r\n", _sbus->_channels[i]);
 
+
 		}
 
 	}
 
 }
+
+void Debugger::displayMavlink_header(void){
+
+
+
+	if(HAL_GetTick() % 100 == 0){
+		printf("Mavlink start of message: %d \r\n", _mavlink->_mavlink_received_header.start_of_msg);
+		printf("Mavlink payload length: %d \r\n", _mavlink->_mavlink_received_header.payload_len);
+		printf("Mavlink sequence number: %d \r\n", _mavlink->_mavlink_received_header.sequence_num);
+		printf("Mavlink system id: %d \r\n", _mavlink->_mavlink_received_header.sys_id);
+		printf("Mavlink comp id: %d \r\n", _mavlink->_mavlink_received_header.comp_id);
+		printf("Mavlink msg id: %d \r\n", _mavlink->_mavlink_received_header.msg_id);
+
+		printf("\r\n");
+		printf("\r\n");
+
+	}
+
+
+
+}
+
+void Debugger::displayMavlink_RAW(void){
+
+	if(HAL_GetTick() % 500 == 0){
+
+		for(int i = 0; i < sizeof(_mavlink->_receiveBuffer_1) ; i++){
+
+			printf("Mavlink bytes: %d \r\n", i);
+			printf("value: %d \r\n", _mavlink->_receiveBuffer_1[i]);
+
+			printf("\r\n");
+			printf("\r\n");
+
+		}
+
+	}
+
+}
+
+

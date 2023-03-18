@@ -34,8 +34,10 @@ class Initializer{
 
 		//Getters for handlers because the handlers themselves should stay private
 		TIM_HandleTypeDef* get_LED_Timer(void);
-		TIM_HandleTypeDef* get_Selector_Timer(void);
-		TIM_HandleTypeDef* get_PushMotor_Timer(void);
+		TIM_HandleTypeDef* get_selector_Timer(void);
+		TIM_HandleTypeDef* get_pushMotor_Timer(void);
+		TIM_HandleTypeDef* get_fluidMotor_Timer(void);
+		TIM_HandleTypeDef* get_cleanerMotor_Timer(void);
 		UART_HandleTypeDef* get_huart_1(void);
 		UART_HandleTypeDef* get_huart_2(void);
 
@@ -58,7 +60,8 @@ class Initializer{
 		//Timer for fluid actuator
 		TIM_HandleTypeDef htim3;
 
-
+		//not sure if this is even used... just keep it here for now.
+		TIM_HandleTypeDef htim2;
 
 		//getters and setters for now
 

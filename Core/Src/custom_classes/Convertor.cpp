@@ -6,23 +6,29 @@ Convertor::Convertor(SBUS *sbus, Initializer *init, Components* components){
 	this->_timers = init;
 	this->_components = components;
 
-}
+	this->_ledPWM = 0;
 
-void Convertor::testLED(void){
-
-	__HAL_TIM_SET_COMPARE(_timers->get_LED_Timer(), TIM_CHANNEL_1, 100);
 
 }
 
+
+void Convertor::ledOFF(void){
+
+	__HAL_TIM_SET_COMPARE(_timers->get_LED_Timer(), TIM_CHANNEL_1, 0);
+
+
+}
 void Convertor::testSelector(void){
 
-	__HAL_TIM_SET_COMPARE(_timers->get_Selector_Timer(),  TIM_CHANNEL_3, 200);
+	__HAL_TIM_SET_COMPARE(_timers->get_selector_Timer(),  TIM_CHANNEL_3, 200);
 }
 
 void Convertor::getADC(void){
 
 
-    HAL_ADC_Start_DMA(_components->get_ADC_1(), (uint32_t*)&ADC_1_Buffer, 2);
+    HAL_ADC_Start_DMA(_components->get_ADC_1(), (uint32_t*)&ADC_1_Buffer, 3);
+    HAL_ADC_Start_DMA(_components->get_ADC_2(), (uint32_t*)&ADC_2_Buffer, 2);
+    HAL_ADC_Start_DMA(_components->get_ADC_5(), (uint32_t*)&ADC_5_Buffer, 2);
 
 
 
@@ -67,6 +73,24 @@ void Convertor::actuatorControl(int16_t pwm_input, TIM_HandleTypeDef *tim, uint3
 }
 
 
+void Convertor::updateCleanerMotor(void){
+
+	this->_cleanerMotorPWM = 0;
+	this->_cleanerMotorPWM = this->_sbus->getRightY();
+
+	if(_cleanerMotorPWM > 10){
+		__HAL_TIM_SET_COMPARE(_timers->get_cleanerMotor_Timer(), TIM_CHANNEL_3, abs(_cleanerMotorPWM));
+
+	}else{
+
+		__HAL_TIM_SET_COMPARE(_timers->get_cleanerMotor_Timer(), TIM_CHANNEL_3, 0);
+
+	}
+
+
+
+}
+
 
 
 void Convertor::updateSelector(void){
@@ -78,10 +102,10 @@ void Convertor::updateSelector(void){
 	float probePos = 960;
 	if(_selectorPWM > 0){
 
-		this->actuatorControl(_selectorPWM, this->_timers->get_Selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3);
+		this->actuatorControl(_selectorPWM, this->_timers->get_selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3);
 	}else if(_selectorPWM < 0){
 
-		this->actuatorControl(_selectorPWM, this->_timers->get_Selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3 );
+		this->actuatorControl(_selectorPWM, this->_timers->get_selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3 );
 
 	}
 
@@ -90,32 +114,112 @@ void Convertor::updateSelector(void){
 
 void Convertor::updatePushMotor(void){
 
+	//currently basic implementation for push motor
+
+
 	this->_pushMotorPWM = this->_sbus->getLeftY();
 
 	if(_pushMotorPWM > 0){
 
-		this->actuatorControl(_pushMotorPWM, this->_timers->get_PushMotor_Timer() , TIM_CHANNEL_2, TIM_CHANNEL_3);
+		this->actuatorControl(_pushMotorPWM, this->_timers->get_pushMotor_Timer() , TIM_CHANNEL_2, TIM_CHANNEL_3);
 
 	}else if(_pushMotorPWM < 0){
 
-		this->actuatorControl(_pushMotorPWM, this->_timers->get_PushMotor_Timer(), TIM_CHANNEL_2, TIM_CHANNEL_3);
+		this->actuatorControl(_pushMotorPWM, this->_timers->get_pushMotor_Timer(), TIM_CHANNEL_2, TIM_CHANNEL_3);
 	}
 
 }
 
 void Convertor::updateFluidMotor(void){
 
+	//currently basic implementation for fluid motor
+	//simple movement with jogwheel for debug now, fix buttons and fluidpercentage later.
+
+	this->_fluidPWM = this->_sbus->getJogWheel();
+
+	if(_fluidPWM > 0){
+
+		this->actuatorControl(_fluidPWM, this->_timers->get_fluidMotor_Timer() , TIM_CHANNEL_2, TIM_CHANNEL_1);
+
+	}else if(_fluidPWM < 0){
+
+		this->actuatorControl(_fluidPWM, this->_timers->get_fluidMotor_Timer(), TIM_CHANNEL_2, TIM_CHANNEL_1);
+	}
 
 
 }
 
 
-int16_t Convertor::get_selectorPWM(){
+int16_t Convertor::get_selectorPWM(void){
 
 	return this->_selectorPWM;
+
 }
 
 
+int16_t Convertor::get_fluidPWM(void){
+
+	return this->_fluidPWM;
+}
+
+
+int16_t Convertor::get_pushPWM(void){
+
+
+	return this->_pushMotorPWM;
+
+}
+
+int16_t Convertor::get_cleanerMotorPWM(void){
+
+	return this->_cleanerMotorPWM;
+
+
+}
+
+int16_t Convertor::get_LEDPWM(void){
+
+	return _ledPWM;
+}
+
+int16_t Convertor::get_selector_position(void){
+
+	return ADC_1_Buffer[0] / 4.095;
+}
+
+int16_t Convertor::get_fluidPosition(void){
+
+	return ADC_1_Buffer[3] / 4.095;
+
+}
+
+int16_t Convertor::get_pushPosition(void){
+
+	return ADC_1_Buffer[2] / 4.095;
+}
+
+
+int16_t Convertor::get_LEDCurrent(void){
+
+	return ADC_2_Buffer[0] / 4.095;
+}
+
+int16_t Convertor::get_fluidCurrent(void){
+
+
+	return ADC_2_Buffer[1] / 4.095;
+}
+
+int16_t Convertor::get_pushCurrent(void){
+
+	return ADC_5_Buffer[0] / 4.095;
+
+}
+
+int16_t Convertor::get_selectorCurrent(void){
+
+	return ADC_5_Buffer[1] / 4.095;
+}
 
 
 void Convertor::process(void){
@@ -124,19 +228,12 @@ void Convertor::process(void){
 	this->updateLED();
 	this->updateSelector();
 	this->updatePushMotor();
+	this->updateFluidMotor();
+	this->updateCleanerMotor();
 	this->getADC();
 
 }
 
-uint16_t Convertor::get_LEDPWM(){
-
-	return _ledPWM;
-}
-
-int16_t Convertor::get_selector_position(){
 
 
-	return ADC_1_Buffer[0] / 4.095;
-	//return _ADC_1_value /4.095;
 
-}

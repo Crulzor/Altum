@@ -4,7 +4,6 @@ SBUS::SBUS(UART_HandleTypeDef *huart_sbus){
 
 	this->_huart_sbus = huart_sbus;
 
-	HAL_UART_Receive_DMA (this->_huart_sbus, _sbus_buffer, SBUS_PACKET_SIZE);
 
 
 
@@ -13,8 +12,11 @@ SBUS::SBUS(UART_HandleTypeDef *huart_sbus){
 
 void SBUS::update(void){
 
+
+
 	HAL_UARTEx_ReceiveToIdle_DMA(this->_huart_sbus, this->_sbus_buffer, SBUS_PACKET_SIZE);
 	this->readSBUS();
+
 
 
 
@@ -23,22 +25,21 @@ void SBUS::update(void){
 
 bool SBUS::readSBUS(void){
 
-
-
 		// SBUS protocol: 25-byte packet
 	    // 22 bytes in between contain channel data
 	    // each channel is a 16-bit value, with 11-bit resolution and 5-bit status
 	    // for the Herelink, there are 16 channels, but we only care about channels 1-8 for the sticks
 
+		// buttons are assigned to channels on the herelink controller.
+
 		// OK DUS
-		// EERST BYTE 1 EN 2 OR, dan shift met 8 posities naar links, DAN ANDEN met 0111 1111 1111 (om 11 bits te krijgen
+		// EERST BYTE 1 EN 2 OPTELLEN/OR, dan bitshiften met 8 posities naar links, dan ANDEN met 0111 1111 1111 (om 11 bits te krijgen
 		// en zeker geen losse bits mee te pakken)
 
-		//als iemand er ooit in slaagt om dit in een mooie for-loop te gieten, chapeau, ik vind hem niet :') (maar het moet mogelijk zijn).
+		//als iemand er ooit in slaagt om dit in een mooie for-loop of iets dergelijks te gieten, chapeau, ik vind hem niet :').
 
 
 		//RIGHT JOYSTICK X
-
 		uint16_t MSB =_sbus_buffer[1];
 		uint16_t LSB = _sbus_buffer[2] << 8;
 		uint16_t thirdByte;
@@ -64,7 +65,6 @@ bool SBUS::readSBUS(void){
 		MSB = _sbus_buffer[6] >> 4;
 		LSB = _sbus_buffer[7] << 4;
 		this->_channels[4] = (MSB | LSB) & 0x07FF;
-
 
 		//BUTTON A
 		MSB = _sbus_buffer[7] >> 7;
@@ -230,7 +230,7 @@ float SBUS::getJogWheel(void){
 	int16_t raw_value = _channels[4];
 
 	float center_value = 1024.0f;
-	float max_left = 1024.0f;
+	float max_left = 1684.0f;
 	float max_right = 364.0f;
 
 	if(raw_value < center_value){
@@ -239,7 +239,7 @@ float SBUS::getJogWheel(void){
 
 	}else if (raw_value > center_value){
 
-		return ((raw_value - center_value) * 1000.0f / (center_value - max_right));
+		return ((raw_value - center_value) * 1000.0f / (max_right - center_value));
 	}else {
 
 		return 0.0f;
@@ -293,7 +293,8 @@ bool SBUS::B_button(void){
 	  static uint8_t debounce_state = 0;
 	  static uint8_t debounce_counter = 0;
 
-	  bool button_pressed = (_channels[6] > 500);
+	  bool button_pressed = (_channels[6] > 1000
+			  );
 
 	  switch (debounce_state) {
 	    case 0:  // button released
@@ -329,7 +330,7 @@ bool SBUS::C_button(void){
 	  static uint8_t debounce_state = 0;
 	  static uint8_t debounce_counter = 0;
 
-	  bool button_pressed = (_channels[7] > 500);
+	  bool button_pressed = (_channels[7] > 1000);
 
 	  switch (debounce_state) {
 		case 0:  // button released
@@ -364,7 +365,7 @@ bool SBUS::D_button(void){
 	  static uint8_t debounce_state = 0;
 	  static uint8_t debounce_counter = 0;
 
-	  bool button_pressed = (_channels[8] > 500);
+	  bool button_pressed = (_channels[8] > 1000);
 
 	  switch (debounce_state) {
 		case 0:  // button released
@@ -399,7 +400,7 @@ bool SBUS::home_button(void){
       static uint8_t debounce_state = 0;
 	  static uint8_t debounce_counter = 0;
 
-	  bool button_pressed = (_channels[9] > 500);
+	  bool button_pressed = (_channels[9] > 1000);
 
 	  switch (debounce_state) {
 		case 0:  // button released

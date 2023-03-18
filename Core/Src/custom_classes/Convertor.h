@@ -25,13 +25,31 @@ class Convertor{
 		void updateLED(void);
 		void updatePushMotor(void);
 		void updateFluidMotor(void);
+		void updateCleanerMotor(void);
 
-		void testLED(void);
 		void testSelector(void);
+		void ledOFF(void);
 
-		uint16_t get_LEDPWM();
-		int16_t get_selectorPWM();
-		int16_t get_selector_position();
+
+		//Getters...getters everywhere....
+
+		//Getters for the pwm values
+		int16_t get_LEDPWM(void);
+		int16_t get_pushPWM(void);
+		int16_t get_fluidPWM(void);
+		int16_t get_selectorPWM(void);
+		int16_t get_cleanerMotorPWM(void);
+
+		//Getters for the pot positions (ADC)
+		int16_t get_selector_position(void);
+		int16_t get_pushPosition(void);
+		int16_t get_fluidPosition(void);
+
+		//Getters for the shunt(current) (ADC)
+		int16_t get_fluidCurrent(void);
+		int16_t get_LEDCurrent(void);
+		int16_t get_pushCurrent(void);
+		int16_t get_selectorCurrent(void);
 
 
 
@@ -41,8 +59,7 @@ class Convertor{
 
 		//public buffer for now for debugging purposes.
 
-		uint32_t _ADC_1_value = 0;
-		uint32_t ADC_1_Buffer[2] = {0};
+		uint32_t ADC_1_Buffer[3] = {0};
 		uint32_t ADC_2_Buffer[2] = {0};
 		uint32_t ADC_5_Buffer[2] = {0};
 
@@ -55,8 +72,8 @@ class Convertor{
 		Components *_components;
 
 		//private variables
-		uint16_t _ledPWM = 0;
-		uint16_t _motorPWM = 0;
+		int16_t _ledPWM = 0;
+		int16_t _cleanerMotorPWM = 0;
 		int16_t _selectorPWM = 0;
 		int16_t _pushMotorPWM = 0;
 		int16_t _fluidPWM = 0;

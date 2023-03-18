@@ -40,7 +40,7 @@ class SBUS{
 
 
 		//Keeping these public for debugging purposes for now.
-		uint8_t _sbus_buffer[SBUS_PACKET_SIZE];
+		uint8_t _sbus_buffer[SBUS_PACKET_SIZE] = {0};
 		uint16_t _channels[SBUS_NUM_CHANNELS] = {0};
 
 

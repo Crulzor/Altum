@@ -81,7 +81,7 @@ void Components::init_ADC_1(void){
 		  hadc1_ptr->Init.EOCSelection = ADC_EOC_SEQ_CONV;		// Use end of sequence conversion
 		  hadc1_ptr->Init.LowPowerAutoWait = DISABLE;
 		  hadc1_ptr->Init.ContinuousConvMode = DISABLE;
-		  hadc1_ptr->Init.NbrOfConversion = 2;
+		  hadc1_ptr->Init.NbrOfConversion = 3;
 		  hadc1_ptr->Init.DiscontinuousConvMode = DISABLE;
 		  hadc1_ptr->Init.ExternalTrigConv = ADC_SOFTWARE_START;
 		  hadc1_ptr->Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
@@ -112,6 +112,9 @@ void Components::init_ADC_1(void){
 		  */
 
 		  //SAMPLING TIME ORIGINEEL OP 47 CYCLES. MISSCHIEN NOG AANPASSEN
+
+
+		  //KANAAL VOOR DE SELECTOR POT
 		  sConfig.Channel = ADC_CHANNEL_11;
 		  sConfig.Rank = ADC_REGULAR_RANK_1;
 		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
@@ -123,8 +126,24 @@ void Components::init_ADC_1(void){
 		    this->Error_Handler();
 		    printf("ADC 1 HAL_ADC_ConfigChannel NOT ok");
 		  }
-		  sConfig.Channel = ADC_CHANNEL_VOPAMP1;
-		  sConfig.Rank = ADC_REGULAR_RANK_2;
+
+
+		  //KANAAL VOOR DE PUSH POT
+		  sConfig.Channel = ADC_CHANNEL_14;
+		  sConfig.Rank = ADC_REGULAR_RANK_3;
+		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+		  sConfig.Offset = 0;
+		  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
+		  {
+		    this->Error_Handler();
+		    printf("ADC 1 HAL_ADC_ConfigChannel Vopamp1 NOT ok");
+		  }
+
+		  //KANAAL VOOR DE FLUID POT
+		  sConfig.Channel = ADC_CHANNEL_12;
+		  sConfig.Rank = ADC_REGULAR_RANK_4;
 		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
 		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
 		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
@@ -174,6 +193,9 @@ void Components::init_ADC_2(void){
 
 	  /** Configure Regular Channel
 	  */
+
+	  //led current
+
 	  sConfig.Channel = ADC_CHANNEL_VOPAMP2;
 	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
@@ -186,8 +208,10 @@ void Components::init_ADC_2(void){
 	    printf("problem with ADC2 channel one init \r\n");
 
 	  }
+
+	  //fluid current
 	  sConfig.Channel = ADC_CHANNEL_VOPAMP3_ADC2;
-	  sConfig.Rank = ADC_REGULAR_RANK_1;
+	  sConfig.Rank = ADC_REGULAR_RANK_2;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
 	  sConfig.OffsetNumber = ADC_OFFSET_NONE;
@@ -237,6 +261,7 @@ void Components::init_ADC_5(void){
 
 	  /** Configure Regular Channel
 	  */
+	  //push motor shunt channel (current)
 	  sConfig.Channel = ADC_CHANNEL_VOPAMP4;
 	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
@@ -250,8 +275,9 @@ void Components::init_ADC_5(void){
 
 	  }
 
+	  //selector motor (current)
 	  sConfig.Channel = ADC_CHANNEL_VOPAMP5;
-	  sConfig.Rank = ADC_REGULAR_RANK_1;
+	  sConfig.Rank = ADC_REGULAR_RANK_2;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
 	  sConfig.OffsetNumber = ADC_OFFSET_NONE;
