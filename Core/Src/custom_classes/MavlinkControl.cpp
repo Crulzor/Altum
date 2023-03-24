@@ -13,13 +13,14 @@ MavlinkControl::MavlinkControl(UART_HandleTypeDef* huart, I2C_HandleTypeDef* i2c
 
 	  instancePtr = this;
 
-	//HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, RX_BUFFER_SIZE);
 	//HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, MAVLINK_BUFFER_SIZE);
 
 
 
 
 }
+
+MavlinkControl::MavlinkControl(UART_HandleTypeDef* huart): _huart_mavlink(huart){}
 
 void MavlinkControl::uartRxCallback(UART_HandleTypeDef *huart, uint16_t Size) {
   // Call the overridden function with the instancePtr as the first argument
@@ -30,20 +31,16 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 
   // Access the instance of the class using the static member variable
   MavlinkControl* instance = MavlinkControl::instancePtr;
-
-
-
-	  //printf("Size/length from callback function %d \r\n", instance->_receiveBuffer_1[0]);
-  	  instance->_bufferIndex ++;
-  	  //instance->readFlightTime();
+	instance
+	->process_header();
 
 
 
 }
 
 void MavlinkControl::update_RX(void){
-	HAL_UART_Receive_DMA(_huart_mavlink, _receiveBuffer_1, MAVLINK_BUFFER_SIZE);
-	//this->process_header();
+	HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, RX_BUFFER_SIZE);
+
 
 }
 
@@ -104,17 +101,6 @@ void MavlinkControl::process_header(void){
 		_mavlink_received_header.msgid = _receiveBuffer_2[5];
 
 
-	}else{
-
-		_mavlink_received_header.magic = 0;
-		_mavlink_received_header.len = 0;
-		_mavlink_received_header.incompat_flags = 0;
-		_mavlink_received_header.compat_flags = 0;
-		_mavlink_received_header.seq = 0;
-		_mavlink_received_header.sysid = 0;
-		_mavlink_received_header.msgid = 0;
-		_mavlink_received_header.compid = 0;
-
 	}
 
 
@@ -165,6 +151,31 @@ void MavlinkControl::sendTestMessage(void){
 
 }
 
+void MavlinkControl::readFlightTime() {
+
+
+
+    // Loop until we receive the heartbeat message
+    while (_flight_time == 0) {
+
+        // Read one byte at a time until we get a complete mavlink message
+        while (mavlink_parse_char(MAVLINK_COMM_0, _receiveBuffer_1[_bufferIndex++], &_mavlinkReceived, &_status) == MAVLINK_FRAMING_INCOMPLETE);
+
+        // If we have received a heartbeat message
+        if (_mavlinkReceived.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
+
+            // Decode the message and extract the flight time
+            mavlink_heartbeat_t heartbeat;
+            mavlink_msg_heartbeat_decode(&_mavlinkReceived, &heartbeat);
+            _flight_time = heartbeat.custom_mode;
+
+            // Reset the receive buffer index
+            _bufferIndex = 0;
+        }
+    }
+
+}
+
 void MavlinkControl::sendAltitude(uint16_t altitude){
 
 	float fAltitude = altitude;
@@ -177,29 +188,8 @@ void MavlinkControl::sendAltitude(uint16_t altitude){
 
 }
 
-uint32_t MavlinkControl::readFlightTime(void) {
 
-    mavlink_message_t msg;
-    mavlink_status_t status;
+uint32_t MavlinkControl::getFlightTime(void){
 
-    uint32_t flight_time = 0;
-
-    // Wait for a message from the herelink controller
-    while (!mavlink_parse_char(MAVLINK_COMM_0, _receiveBuffer_1[_bufferIndex], &msg, &status)) {}
-
-    // Check if the message is a MAVLINK_MSG_ID_FLIGHT_INFORMATION message
-    if (msg.msgid == MAVLINK_MSG_ID_FLIGHT_INFORMATION) {
-        mavlink_flight_information_t flight_info;
-        mavlink_msg_flight_information_decode(&msg, &flight_info);
-
-        // Get the flight time in seconds
-        flight_time = flight_info.time_boot_ms / 1000;
-    }
-
-    printf("testing \r\n");
-
-    printf("FLIGHT TIME %d \r\n ", flight_time);
-
-    return flight_time;
+	return this->_flight_time;
 }
-

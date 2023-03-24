@@ -24,6 +24,7 @@ void Altimeter::init_altimeter(void){
 }
 
 
+
 float Altimeter::get_altitude(void){
 
 	//array contains the address of the altitude register we want to read from (0x26)

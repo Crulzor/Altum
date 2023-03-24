@@ -26,5 +26,7 @@ extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
 extern ADC_HandleTypeDef hadc5;
 
+extern I2C_HandleTypeDef hi2c2;
+
 
 #endif /* HANDLERS_H_ */

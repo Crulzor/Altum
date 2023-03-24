@@ -55,6 +55,9 @@ class MavlinkControl{
 				MAV_STATE_STANDBY
 		};
 
+        mavlink_flight_information_t flight_info;
+
+
 
 	public:
 		//buffers for receiving data
@@ -66,6 +69,10 @@ class MavlinkControl{
 		//buffers for sending data
 		uint8_t _bufferPackedforUart[MAVLINK_BUFFER_SIZE] = {0};
 		uint16_t _TX_bufferLength;
+
+		//Var for flight time. Used for testing purposes right now
+		double _flight_time = 0;
+
 		//function for callback implementation.
 		void uartRxCallback(UART_HandleTypeDef *huart, uint16_t Size);
         friend void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size);
@@ -86,6 +93,7 @@ class MavlinkControl{
 
 
 		MavlinkControl();
+		MavlinkControl(UART_HandleTypeDef* huart);
 		MavlinkControl(UART_HandleTypeDef* huart, I2C_HandleTypeDef* i2c);
 
 
@@ -96,10 +104,8 @@ class MavlinkControl{
 		void sendTestMessage(void);
 		void sendAltitude(uint16_t altitude);
 
-		uint32_t readFlightTime(void);
-
-		void parseMavlinkDataRX(void);
-		void prepareMavlinkPacket(void);
+		void readFlightTime(void);
+		uint32_t getFlightTime(void);
 
 		void process_header(void);
 

@@ -48,10 +48,24 @@ void Debugger::displayDebugInfo(void){
 		printf("push motor current: %d \r\n", this->_convertor->get_pushCurrent());
 		printf("selector motor current: %d \r\n", this->_convertor->get_selectorCurrent());
 
+		printf("\r\n");
+
+
+		printf("flight time %d \r\n", _mavlink->getFlightTime());
+
+		printf("\r\n");
+
+		printf("Mavlink start of message: %d \r\n", _mavlink->_mavlink_received_header.magic);
+		printf("Mavlink payload length: %d \r\n", _mavlink->_mavlink_received_header.len);
+		printf("Mavlink incompat flags: %d \r\n", _mavlink->_mavlink_received_header.incompat_flags);
+		printf("Mavlink compat flags: %d \r\n", _mavlink->_mavlink_received_header.compat_flags);
+		printf("Mavlink seq: %d \r\n", _mavlink->_mavlink_received_header.seq);
+		printf("Mavlink sys id: %d \r\n", _mavlink->_mavlink_received_header.sysid);
+		printf("Mavlink comp id: %d \r\n", _mavlink->_mavlink_received_header.compid);
+		printf("Mavlink msg id: %d \r\n", _mavlink->_mavlink_received_header.msgid);
 
 		printf("\r\n");
 		printf("\r\n");
-
 		//HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
 
 
@@ -101,7 +115,7 @@ void Debugger::displayMavlink_header(void){
 
 void Debugger::displayMavlink_RAW(void){
 
-	if(HAL_GetTick() % 500 == 0){
+	if(HAL_GetTick() % 	100 == 0){
 
 		for(int i = 0; i < sizeof(_mavlink->_receiveBuffer_1) ; i++){
 

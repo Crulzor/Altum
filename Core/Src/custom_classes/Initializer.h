@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Inc/main.h"
+#include "handlers.h"
 
 class Initializer{
 
@@ -50,8 +51,7 @@ class Initializer{
 		UART_HandleTypeDef*  _huart1;
 		UART_HandleTypeDef* _huart2;
 
-		I2C_HandleTypeDef hi2c2;
-
+		I2C_HandleTypeDef* hi2c_ptr = &hi2c2;
 
 		//Timer for cleaner motor (the big one that scrubs)
 		TIM_HandleTypeDef htim1;

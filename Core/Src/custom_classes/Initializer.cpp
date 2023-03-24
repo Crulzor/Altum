@@ -30,11 +30,8 @@ void Initializer::init_Configs(void){
 	this->initUSART_2();
 	this->initI2C2();
 
+
     MX_USB_Device_Init();
-
-
-
-
 
 
 }
@@ -597,17 +594,16 @@ void Initializer::initUSART_2(void){
 
 void Initializer::initI2C2(void){
 
-	  I2C_HandleTypeDef hi2c2;
-	  hi2c2.Instance = I2C2;
-	  hi2c2.Init.Timing = 0x20A0C4DF;
-	  hi2c2.Init.OwnAddress1 = 0;
-	  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-	  hi2c2.Init.OwnAddress2 = 0;
-	  hi2c2.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
-	  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-	  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-	  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+	  hi2c_ptr->Instance = I2C2;
+	  hi2c_ptr->Init.Timing = 0x20A0C4DF;
+	  hi2c_ptr->Init.OwnAddress1 = 0;
+	  hi2c_ptr->Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+	  hi2c_ptr->Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+	  hi2c_ptr->Init.OwnAddress2 = 0;
+	  hi2c_ptr->Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+	  hi2c_ptr->Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+	  hi2c_ptr->Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+	  if (HAL_I2C_Init(hi2c_ptr) != HAL_OK)
 	  {
 	    Error_Handler();
 	    printf("problem with I2C2");
@@ -615,7 +611,7 @@ void Initializer::initI2C2(void){
 
 	  /** Configure Analogue filter
 	  */
-	  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c2, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+	  if (HAL_I2CEx_ConfigAnalogFilter(hi2c_ptr, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
 	  {
 	    this->Error_Handler();
 	    printf("problem with I2C2");
@@ -624,7 +620,7 @@ void Initializer::initI2C2(void){
 
 	  /** Configure Digital filter
 	  */
-	  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 0) != HAL_OK)
+	  if (HAL_I2CEx_ConfigDigitalFilter(hi2c_ptr, 0) != HAL_OK)
 	  {
 	    this->Error_Handler();
 	    printf("problem with I2C2");
@@ -633,6 +629,8 @@ void Initializer::initI2C2(void){
 	  /* USER CODE BEGIN I2C2_Init 2 */
 
 	  /* USER CODE END I2C2_Init 2 */
+	  __HAL_RCC_I2C2_CLK_ENABLE();
+
 
 }
 
@@ -812,7 +810,7 @@ void Initializer::Error_Handler(void){
 
 	for (uint8_t i = 0; i < 30; i++){		/* Toggle LED signal for error */
 		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
-		HAL_Delay(100);
+		HAL_Delay(50);
 		printf("Initialization error handler !! \r\n");
 
 	}

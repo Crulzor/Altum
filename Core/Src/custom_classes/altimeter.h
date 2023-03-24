@@ -29,7 +29,7 @@ class Altimeter{
 		uint8_t _pressure_data[3];
 		uint8_t temp_data[2];
 
-		float _altitude;
+		float _altitude = 0;
 
 	public:
 

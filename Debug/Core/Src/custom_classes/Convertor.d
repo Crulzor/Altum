@@ -289,8 +289,8 @@ Core/Src/custom_classes/Convertor.o: \
  ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h \
  ../Core/Src/custom_classes/Initializer.h \
  ../Core/Src/custom_classes/../../Inc/main.h \
- ../Core/Src/custom_classes/components.h \
- ../Core/Src/custom_classes/handlers.h
+ ../Core/Src/custom_classes/handlers.h \
+ ../Core/Src/custom_classes/components.h
 ../Core/Src/custom_classes/Convertor.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
@@ -582,5 +582,5 @@ Core/Src/custom_classes/Convertor.o: \
 ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h:
 ../Core/Src/custom_classes/Initializer.h:
 ../Core/Src/custom_classes/../../Inc/main.h:
-../Core/Src/custom_classes/components.h:
 ../Core/Src/custom_classes/handlers.h:
+../Core/Src/custom_classes/components.h:

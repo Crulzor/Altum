@@ -29,3 +29,5 @@ OPAMP_HandleTypeDef hopamp5;
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc2;
 ADC_HandleTypeDef hadc5;
+
+I2C_HandleTypeDef hi2c2;

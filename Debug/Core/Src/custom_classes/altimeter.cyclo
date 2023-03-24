@@ -1,4 +1,4 @@
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
 altimeter.cpp:3:1:Altimeter::Altimeter(I2C_HandleTypeDef*)	1
 altimeter.cpp:9:6:void Altimeter::init_altimeter()	1
-altimeter.cpp:27:7:float Altimeter::get_altitude()	1
+altimeter.cpp:28:7:float Altimeter::get_altitude()	1
