@@ -28,7 +28,7 @@ void Initializer::init_Configs(void){
 	this->initTIM_20();
 	this->initUSART_1();
 	this->initUSART_2();
-
+	this->initI2C2();
 
     MX_USB_Device_Init();
 
@@ -38,6 +38,7 @@ void Initializer::init_Configs(void){
 
 
 }
+
 
 void Initializer::initTIM_1(void){
 
@@ -796,6 +797,12 @@ TIM_HandleTypeDef* Initializer::get_cleanerMotor_Timer(void){
 	return &htim1;
 
 }
+
+I2C_HandleTypeDef* Initializer::get_i2c(void){
+
+	return &hi2c2;
+}
+
 
 
 void Initializer::Error_Handler(void){

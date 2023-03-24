@@ -40,6 +40,7 @@ class Initializer{
 		TIM_HandleTypeDef* get_cleanerMotor_Timer(void);
 		UART_HandleTypeDef* get_huart_1(void);
 		UART_HandleTypeDef* get_huart_2(void);
+		I2C_HandleTypeDef* get_i2c(void);
 
 
 
@@ -48,6 +49,9 @@ class Initializer{
 
 		UART_HandleTypeDef*  _huart1;
 		UART_HandleTypeDef* _huart2;
+
+		I2C_HandleTypeDef hi2c2;
+
 
 		//Timer for cleaner motor (the big one that scrubs)
 		TIM_HandleTypeDef htim1;

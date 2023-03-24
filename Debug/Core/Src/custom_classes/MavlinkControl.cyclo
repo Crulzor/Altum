@@ -7,20 +7,36 @@ mavlink_sha256.h:105:20:void mavlink_sha256_calc(mavlink_sha256_ctx*, uint32_t*)
 mavlink_sha256.h:152:21:void mavlink_sha256_update(mavlink_sha256_ctx*, const void*, uint32_t)	6
 mavlink_sha256.h:192:21:void mavlink_sha256_final_48(mavlink_sha256_ctx*, uint8_t*)	1
 mavlink_helpers.h:23:34:mavlink_status_t* mavlink_get_channel_status(uint8_t)	1
+mavlink_helpers.h:39:35:mavlink_message_t* mavlink_get_channel_buffer(uint8_t)	1
 mavlink_helpers.h:73:24:uint8_t mavlink_sign_packet(mavlink_signing_t*, uint8_t*, const uint8_t*, uint8_t, const uint8_t*, uint8_t, const uint8_t*)	3
 mavlink_helpers.h:111:24:uint8_t _mav_trim_payload(const char*, uint8_t)	3
+mavlink_helpers.h:123:21:bool mavlink_signature_check(mavlink_signing_t*, mavlink_signing_streams_t*, const mavlink_message_t*)	13
 mavlink_helpers.h:223:25:uint16_t mavlink_finalize_message_buffer(mavlink_message_t*, uint8_t, uint8_t, mavlink_status_t*, uint8_t, uint8_t, uint8_t)	10
 mavlink_helpers.h:292:25:uint16_t mavlink_finalize_message_chan(mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)	1
 mavlink_helpers.h:302:25:uint16_t mavlink_finalize_message(mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)	1
+mavlink_helpers.h:308:20:void _mav_parse_error(mavlink_status_t*)	1
 mavlink_helpers.h:445:25:uint16_t mavlink_msg_to_send_buffer(uint8_t*, const mavlink_message_t*)	4
+mavlink_helpers.h:498:21:void mavlink_start_checksum(mavlink_message_t*)	1
+mavlink_helpers.h:505:21:void mavlink_update_checksum(mavlink_message_t*, uint8_t)	1
+mavlink_helpers.h:516:43:const mavlink_msg_entry_t* mavlink_get_msg_entry(uint32_t)	5
+mavlink_helpers.h:588:24:uint8_t mavlink_frame_char_buffer(mavlink_message_t*, mavlink_status_t*, uint8_t, mavlink_message_t*, mavlink_status_t*)	51
+mavlink_helpers.h:910:24:uint8_t mavlink_frame_char(uint8_t, uint8_t, mavlink_message_t*, mavlink_status_t*)	1
+mavlink_helpers.h:988:24:uint8_t mavlink_parse_char(uint8_t, uint8_t, mavlink_message_t*, mavlink_status_t*)	4
+mavlink_msg_vfr_hud.h:67:24:uint16_t mavlink_msg_vfr_hud_pack(uint8_t, uint8_t, mavlink_message_t*, float, float, int16_t, uint16_t, float, float)	1
+mavlink_msg_flight_information.h:276:20:void mavlink_msg_flight_information_decode(const mavlink_message_t*, mavlink_flight_information_t*)	1
 mavlink_msg_heartbeat.h:66:24:uint16_t mavlink_msg_heartbeat_pack(uint8_t, uint8_t, mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t)	1
 mavlink_msg_heartbeat.h:146:24:uint16_t mavlink_msg_heartbeat_encode(uint8_t, uint8_t, mavlink_message_t*, const mavlink_heartbeat_t*)	1
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
-MavlinkControl.h:73:8:constexpr MavlinkControl::mavlink_header_t::mavlink_header_t()	1
-MavlinkControl.cpp:3:1:MavlinkControl::MavlinkControl()	1
-MavlinkControl.cpp:5:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*)	1
-MavlinkControl.cpp:14:6:void MavlinkControl::update()	2
-MavlinkControl.cpp:33:6:void MavlinkControl::processReceivedBuffer()	3
-MavlinkControl.cpp:64:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	1
-MavlinkControl.cpp:72:6:void MavlinkControl::heartbeat()	2
-MavlinkControl.cpp:91:6:void MavlinkControl::onReceiveEvent(UART_HandleTypeDef*)	2
+MavlinkControl.h:83:8:constexpr MavlinkControl::mavlink_header_t::mavlink_header_t()	1
+MavlinkControl.cpp:9:1:MavlinkControl::MavlinkControl()	1
+MavlinkControl.cpp:11:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*, I2C_HandleTypeDef*)	1
+MavlinkControl.cpp:24:6:void MavlinkControl::uartRxCallback(UART_HandleTypeDef*, uint16_t)	1
+MavlinkControl.cpp:29:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	1
+MavlinkControl.cpp:44:6:void MavlinkControl::update_RX()	1
+MavlinkControl.cpp:54:6:void MavlinkControl::update_TX()	2
+MavlinkControl.cpp:69:6:void MavlinkControl::process_header()	3
+MavlinkControl.cpp:128:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	1
+MavlinkControl.cpp:135:6:void MavlinkControl::heartbeat()	2
+MavlinkControl.cpp:152:6:void MavlinkControl::sendTestMessage()	2
+MavlinkControl.cpp:168:6:void MavlinkControl::sendAltitude(uint16_t)	2
+MavlinkControl.cpp:180:10:uint32_t MavlinkControl::readFlightTime()	3

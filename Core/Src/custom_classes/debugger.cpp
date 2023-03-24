@@ -80,13 +80,15 @@ void Debugger::displayMavlink_header(void){
 
 
 
-	if(HAL_GetTick() % 100 == 0){
-		printf("Mavlink start of message: %d \r\n", _mavlink->_mavlink_received_header.start_of_msg);
-		printf("Mavlink payload length: %d \r\n", _mavlink->_mavlink_received_header.payload_len);
-		printf("Mavlink sequence number: %d \r\n", _mavlink->_mavlink_received_header.sequence_num);
-		printf("Mavlink system id: %d \r\n", _mavlink->_mavlink_received_header.sys_id);
-		printf("Mavlink comp id: %d \r\n", _mavlink->_mavlink_received_header.comp_id);
-		printf("Mavlink msg id: %d \r\n", _mavlink->_mavlink_received_header.msg_id);
+	if(HAL_GetTick() % 100 == 0 && _mavlink->_mavlink_received_header.magic != 0){
+		printf("Mavlink start of message: %d \r\n", _mavlink->_mavlink_received_header.magic);
+		printf("Mavlink payload length: %d \r\n", _mavlink->_mavlink_received_header.len);
+		printf("Mavlink incompat flags: %d \r\n", _mavlink->_mavlink_received_header.incompat_flags);
+		printf("Mavlink compat flags: %d \r\n", _mavlink->_mavlink_received_header.compat_flags);
+		printf("Mavlink seq: %d \r\n", _mavlink->_mavlink_received_header.seq);
+		printf("Mavlink sys id: %d \r\n", _mavlink->_mavlink_received_header.sysid);
+		printf("Mavlink comp id: %d \r\n", _mavlink->_mavlink_received_header.compid);
+		printf("Mavlink msg id: %d \r\n", _mavlink->_mavlink_received_header.msgid);
 
 		printf("\r\n");
 		printf("\r\n");

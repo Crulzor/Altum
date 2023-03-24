@@ -3,4 +3,4 @@ c:\st\stm32cubeide_1.11.2\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.external
 ../Core/Src/custom_classes/debugger.cpp:12:6:void Debugger::displayDebugInfo()	16	static
 ../Core/Src/custom_classes/debugger.cpp:63:6:void Debugger::displaySBUS_channels()	24	static
 ../Core/Src/custom_classes/debugger.cpp:79:6:void Debugger::displayMavlink_header()	16	static
-../Core/Src/custom_classes/debugger.cpp:100:6:void Debugger::displayMavlink_RAW()	24	static
+../Core/Src/custom_classes/debugger.cpp:102:6:void Debugger::displayMavlink_RAW()	24	static

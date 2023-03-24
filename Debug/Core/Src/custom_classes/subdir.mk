@@ -12,6 +12,7 @@ CPP_SRCS += \
 ../Core/Src/custom_classes/Initializer.cpp \
 ../Core/Src/custom_classes/MavlinkControl.cpp \
 ../Core/Src/custom_classes/SBUS.cpp \
+../Core/Src/custom_classes/altimeter.cpp \
 ../Core/Src/custom_classes/components.cpp \
 ../Core/Src/custom_classes/debugger.cpp 
 
@@ -23,6 +24,7 @@ OBJS += \
 ./Core/Src/custom_classes/Initializer.o \
 ./Core/Src/custom_classes/MavlinkControl.o \
 ./Core/Src/custom_classes/SBUS.o \
+./Core/Src/custom_classes/altimeter.o \
 ./Core/Src/custom_classes/components.o \
 ./Core/Src/custom_classes/debugger.o \
 ./Core/Src/custom_classes/handlers.o 
@@ -32,6 +34,7 @@ CPP_DEPS += \
 ./Core/Src/custom_classes/Initializer.d \
 ./Core/Src/custom_classes/MavlinkControl.d \
 ./Core/Src/custom_classes/SBUS.d \
+./Core/Src/custom_classes/altimeter.d \
 ./Core/Src/custom_classes/components.d \
 ./Core/Src/custom_classes/debugger.d 
 
@@ -45,7 +48,7 @@ Core/Src/custom_classes/%.o Core/Src/custom_classes/%.su Core/Src/custom_classes
 clean: clean-Core-2f-Src-2f-custom_classes
 
 clean-Core-2f-Src-2f-custom_classes:
-	-$(RM) ./Core/Src/custom_classes/Convertor.cyclo ./Core/Src/custom_classes/Convertor.d ./Core/Src/custom_classes/Convertor.o ./Core/Src/custom_classes/Convertor.su ./Core/Src/custom_classes/Initializer.cyclo ./Core/Src/custom_classes/Initializer.d ./Core/Src/custom_classes/Initializer.o ./Core/Src/custom_classes/Initializer.su ./Core/Src/custom_classes/MavlinkControl.cyclo ./Core/Src/custom_classes/MavlinkControl.d ./Core/Src/custom_classes/MavlinkControl.o ./Core/Src/custom_classes/MavlinkControl.su ./Core/Src/custom_classes/SBUS.cyclo ./Core/Src/custom_classes/SBUS.d ./Core/Src/custom_classes/SBUS.o ./Core/Src/custom_classes/SBUS.su ./Core/Src/custom_classes/components.cyclo ./Core/Src/custom_classes/components.d ./Core/Src/custom_classes/components.o ./Core/Src/custom_classes/components.su ./Core/Src/custom_classes/debugger.cyclo ./Core/Src/custom_classes/debugger.d ./Core/Src/custom_classes/debugger.o ./Core/Src/custom_classes/debugger.su ./Core/Src/custom_classes/handlers.cyclo ./Core/Src/custom_classes/handlers.d ./Core/Src/custom_classes/handlers.o ./Core/Src/custom_classes/handlers.su
+	-$(RM) ./Core/Src/custom_classes/Convertor.cyclo ./Core/Src/custom_classes/Convertor.d ./Core/Src/custom_classes/Convertor.o ./Core/Src/custom_classes/Convertor.su ./Core/Src/custom_classes/Initializer.cyclo ./Core/Src/custom_classes/Initializer.d ./Core/Src/custom_classes/Initializer.o ./Core/Src/custom_classes/Initializer.su ./Core/Src/custom_classes/MavlinkControl.cyclo ./Core/Src/custom_classes/MavlinkControl.d ./Core/Src/custom_classes/MavlinkControl.o ./Core/Src/custom_classes/MavlinkControl.su ./Core/Src/custom_classes/SBUS.cyclo ./Core/Src/custom_classes/SBUS.d ./Core/Src/custom_classes/SBUS.o ./Core/Src/custom_classes/SBUS.su ./Core/Src/custom_classes/altimeter.cyclo ./Core/Src/custom_classes/altimeter.d ./Core/Src/custom_classes/altimeter.o ./Core/Src/custom_classes/altimeter.su ./Core/Src/custom_classes/components.cyclo ./Core/Src/custom_classes/components.d ./Core/Src/custom_classes/components.o ./Core/Src/custom_classes/components.su ./Core/Src/custom_classes/debugger.cyclo ./Core/Src/custom_classes/debugger.d ./Core/Src/custom_classes/debugger.o ./Core/Src/custom_classes/debugger.su ./Core/Src/custom_classes/handlers.cyclo ./Core/Src/custom_classes/handlers.d ./Core/Src/custom_classes/handlers.o ./Core/Src/custom_classes/handlers.su
 
 .PHONY: clean-Core-2f-Src-2f-custom_classes
 

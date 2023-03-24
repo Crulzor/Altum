@@ -289,6 +289,7 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Core/Src/custom_classes/components.h \
  ../Core/Src/custom_classes/handlers.h ../Core/Src/custom_classes/SBUS.h \
  ../Core/Src/custom_classes/MavlinkControl.h \
+ ../Core/Src/custom_classes/altimeter.h \
  ../Core/Src/custom_classes/Convertor.h \
  ../Core/Src/custom_classes/debugger.h \
  ../Core/Src/custom_classes/handlers.h
@@ -586,6 +587,7 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Core/Src/custom_classes/handlers.h:
 ../Core/Src/custom_classes/SBUS.h:
 ../Core/Src/custom_classes/MavlinkControl.h:
+../Core/Src/custom_classes/altimeter.h:
 ../Core/Src/custom_classes/Convertor.h:
 ../Core/Src/custom_classes/debugger.h:
 ../Core/Src/custom_classes/handlers.h:
