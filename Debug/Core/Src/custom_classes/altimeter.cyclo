@@ -6,9 +6,9 @@ bitset:406:7:static constexpr std::_Base_bitset<1>::_WordT std::_Base_bitset<1>:
 bitset:414:7:constexpr std::_Base_bitset<1>::_WordT std::_Base_bitset<1>::_M_getword(std::size_t) const	1
 altimeter.cpp:3:1:Altimeter::Altimeter(I2C_HandleTypeDef*)	1
 altimeter.cpp:9:6:void Altimeter::init_altimeter()	8
-altimeter.cpp:71:7:float Altimeter::read_altitude()	2
-altimeter.cpp:131:7:float Altimeter::get_altitude()	1
-altimeter.cpp:136:6:void Altimeter::update()	1
+altimeter.cpp:70:7:float Altimeter::read_altitude()	2
+altimeter.cpp:130:7:float Altimeter::get_altitude()	1
+altimeter.cpp:135:6:void Altimeter::update()	1
 bitset:874:17:constexpr std::bitset<_Nb>::bitset(long long unsigned int) [with unsigned int _Nb = 8]	1
 bitset:1249:7:std::__cxx11::basic_string<char> std::bitset<_Nb>::to_string() const [with unsigned int _Nb = 8]	1
 bitset:874:17:constexpr std::bitset<_Nb>::bitset(long long unsigned int) [with unsigned int _Nb = 32]	1

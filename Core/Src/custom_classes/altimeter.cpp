@@ -36,7 +36,7 @@ void Altimeter::init_altimeter(void){
 	transmit_data[0] = _altimeter_address;
 	transmit_data[1] = _altimeter_ctrl_reg_1;
 	transmit_data[2] = _altimeter_mode;
-	if(HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 3, 100) != HAL_OK){
+	if(HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 2, 100) != HAL_OK){
 
 		printf("error with i2c \r\n");
 
@@ -44,22 +44,21 @@ void Altimeter::init_altimeter(void){
 	transmit_data[0] = _altimeter_address;
 	transmit_data[1] = _altimeter_ctrl_reg_1;
 	transmit_data[2] = 0xFB;
-	HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 3, 100);
+	HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 2, 100);
 	while(HAL_I2C_GetState(_i2c) != HAL_I2C_STATE_READY);
 
 
 	// Enable Data Flags in PT_DATA_CFG
-	transmit_data[0] = _altimeter_address;
-	transmit_data[1] = _altimeter_data_event_flag_reg;
-	transmit_data[2] = 0x07;
-	HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 3, 100);
+	transmit_data[0] = _altimeter_data_event_flag_reg;
+	transmit_data[1] = 0x07;
+	HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 2, 100);
 	while(HAL_I2C_GetState(_i2c) != HAL_I2C_STATE_READY);
 
 	// Set Active
 	transmit_data[0] = _altimeter_address;
 	transmit_data[1] = _altimeter_ctrl_reg_1;
 	transmit_data[2] = 0xB9;
-	HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 3, 100);
+	HAL_I2C_Master_Transmit(_i2c, _altimeter_address, transmit_data, 2, 100);
 	while(HAL_I2C_GetState(_i2c) != HAL_I2C_STATE_READY);
 
 
