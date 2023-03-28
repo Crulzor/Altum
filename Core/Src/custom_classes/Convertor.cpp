@@ -149,6 +149,19 @@ void Convertor::updateFluidMotor(void){
 
 }
 
+void Convertor::updateFluidAmount(void){
+
+
+	if(this->_sbus->D_button() && (_fluidAmount < 100)){
+
+		_fluidAmount += 10;
+	}else if(_sbus->C_button() && (_fluidAmount > 0)){
+
+		_fluidAmount -= 10;
+	}
+
+}
+
 
 int16_t Convertor::get_selectorPWM(void){
 
@@ -221,6 +234,10 @@ int16_t Convertor::get_selectorCurrent(void){
 	return ADC_5_Buffer[1] / 4.095;
 }
 
+int16_t Convertor::get_fluidAmount(void){
+
+	return _fluidAmount;
+}
 
 void Convertor::process(void){
 
@@ -231,6 +248,7 @@ void Convertor::process(void){
 	this->updateFluidMotor();
 	this->updateCleanerMotor();
 	this->getADC();
+	this->updateFluidAmount();
 
 }
 

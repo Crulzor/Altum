@@ -62,39 +62,33 @@ int main(void){
 	MavlinkControl mavlink(&huart1, init.get_i2c());
 
 	Convertor convertor(&sbus, &init, &components);
-	Debugger debugger(&sbus, &mavlink, &convertor);
 	Altimeter altimeter(&hi2c2);
+	Debugger debugger(&sbus, &mavlink, &convertor, &altimeter);
 
 
-	HAL_Delay(100);
+	HAL_Delay(5000);
 
 	printf(" sanity check \r \n");
 
 
     altimeter.init_altimeter();
+    uint32_t last_altimeter_tick = 0;
 
 	/* Main loop */
 	while (1){
 
 
-		if(HAL_GetTick() % 1000 == 0){
+		sbus.update();
+		convertor.process();
+		mavlink.update_TX();
+		mavlink.update_RX();
+		printf("testing %f \r\n", altimeter.read_altitude());
+		//debugger.displayDebugInfo();
+		//debugger.displayMavlink_header();
+		//debugger.displaySBUS_channels();
+		//debugger.displayMavlink_RAW();
 
-			HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
-
-
-		}
-
-		  sbus.update();
-		  convertor.process();
-		  mavlink.update_TX();
-		  mavlink.update_RX();
-		  printf("testing %f \r\n",altimeter.get_altitude());
-		  //mavlink.readFlightTime();
-		  //debugger.displayMavlink_header();
-		  //debugger.displaySBUS_channels();
-		  //debugger.displayDebugInfo();
-		  //debugger.displayMavlink_RAW();
-
+		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
 
 
 	}

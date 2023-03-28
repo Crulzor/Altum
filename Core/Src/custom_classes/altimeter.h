@@ -1,6 +1,7 @@
 #pragma once
 
 #include "main.h"
+#include <math.h>
 #include <stdio.h>
 #include <bitset>
 #include <stdint.h>
@@ -12,10 +13,11 @@ class Altimeter{
 
 		I2C_HandleTypeDef* _i2c;
 
+		//MPL3115A2 register definitions
 		static const int16_t _altimeter_address = 0xC0;
+		static const int16_t _altimeter_status_reg = 0x00;
 		static const int16_t _altimeter_ctrl_reg_1 = 0x26;
 		static const int16_t _altimeter_ctrl_reg_2 = 0x27;
-		static const int16_t _altimeter_status_reg = 0x00;
 		static const int16_t _altimeter_pressure_MSB = 0x01;
 		static const int16_t _altimeter_pressure_CSB = 0x01;
 		static const int16_t _altimeter_pressure_LSB = 0x03;
@@ -29,8 +31,6 @@ class Altimeter{
 		uint8_t status_reg_data;
 		uint8_t _pressure_data[3];
 
-		uint8_t temp_data[2];
-
 		float _altitude = 0;
 
 	public:
@@ -40,7 +40,10 @@ class Altimeter{
 
 		//Initialize altimeter
 		void init_altimeter(void);
+		void test_communication(void);
+		float read_altitude(void);
 		float get_altitude(void);
+		void update(void);
 
 
 

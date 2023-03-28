@@ -1,4 +1,23 @@
+char_traits.h:328:7:static void std::char_traits<char>::assign(std::char_traits<char>::char_type&, const char_type&)	1
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
+bitset:386:17:constexpr std::_Base_bitset<1>::_Base_bitset(long long unsigned int)	1
+bitset:402:7:static constexpr std::size_t std::_Base_bitset<1>::_S_whichbit(std::size_t)	1
+bitset:406:7:static constexpr std::_Base_bitset<1>::_WordT std::_Base_bitset<1>::_S_maskbit(std::size_t)	1
+bitset:414:7:constexpr std::_Base_bitset<1>::_WordT std::_Base_bitset<1>::_M_getword(std::size_t) const	1
 altimeter.cpp:3:1:Altimeter::Altimeter(I2C_HandleTypeDef*)	1
-altimeter.cpp:9:6:void Altimeter::init_altimeter()	4
-altimeter.cpp:32:7:float Altimeter::get_altitude()	6
+altimeter.cpp:9:6:void Altimeter::init_altimeter()	8
+altimeter.cpp:71:7:float Altimeter::read_altitude()	2
+altimeter.cpp:131:7:float Altimeter::get_altitude()	1
+altimeter.cpp:136:6:void Altimeter::update()	1
+bitset:874:17:constexpr std::bitset<_Nb>::bitset(long long unsigned int) [with unsigned int _Nb = 8]	1
+bitset:1249:7:std::__cxx11::basic_string<char> std::bitset<_Nb>::to_string() const [with unsigned int _Nb = 8]	1
+bitset:874:17:constexpr std::bitset<_Nb>::bitset(long long unsigned int) [with unsigned int _Nb = 32]	1
+bitset:1249:7:std::__cxx11::basic_string<char> std::bitset<_Nb>::to_string() const [with unsigned int _Nb = 32]	1
+bitset:682:7:static constexpr long long unsigned int std::_Sanitize_val<_Nb, true>::_S_do_sanitize_val(long long unsigned int) [with unsigned int _Nb = 8]	1
+bitset:1197:2:std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::bitset<_Nb>::to_string() const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; unsigned int _Nb = 8]	1
+bitset:682:7:static constexpr long long unsigned int std::_Sanitize_val<_Nb, true>::_S_do_sanitize_val(long long unsigned int) [with unsigned int _Nb = 32]	1
+bitset:1197:2:std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::bitset<_Nb>::to_string() const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; unsigned int _Nb = 32]	1
+bitset:1413:7:void std::bitset<_Nb>::_M_copy_to_string(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, _CharT, _CharT) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; unsigned int _Nb = 8]	3
+bitset:1413:7:void std::bitset<_Nb>::_M_copy_to_string(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, _CharT, _CharT) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; unsigned int _Nb = 32]	3
+bitset:1065:7:constexpr bool std::bitset<_Nb>::_Unchecked_test(std::size_t) const [with unsigned int _Nb = 8]	1
+bitset:1065:7:constexpr bool std::bitset<_Nb>::_Unchecked_test(std::size_t) const [with unsigned int _Nb = 32]	1

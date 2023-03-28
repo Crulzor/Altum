@@ -26,6 +26,7 @@ class Convertor{
 		void updatePushMotor(void);
 		void updateFluidMotor(void);
 		void updateCleanerMotor(void);
+		void updateFluidAmount(void);
 
 		void testSelector(void);
 		void ledOFF(void);
@@ -50,7 +51,7 @@ class Convertor{
 		int16_t get_LEDCurrent(void);
 		int16_t get_pushCurrent(void);
 		int16_t get_selectorCurrent(void);
-
+		int16_t get_fluidAmount(void);
 
 
 		void process(void);

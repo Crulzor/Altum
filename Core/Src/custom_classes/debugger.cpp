@@ -1,18 +1,21 @@
 #include "debugger.h"
 
-Debugger::Debugger(SBUS *sbus, MavlinkControl* mavlink, Convertor *convertor){
+Debugger::Debugger(SBUS *sbus, MavlinkControl* mavlink, Convertor *convertor, Altimeter* altimeter){
 
 	this->_sbus = sbus;
 	this->_convertor = convertor;
 	this->_mavlink = mavlink;
+	this->_altimeter = altimeter;
 
 }
 
 
 void Debugger::displayDebugInfo(void){
-
+	//BIG debug function. I'm just dumping everything here, because printf still is a bit wonky and this
+	//works best...
 
 	if(HAL_GetTick() % 100 == 0){
+
 
 
 		printf("Left joystick Y: %f \r\n", this->_sbus->getLeftY());
@@ -33,6 +36,7 @@ void Debugger::displayDebugInfo(void){
 		printf("selectorPWM: %d\r\n", this->_convertor->get_selectorPWM());
 		printf("push motor PWM: %d \r\n", this->_convertor->get_pushPWM());
 		printf("fluid motor PWM: %d \r\n", this->_convertor->get_fluidPWM());
+		printf("fluid amount to apply %d \r\n", _convertor->get_fluidAmount());
 		printf("cleaner motor PWM: %d \r\n", this->_convertor->get_cleanerMotorPWM());
 		printf("\r\n");
 
@@ -50,6 +54,9 @@ void Debugger::displayDebugInfo(void){
 
 		printf("\r\n");
 
+		printf("Altitude value: %f \r\n", this->_altimeter->get_altitude());
+
+		printf("\r\n");
 
 		printf("flight time %d \r\n", _mavlink->getFlightTime());
 
@@ -66,13 +73,14 @@ void Debugger::displayDebugInfo(void){
 
 		printf("\r\n");
 		printf("\r\n");
-		//HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
 
 
 	}
 
 
 }
+
+//Functions below are mainly for debugging raw channels.
 
 void Debugger::displaySBUS_channels(void){
 
@@ -131,4 +139,13 @@ void Debugger::displayMavlink_RAW(void){
 
 }
 
+void Debugger::displayAltitude(void){
+
+
+		//printf("Altitude value: %f \r\n", this->_altimeter->read_altitude());
+		printf("Altitude getter value: %f \r\n", this->_altimeter->get_altitude());
+
+
+
+}
 
