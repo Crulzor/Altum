@@ -1,7 +1,7 @@
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
 debugger.cpp:3:1:Debugger::Debugger(SBUS*, MavlinkControl*, Convertor*, Altimeter*)	1
 debugger.cpp:13:6:void Debugger::displayDebugInfo()	2
-debugger.cpp:85:6:void Debugger::displaySBUS_channels()	3
-debugger.cpp:101:6:void Debugger::displayMavlink_header()	4
-debugger.cpp:124:6:void Debugger::displayMavlink_RAW()	3
-debugger.cpp:142:6:void Debugger::displayAltitude()	1
+debugger.cpp:99:6:void Debugger::displaySBUS_channels()	3
+debugger.cpp:115:6:void Debugger::displayMavlink_header()	4
+debugger.cpp:138:6:void Debugger::displayMavlink_RAW()	3
+debugger.cpp:156:6:void Debugger::displayAltitude()	1

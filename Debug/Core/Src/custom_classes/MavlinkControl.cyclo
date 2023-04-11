@@ -22,23 +22,26 @@ mavlink_helpers.h:516:43:const mavlink_msg_entry_t* mavlink_get_msg_entry(uint32
 mavlink_helpers.h:588:24:uint8_t mavlink_frame_char_buffer(mavlink_message_t*, mavlink_status_t*, uint8_t, mavlink_message_t*, mavlink_status_t*)	51
 mavlink_helpers.h:910:24:uint8_t mavlink_frame_char(uint8_t, uint8_t, mavlink_message_t*, mavlink_status_t*)	1
 mavlink_helpers.h:988:24:uint8_t mavlink_parse_char(uint8_t, uint8_t, mavlink_message_t*, mavlink_status_t*)	4
+mavlink_msg_sys_status.h:564:20:void mavlink_msg_sys_status_decode(const mavlink_message_t*, mavlink_sys_status_t*)	1
 mavlink_msg_vfr_hud.h:67:24:uint16_t mavlink_msg_vfr_hud_pack(uint8_t, uint8_t, mavlink_message_t*, float, float, int16_t, uint16_t, float, float)	1
+mavlink_msg_altitude.h:71:24:uint16_t mavlink_msg_altitude_pack(uint8_t, uint8_t, mavlink_message_t*, uint64_t, float, float, float, float, float, float)	1
 mavlink_msg_heartbeat.h:66:24:uint16_t mavlink_msg_heartbeat_pack(uint8_t, uint8_t, mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t)	1
 mavlink_msg_heartbeat.h:146:24:uint16_t mavlink_msg_heartbeat_encode(uint8_t, uint8_t, mavlink_message_t*, const mavlink_heartbeat_t*)	1
 mavlink_msg_heartbeat.h:321:20:void mavlink_msg_heartbeat_decode(const mavlink_message_t*, mavlink_heartbeat_t*)	1
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
-MavlinkControl.h:90:8:constexpr MavlinkControl::mavlink_header_t::mavlink_header_t()	1
+MavlinkControl.h:95:8:constexpr MavlinkControl::mavlink_header_t::mavlink_header_t()	1
 MavlinkControl.cpp:9:1:MavlinkControl::MavlinkControl()	1
-MavlinkControl.cpp:11:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*, I2C_HandleTypeDef*)	1
-MavlinkControl.cpp:23:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*)	1
-MavlinkControl.cpp:25:6:void MavlinkControl::uartRxCallback(UART_HandleTypeDef*, uint16_t)	1
-MavlinkControl.cpp:30:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	1
-MavlinkControl.cpp:41:6:void MavlinkControl::update_RX()	1
-MavlinkControl.cpp:51:6:void MavlinkControl::update_TX()	2
-MavlinkControl.cpp:66:6:void MavlinkControl::process_header()	3
-MavlinkControl.cpp:114:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	1
-MavlinkControl.cpp:121:6:void MavlinkControl::heartbeat()	2
-MavlinkControl.cpp:138:6:void MavlinkControl::sendTestMessage()	2
-MavlinkControl.cpp:154:6:void MavlinkControl::readFlightTime()	4
-MavlinkControl.cpp:179:6:void MavlinkControl::sendAltitude(uint16_t)	2
-MavlinkControl.cpp:192:10:uint32_t MavlinkControl::getFlightTime()	1
+MavlinkControl.cpp:11:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*, Altimeter*)	1
+MavlinkControl.cpp:22:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*)	1
+MavlinkControl.cpp:24:6:void MavlinkControl::uartRxCallback(UART_HandleTypeDef*, uint16_t)	1
+MavlinkControl.cpp:29:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	2
+MavlinkControl.cpp:56:6:void MavlinkControl::update_RX()	1
+MavlinkControl.cpp:71:6:void MavlinkControl::update_TX()	2
+MavlinkControl.cpp:84:6:void MavlinkControl::process_header()	3
+MavlinkControl.cpp:130:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	1
+MavlinkControl.cpp:137:6:void MavlinkControl::heartbeat()	2
+MavlinkControl.cpp:154:6:void MavlinkControl::sendTestMessage()	2
+MavlinkControl.cpp:170:6:void MavlinkControl::decodeHeartbeat(mavlink_message_t)	2
+MavlinkControl.cpp:182:6:void MavlinkControl::readFlightTime(mavlink_message_t)	2
+MavlinkControl.cpp:197:6:void MavlinkControl::sendAltitude()	2
+MavlinkControl.cpp:216:10:uint32_t MavlinkControl::getFlightTime()	1

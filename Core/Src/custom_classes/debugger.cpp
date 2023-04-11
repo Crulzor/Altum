@@ -32,6 +32,9 @@ void Debugger::displayDebugInfo(void){
 		printf("Jogwheel: %f \r\n", this->_sbus->getJogWheel());
 
 
+
+		printf("home press: %d \r\n", this->_sbus->_channels[9]);
+
 		printf("LedPWM: %d\r\n", this->_convertor->get_LEDPWM());
 		printf("selectorPWM: %d\r\n", this->_convertor->get_selectorPWM());
 		printf("push motor PWM: %d \r\n", this->_convertor->get_pushPWM());
@@ -54,7 +57,16 @@ void Debugger::displayDebugInfo(void){
 
 		printf("\r\n");
 
+		printf("bits and bytes from the altimeter:  \r\n");
+
 		printf("Altitude value: %f \r\n", this->_altimeter->get_altitude());
+		printf("Altitude offset: %f, \r\n", this->_altimeter->get_offset());
+		printf("ALTIMETER CONTROL REGISTER 1: %d \r\n", this->_altimeter->read_ctrl_reg_1());
+		printf("ALTIMETER STATUS REGISTER: %d \r\n", this->_altimeter->read_status_reg());
+		printf("ALTIMETER FIFO STATUS REGISTER %d \r\n", this->_altimeter->read_data_reg());
+		printf("ALTIMETER WHOAMI  REGISTER %d \r\n", this->_altimeter->whoAmI());
+
+
 
 		printf("\r\n");
 
@@ -68,6 +80,8 @@ void Debugger::displayDebugInfo(void){
 		printf("Mavlink compat flags: %d \r\n", _mavlink->_mavlink_received_header.compat_flags);
 		printf("Mavlink seq: %d \r\n", _mavlink->_mavlink_received_header.seq);
 		printf("Mavlink sys id: %d \r\n", _mavlink->_mavlink_received_header.sysid);
+		printf("Mavlink received heartbeat system status %d \r\n", _mavlink->_received_heartbeat.system_status);
+		printf("Mavlink received heartbeat vehicle type %d \r\n", _mavlink->_received_heartbeat.system_status);
 		printf("Mavlink comp id: %d \r\n", _mavlink->_mavlink_received_header.compid);
 		printf("Mavlink msg id: %d \r\n", _mavlink->_mavlink_received_header.msgid);
 

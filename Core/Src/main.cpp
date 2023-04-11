@@ -28,11 +28,11 @@
 
 //#include "custom_classes/USBDevice.h"
 #include "../../Mavlink_v2/common/mavlink.h"
+#include "custom_classes/altimeter.h"
 #include "custom_classes/Initializer.h"
 #include "custom_classes/components.h"
 #include "custom_classes/SBUS.h"
 #include "custom_classes/MavlinkControl.h"
-#include "custom_classes/altimeter.h"
 #include "custom_classes/Convertor.h"
 #include "custom_classes/debugger.h"
 #include "custom_classes/handlers.h"
@@ -40,6 +40,7 @@
 //UART HANDLES IN MAIN FOR NOW, DMA HANDLES are created in stm32g4xx_hal_msp.c file
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
+
 
 
 int main(void){
@@ -59,20 +60,19 @@ int main(void){
 	HAL_Delay(100);
 	//SBUS, Convertor, Debugger Objects
 	SBUS sbus(&huart2);
-	MavlinkControl mavlink(&huart1, init.get_i2c());
-
-	Convertor convertor(&sbus, &init, &components);
 	Altimeter altimeter(&hi2c2);
+	MavlinkControl mavlink(&huart1, &altimeter);
+
+	Convertor convertor(&sbus, &init, &components, &altimeter);
 	Debugger debugger(&sbus, &mavlink, &convertor, &altimeter);
 
 
 	HAL_Delay(5000);
 
-	printf(" sanity check \r \n");
+	printf("\r\n sanity check \r \n");
 
 
     altimeter.init_altimeter();
-    uint32_t last_altimeter_tick = 0;
 
 	/* Main loop */
 	while (1){
@@ -81,14 +81,18 @@ int main(void){
 		sbus.update();
 		convertor.process();
 		mavlink.update_TX();
-		mavlink.update_RX();
-		printf("testing %f \r\n", altimeter.read_altitude());
+		altimeter.read_altitude();
+
 		//debugger.displayDebugInfo();
 		//debugger.displayMavlink_header();
 		//debugger.displaySBUS_channels();
 		//debugger.displayMavlink_RAW();
 
+
 		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
+
+
+
 
 
 	}
@@ -113,6 +117,14 @@ void Error_Handler(void){
 }
 
 
+//void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size){
+//
+//	if(huart->Instance == USART1){
+//
+//		printf("testing callback \r\n");
+//	}
+//
+//}
 
 
 #ifdef  USE_FULL_ASSERT

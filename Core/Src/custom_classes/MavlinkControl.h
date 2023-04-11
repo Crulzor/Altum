@@ -2,6 +2,8 @@
 #include "../../Mavlink_v2/common/mavlink.h"
 #include "../../Mavlink_v2/mavlink_types.h"
 
+#include "altimeter.h"
+
 #include "main.h"
 #include <bitset>
 #include <cstdint>
@@ -19,6 +21,7 @@ class MavlinkControl{
 
 		UART_HandleTypeDef* _huart_mavlink;
 		I2C_HandleTypeDef* _altimeter_i2c;
+		Altimeter* _altimeter;
 
 		//pointer to the class instance itself. Used in callback functions.
         static MavlinkControl* instancePtr;
@@ -39,6 +42,7 @@ class MavlinkControl{
 		//This is the "nextBufferSendToMavlinkBus" variable in Gio's code
 
 		mavlink_sys_status_t _system_status;
+
 		mavlink_status_t _status;
 		mavlink_system_t _mavlink_system = {
 
@@ -46,6 +50,7 @@ class MavlinkControl{
 				1		//comonent id (MAV_COMPONENT value)
 
 		};
+
 
 		mavlink_heartbeat_t _mavlink_heartbeat = {
 				0, 		//custom mode = none
@@ -64,7 +69,7 @@ class MavlinkControl{
 		uint8_t _receiveBuffer_1[MAVLINK_BUFFER_SIZE] = {0};
 	    uint8_t* _tempBuffer;
 		uint8_t* _receiveBuffer_2 = {0};
-		uint8_t _bufferIndex = 0;
+		uint32_t _bufferIndex = 0;
 
 		//buffers for sending data
 		uint8_t _bufferPackedforUart[MAVLINK_BUFFER_SIZE] = {0};
@@ -91,20 +96,22 @@ class MavlinkControl{
 
 	    mavlink_header_t _mavlink_received_header;
 
+		mavlink_heartbeat_t _received_heartbeat;
 
 		MavlinkControl();
 		MavlinkControl(UART_HandleTypeDef* huart);
-		MavlinkControl(UART_HandleTypeDef* huart, I2C_HandleTypeDef* i2c);
-
+		MavlinkControl(UART_HandleTypeDef* huart, Altimeter* altimeter);
 
 		mavlink_header_t getMavlinkHeader(void);
 		uint8_t returnTestFunction(void);
 
 		void heartbeat(void);
 		void sendTestMessage(void);
-		void sendAltitude(uint16_t altitude);
+		void sendAltitude(void);
 
-		void readFlightTime(void);
+		void readFlightTime(mavlink_message_t receivedMessage);
+		void decodeHeartbeat(mavlink_message_t receivedMessage);
+
 		uint32_t getFlightTime(void);
 
 		void process_header(void);

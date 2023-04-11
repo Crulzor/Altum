@@ -234,7 +234,8 @@ Core/Src/custom_classes/MavlinkControl.o: \
  ../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h \
  ../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_protocol_version.h \
  ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h \
- ../Core/Inc/main.h ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
+ ../Core/Src/custom_classes/altimeter.h ../Core/Inc/main.h \
+ ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  ../Core/Inc/stm32g4xx_hal_conf.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_def.h \
@@ -520,6 +521,7 @@ Core/Src/custom_classes/MavlinkControl.o: \
 ../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h:
 ../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_protocol_version.h:
 ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h:
+../Core/Src/custom_classes/altimeter.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 ../Core/Inc/stm32g4xx_hal_conf.h:

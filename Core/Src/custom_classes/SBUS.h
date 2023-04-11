@@ -19,7 +19,7 @@ class SBUS{
 		static const uint8_t SBUS_END_BYTE = 0x04;
 		static const uint8_t SBUS_NUM_CHANNELS = 16;
 
-		static const uint8_t _debounceTime = 50;
+		static const uint8_t _debounceTime = 40;
 
 
 	public:
@@ -37,6 +37,7 @@ class SBUS{
 		bool C_button(void);
 		bool D_button(void);
 		bool home_button(void);
+		bool home_button_long(void);
 
 
 		//Keeping these public for debugging purposes for now.

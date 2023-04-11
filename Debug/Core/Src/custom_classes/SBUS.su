@@ -10,4 +10,5 @@
 ../Core/Src/custom_classes/SBUS.cpp:290:6:bool SBUS::B_button()	24	static
 ../Core/Src/custom_classes/SBUS.cpp:328:6:bool SBUS::C_button()	24	static
 ../Core/Src/custom_classes/SBUS.cpp:363:6:bool SBUS::D_button()	24	static
-../Core/Src/custom_classes/SBUS.cpp:398:6:bool SBUS::home_button()	24	static
+../Core/Src/custom_classes/SBUS.cpp:398:6:bool SBUS::home_button_long()	24	static
+../Core/Src/custom_classes/SBUS.cpp:433:6:bool SBUS::home_button()	24	static

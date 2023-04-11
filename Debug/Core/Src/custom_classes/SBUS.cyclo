@@ -10,4 +10,5 @@ SBUS.cpp:251:6:bool SBUS::A_button()	9
 SBUS.cpp:290:6:bool SBUS::B_button()	9
 SBUS.cpp:328:6:bool SBUS::C_button()	9
 SBUS.cpp:363:6:bool SBUS::D_button()	9
-SBUS.cpp:398:6:bool SBUS::home_button()	9
+SBUS.cpp:398:6:bool SBUS::home_button_long()	9
+SBUS.cpp:433:6:bool SBUS::home_button()	9

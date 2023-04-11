@@ -4,6 +4,7 @@
 #include "SBUS.h"
 #include "Initializer.h"
 #include "components.h"
+#include "altimeter.h"
 #include "handlers.h"
 
 //Class to convert SBUS protocol to PWM values etc...
@@ -13,7 +14,7 @@ class Convertor{
 #define DEBOUNCE_DELAY 100
 
 	public:
-		Convertor(SBUS *sbus, Initializer *init, Components *components);
+		Convertor(SBUS *sbus, Initializer *init, Components *components, Altimeter* altimeter);
 
 		//runs at standard at 64k hz
 		void actuatorControl(int16_t pwm_input, TIM_HandleTypeDef *tim, uint32_t channelTimPlus, uint32_t channelTimMin);
@@ -27,6 +28,7 @@ class Convertor{
 		void updateFluidMotor(void);
 		void updateCleanerMotor(void);
 		void updateFluidAmount(void);
+		void setAltitudeOffset(void);
 
 		void testSelector(void);
 		void ledOFF(void);
@@ -71,6 +73,7 @@ class Convertor{
 		SBUS *_sbus;
 		Initializer *_timers;
 		Components *_components;
+		Altimeter* _altimeter;
 
 		//private variables
 		int16_t _ledPWM = 0;

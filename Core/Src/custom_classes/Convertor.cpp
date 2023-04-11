@@ -1,10 +1,11 @@
 #include "Convertor.h"
 
-Convertor::Convertor(SBUS *sbus, Initializer *init, Components* components){
+Convertor::Convertor(SBUS *sbus, Initializer *init, Components* components, Altimeter* altimeter){
 
 	this->_sbus = sbus;
 	this->_timers = init;
 	this->_components = components;
+	this->_altimeter = altimeter;
 
 	this->_ledPWM = 0;
 
@@ -162,6 +163,36 @@ void Convertor::updateFluidAmount(void){
 
 }
 
+void Convertor::setAltitudeOffset(void){
+
+	static uint8_t counter = 0;
+
+
+	if(this->_sbus->home_button()){
+		counter += 1;
+		if (counter >= 2){
+			counter = 0;
+		}
+	}
+
+	switch(counter){
+
+		case 0:
+			_altimeter->set_offset(0);
+			break;
+		case 1:
+			if(_altimeter->get_offset() == 0){
+
+				_altimeter->set_offset(_altimeter->get_altitude());
+			}
+			break;
+		case 2:
+			_altimeter->set_offset(0);
+			break;
+	}
+
+}
+
 
 int16_t Convertor::get_selectorPWM(void){
 
@@ -249,6 +280,7 @@ void Convertor::process(void){
 	this->updateCleanerMotor();
 	this->getADC();
 	this->updateFluidAmount();
+	this->setAltitudeOffset();
 
 }
 

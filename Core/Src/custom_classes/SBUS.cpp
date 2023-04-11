@@ -395,6 +395,41 @@ bool SBUS::D_button(void){
 
 }
 
+bool SBUS::home_button_long(void){
+
+    static uint8_t debounce_state = 0;
+	  static uint8_t debounce_counter = 0;
+
+	  bool button_pressed = (_channels[14] > 1000);
+
+	  switch (debounce_state) {
+		case 0:  // button released
+		  if (button_pressed) {
+			debounce_state = 1;
+			debounce_counter = 0;
+		  }
+		  break;
+
+		case 1:  // button pressed, waiting for debounce
+		  if (!button_pressed) {
+			debounce_state = 0;
+		  } else if (++debounce_counter >= _debounceTime) {
+			debounce_state = 2;
+		  }
+		  break;
+
+		case 2:  // button pressed and debounced
+		  if (!button_pressed) {
+			debounce_state = 0;
+			return true;
+		  }
+		  break;
+	  }
+
+	  return false;
+
+}
+
 bool SBUS::home_button(void){
 
       static uint8_t debounce_state = 0;

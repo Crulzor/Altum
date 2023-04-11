@@ -284,13 +284,13 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Core/Src/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h \
  ../Core/Src/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_protocol_version.h \
  ../Core/Src/../../Mavlink_v2/common/../mavlink_get_info.h \
+ ../Core/Src/custom_classes/altimeter.h \
  ../Core/Src/custom_classes/Initializer.h \
  ../Core/Src/custom_classes/../../Inc/main.h \
  ../Core/Src/custom_classes/handlers.h \
  ../Core/Src/custom_classes/components.h \
  ../Core/Src/custom_classes/SBUS.h \
  ../Core/Src/custom_classes/MavlinkControl.h \
- ../Core/Src/custom_classes/altimeter.h \
  ../Core/Src/custom_classes/Convertor.h \
  ../Core/Src/custom_classes/debugger.h \
  ../Core/Src/custom_classes/handlers.h
@@ -582,13 +582,13 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Core/Src/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h:
 ../Core/Src/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_protocol_version.h:
 ../Core/Src/../../Mavlink_v2/common/../mavlink_get_info.h:
+../Core/Src/custom_classes/altimeter.h:
 ../Core/Src/custom_classes/Initializer.h:
 ../Core/Src/custom_classes/../../Inc/main.h:
 ../Core/Src/custom_classes/handlers.h:
 ../Core/Src/custom_classes/components.h:
 ../Core/Src/custom_classes/SBUS.h:
 ../Core/Src/custom_classes/MavlinkControl.h:
-../Core/Src/custom_classes/altimeter.h:
 ../Core/Src/custom_classes/Convertor.h:
 ../Core/Src/custom_classes/debugger.h:
 ../Core/Src/custom_classes/handlers.h:
