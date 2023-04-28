@@ -25,17 +25,12 @@
 #include <string>
 #include "stm32g4xx_it.h"
 
-
-//#include "custom_classes/USBDevice.h"
 #include "../../Mavlink_v2/common/mavlink.h"
-#include "custom_classes/altimeter.h"
 #include "custom_classes/Initializer.h"
 #include "custom_classes/components.h"
-#include "custom_classes/SBUS.h"
-#include "custom_classes/MavlinkControl.h"
-#include "custom_classes/Convertor.h"
 #include "custom_classes/debugger.h"
 #include "custom_classes/handlers.h"
+#include "custom_classes/HerelinkController/HerelinkController.h"
 
 //UART HANDLES IN MAIN FOR NOW, DMA HANDLES are created in stm32g4xx_hal_msp.c file
 UART_HandleTypeDef huart1;
@@ -49,51 +44,40 @@ int main(void){
 	/* Reset of all peripherals, Initializes
 	 * the Flash interface and the Systick. */
 	HAL_Init();
-	//Initialize clock/DMA/... configurations and components.
 	HAL_Delay(100);
+
+
+	//Initialize clock/DMA/... configurations and components.
 	Initializer init(&huart1, &huart2);
 	init.init_Configs();
-
 	Components components;
 	components.init_Components();
-
 	HAL_Delay(100);
-	//SBUS, Convertor, Debugger Objects
-	SBUS sbus(&huart2);
-	Altimeter altimeter(&hi2c2);
-	MavlinkControl mavlink(&huart1, &altimeter);
-
-	Convertor convertor(&sbus, &init, &components, &altimeter);
-	Debugger debugger(&sbus, &mavlink, &convertor, &altimeter);
 
 
-	HAL_Delay(5000);
+	//HerelinkController object contains all sbus, altimeter & mavlink functionality. ctrl + click to expand
+	HerelinkController controller(&huart2, &huart1, &init, &components);
+	Debugger debugger(&controller);
+	HAL_Delay(1000);
 
 	printf("\r\n sanity check \r \n");
 
-
-    altimeter.init_altimeter();
+	//initialize MPL3115A2 sensor configurations
 
 	/* Main loop */
 	while (1){
 
+			//Keeping it full speed for now
+			//HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
+			controller.update();
 
-		sbus.update();
-		convertor.process();
-		mavlink.update_TX();
-		altimeter.read_altitude();
+			//all the printf functions in the debugtger class can cause problems while restarting the controller
+			//or the PCB, so leave it commented when not debugging
 
-		//debugger.displayDebugInfo();
-		//debugger.displayMavlink_header();
-		//debugger.displaySBUS_channels();
-		//debugger.displayMavlink_RAW();
-
-
-		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
-
-
-
-
+			debugger.displayDebugInfo();
+			//debugger.displayMavlink_header();
+			//debugger.displaySBUS_channels();
+			//debugger.displayMavlink_RAW();
 
 	}
 
@@ -110,21 +94,13 @@ void Error_Handler(void){
 
 	for (uint8_t i = 0; i < 30; i++){		/* Toggle LED signal for error */
 		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
-		printf("MESSAGE FROM MAIN ERROR HANDLER \r\n");
-		HAL_Delay(100);
+		printf("MESSAGE FROM MAIN ERROR HANDLER. Resetting system \r\n");
+		HAL_Delay(1000);
+		NVIC_SystemReset();
+
 	}
 
 }
-
-
-//void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size){
-//
-//	if(huart->Instance == USART1){
-//
-//		printf("testing callback \r\n");
-//	}
-//
-//}
 
 
 #ifdef  USE_FULL_ASSERT

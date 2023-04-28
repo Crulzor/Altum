@@ -11,7 +11,7 @@ class Components{
 
 
 	private:
-		//Hier nog de handlers toevoegen die je nodig zult hebben
+
 		  COMP_HandleTypeDef* hcomp1_ptr = &hcomp1;
 		  COMP_HandleTypeDef* hcomp2_ptr = &hcomp2;
 		  COMP_HandleTypeDef* hcomp4_ptr = &hcomp4;

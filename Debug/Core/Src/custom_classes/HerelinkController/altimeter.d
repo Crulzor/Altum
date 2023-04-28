@@ -1,7 +1,7 @@
-Core/Src/custom_classes/altimeter.o: \
- ../Core/Src/custom_classes/altimeter.cpp \
- ../Core/Src/custom_classes/altimeter.h ../Core/Inc/main.h \
- ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
+Core/Src/custom_classes/HerelinkController/altimeter.o: \
+ ../Core/Src/custom_classes/HerelinkController/altimeter.cpp \
+ ../Core/Src/custom_classes/HerelinkController/altimeter.h \
+ ../Core/Inc/main.h ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  ../Core/Inc/stm32g4xx_hal_conf.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_def.h \
@@ -53,7 +53,7 @@ Core/Src/custom_classes/altimeter.o: \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
-../Core/Src/custom_classes/altimeter.h:
+../Core/Src/custom_classes/HerelinkController/altimeter.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 ../Core/Inc/stm32g4xx_hal_conf.h:

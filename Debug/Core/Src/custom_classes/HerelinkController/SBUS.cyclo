@@ -1,0 +1,15 @@
+SBUS.cpp:3:1:SBUS::SBUS(UART_HandleTypeDef*)	1
+SBUS.cpp:27:6:bool SBUS::readSBUS()	1
+SBUS.cpp:13:6:void SBUS::update()	1
+SBUS.cpp:138:7:float SBUS::getLeftY()	3
+SBUS.cpp:161:7:float SBUS::getLeftX()	3
+SBUS.cpp:183:7:float SBUS::getRightY()	3
+SBUS.cpp:206:7:float SBUS::getRightX()	3
+SBUS.cpp:231:7:float SBUS::getJogWheel()	3
+SBUS.cpp:254:6:bool SBUS::A_button()	8
+SBUS.cpp:293:6:bool SBUS::B_button()	8
+SBUS.cpp:331:6:bool SBUS::C_button()	8
+SBUS.cpp:366:6:bool SBUS::D_button()	8
+SBUS.cpp:401:6:bool SBUS::home_button_long()	8
+SBUS.cpp:436:6:bool SBUS::home_button()	8
+SBUS.cpp:471:6:void SBUS::Error_Handler()	2

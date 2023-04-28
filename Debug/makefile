@@ -11,10 +11,12 @@ RM := rm -rf
 -include sources.mk
 -include USB_Device/Target/subdir.mk
 -include USB_Device/App/subdir.mk
+-include Pid_Controller/subdir.mk
 -include Middlewares/ST/STM32_USB_Device_Library/Core/Src/subdir.mk
 -include Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/subdir.mk
 -include Drivers/STM32G4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
+-include Core/Src/custom_classes/HerelinkController/subdir.mk
 -include Core/Src/custom_classes/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
@@ -81,7 +83,7 @@ main-build: Altum.elf secondary-outputs
 
 # Tool invocations
 Altum.elf Altum.map: $(OBJS) $(USER_OBJS) C:\Users\bartc\STM32CubeIDE\workspace_2\Altum\STM32G484CETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "Altum.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\bartc\STM32CubeIDE\workspace_2\Altum\STM32G484CETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Altum.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+	arm-none-eabi-g++ -o "Altum.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\bartc\STM32CubeIDE\workspace_2\Altum\STM32G484CETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Altum.map" -Wl,--gc-sections -static -flto --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

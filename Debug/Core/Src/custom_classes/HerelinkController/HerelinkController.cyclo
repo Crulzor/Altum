@@ -1,0 +1,6 @@
+HerelinkController.cpp:5:1:HerelinkController::HerelinkController()	1
+HerelinkController.cpp:8:1:HerelinkController::HerelinkController(UART_HandleTypeDef*, UART_HandleTypeDef*, Initializer*, Components*)	1
+HerelinkController.cpp:16:11:Altimeter HerelinkController::getAltimeter()	1
+HerelinkController.cpp:21:16:MavlinkControl HerelinkController::getMavlink()	1
+HerelinkController.cpp:27:6:SBUS HerelinkController::getSbus()	1
+HerelinkController.cpp:32:6:void HerelinkController::update()	1

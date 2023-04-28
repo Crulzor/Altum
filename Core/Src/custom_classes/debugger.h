@@ -1,28 +1,28 @@
 #pragma once
 #include "main.h"
-#include "SBUS.h"
-#include "MavlinkControl.h"
-#include "Convertor.h"
-#include "altimeter.h"
+#include "HerelinkController/HerelinkController.h"
+#include "HerelinkController/SBUS.h"
+#include "HerelinkController/MavlinkControl.h"
+#include "HerelinkController/Convertor.h"
+#include "HerelinkController/altimeter.h"
 
 class Debugger{
 
 
 	private:
-		SBUS *_sbus;
-		Convertor *_convertor;
-		MavlinkControl* _mavlink;
-		Altimeter* _altimeter;
+
+		HerelinkController *_controller;
 
 
 
 	public:
-		Debugger(SBUS *sbus, MavlinkControl* mavlink, Convertor *convertor, Altimeter* altimeter);
+		Debugger(HerelinkController *controller);
 		void displayDebugInfo(void);
 
 		void displaySBUS_channels(void);
 		void displayMavlink_RAW(void);
 		void displayMavlink_header(void);
 		void displayAltitude(void);
+		void debugADC(void);
 
 };

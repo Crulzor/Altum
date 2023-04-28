@@ -95,6 +95,7 @@ float Altimeter::read_altitude(void){
 		//OUT_P_MSB byte by 24 bits into a 32 variable and doing a logical OR with the OUT_P_CSB byte
 		//left shifted 16 bits and a logical OR with the OUT_P_LSB byte left shifted 8 bits gives the
 		//altitude in meters times 65536.
+
 		int32_t raw_altitude = (dataBytes[0] << 24) | (dataBytes[1] << 16) | (dataBytes[2] << 8);
 		//2's complement because it's always a signed value for some reason
 		raw_altitude = (~raw_altitude +1) *-1;
@@ -292,3 +293,15 @@ float Altimeter::get_offset(void){
 
 	return this->_altitude_offset;
 }
+
+void Altimeter::Error_Handler(void){
+
+	for (uint8_t i = 0; i < 30; i++){		/* Toggle LED signal for error */
+		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
+		HAL_Delay(50);
+		printf("Problem with altimeter class \r\n");
+
+	}
+
+}
+

@@ -53,7 +53,8 @@ Core/Src/custom_classes/debugger.o: \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
- ../Core/Src/custom_classes/SBUS.h \
+ ../Core/Src/custom_classes/HerelinkController/HerelinkController.h \
+ ../Core/Src/custom_classes/HerelinkController/MavlinkControl.h \
  ../Core/Inc/../../Mavlink_v2/common/mavlink.h \
  ../Core/Inc/../../Mavlink_v2/common/version.h \
  ../Core/Inc/../../Mavlink_v2/common/common.h \
@@ -279,21 +280,20 @@ Core/Src/custom_classes/debugger.o: \
  ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_system.h \
  ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_operator_id.h \
  ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_message_pack.h \
- ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_arm_status.h \
- ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_system_update.h \
  ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_hygrometer_sensor.h \
- ../Core/Inc/../../Mavlink_v2/common/../standard/standard.h \
- ../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/minimal.h \
- ../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h \
- ../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_protocol_version.h \
+ ../Core/Inc/../../Mavlink_v2/common/../minimal/minimal.h \
+ ../Core/Inc/../../Mavlink_v2/common/../minimal/./mavlink_msg_heartbeat.h \
+ ../Core/Inc/../../Mavlink_v2/common/../minimal/./mavlink_msg_protocol_version.h \
  ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h \
- ../Core/Src/custom_classes/MavlinkControl.h \
- ../Core/Src/custom_classes/altimeter.h \
- ../Core/Src/custom_classes/Convertor.h \
- ../Core/Src/custom_classes/Initializer.h \
- ../Core/Src/custom_classes/../../Inc/main.h \
- ../Core/Src/custom_classes/handlers.h \
- ../Core/Src/custom_classes/components.h
+ ../Core/Src/custom_classes/HerelinkController/altimeter.h \
+ ../Core/Src/custom_classes/HerelinkController/SBUS.h \
+ ../Core/Src/custom_classes/HerelinkController/Convertor.h \
+ ../Core/Src/custom_classes/HerelinkController/../Initializer.h \
+ c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h \
+ ../Core/Src/custom_classes/HerelinkController/../handlers.h \
+ ../Core/Src/custom_classes/HerelinkController/../components.h \
+ ../Core/Src/custom_classes/HerelinkController/../handlers.h \
+ ../Core/Inc/../../Pid_Controller/pid_controller.h
 ../Core/Src/custom_classes/debugger.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
@@ -349,7 +349,8 @@ Core/Src/custom_classes/debugger.o: \
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
-../Core/Src/custom_classes/SBUS.h:
+../Core/Src/custom_classes/HerelinkController/HerelinkController.h:
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.h:
 ../Core/Inc/../../Mavlink_v2/common/mavlink.h:
 ../Core/Inc/../../Mavlink_v2/common/version.h:
 ../Core/Inc/../../Mavlink_v2/common/common.h:
@@ -575,18 +576,17 @@ Core/Src/custom_classes/debugger.o: \
 ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_system.h:
 ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_operator_id.h:
 ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_message_pack.h:
-../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_arm_status.h:
-../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_open_drone_id_system_update.h:
 ../Core/Inc/../../Mavlink_v2/common/./mavlink_msg_hygrometer_sensor.h:
-../Core/Inc/../../Mavlink_v2/common/../standard/standard.h:
-../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/minimal.h:
-../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_heartbeat.h:
-../Core/Inc/../../Mavlink_v2/common/../standard/../minimal/./mavlink_msg_protocol_version.h:
+../Core/Inc/../../Mavlink_v2/common/../minimal/minimal.h:
+../Core/Inc/../../Mavlink_v2/common/../minimal/./mavlink_msg_heartbeat.h:
+../Core/Inc/../../Mavlink_v2/common/../minimal/./mavlink_msg_protocol_version.h:
 ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h:
-../Core/Src/custom_classes/MavlinkControl.h:
-../Core/Src/custom_classes/altimeter.h:
-../Core/Src/custom_classes/Convertor.h:
-../Core/Src/custom_classes/Initializer.h:
-../Core/Src/custom_classes/../../Inc/main.h:
-../Core/Src/custom_classes/handlers.h:
-../Core/Src/custom_classes/components.h:
+../Core/Src/custom_classes/HerelinkController/altimeter.h:
+../Core/Src/custom_classes/HerelinkController/SBUS.h:
+../Core/Src/custom_classes/HerelinkController/Convertor.h:
+../Core/Src/custom_classes/HerelinkController/../Initializer.h:
+c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h:
+../Core/Src/custom_classes/HerelinkController/../handlers.h:
+../Core/Src/custom_classes/HerelinkController/../components.h:
+../Core/Src/custom_classes/HerelinkController/../handlers.h:
+../Core/Inc/../../Pid_Controller/pid_controller.h:

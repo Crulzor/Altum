@@ -1,0 +1,22 @@
+../Core/Inc/../../Mavlink_v2/common/../checksum.h:35:20:void crc_accumulate(uint8_t, uint16_t*)	0	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:489:21:void mavlink_update_checksum(mavlink_message_t*, uint8_t)	16	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_sha256.h:152:21:void mavlink_sha256_update(mavlink_sha256_ctx*, const void*, uint32_t)	416	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_sha256.h:192:21:void mavlink_sha256_final_48(mavlink_sha256_ctx*, uint8_t*)	96	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:429:25:uint16_t mavlink_msg_to_send_buffer(uint8_t*, const mavlink_message_t*)	24	static
+../Core/Inc/../../Mavlink_v2/common/../minimal/./mavlink_msg_heartbeat.h:321:20:void mavlink_msg_heartbeat_decode(const mavlink_message_t*, mavlink_heartbeat_t*)	0	static
+../Core/Inc/../../Mavlink_v2/common/../mavlink_helpers.h:286:25:uint16_t mavlink_finalize_message(mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)	184	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:9:1:MavlinkControl::MavlinkControl()	16	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:11:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*, Altimeter*)	24	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:22:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*)	16	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:57:6:void MavlinkControl::update_RX()	0	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:82:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	0	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:89:6:void MavlinkControl::heartbeat()	64	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:111:6:void MavlinkControl::sendTestMessage()	56	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:131:6:void MavlinkControl::decodeHeartbeat(mavlink_message_t)	8	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:145:6:void MavlinkControl::readFlightTime(mavlink_message_t)	64	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:29:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	648	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:24:6:void MavlinkControl::uartRxCallback(UART_HandleTypeDef*, uint16_t)	0	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:160:6:void MavlinkControl::sendAltitude()	80	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:68:6:void MavlinkControl::update_TX()	8	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:179:10:uint32_t MavlinkControl::getFlightTime()	8	static
+../Core/Src/custom_classes/HerelinkController/MavlinkControl.cpp:185:6:void MavlinkControl::Error_Handler()	16	static

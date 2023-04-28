@@ -41,6 +41,7 @@ class Altimeter{
 
 	public:
 		//Constructor
+		Altimeter();
 		Altimeter(I2C_HandleTypeDef* i2c);
 
 		//Initialize altimeter
@@ -56,6 +57,8 @@ class Altimeter{
 		void set_mode_altimeter(void);
 		void set_mode_active(void);
 		float process_altitude(float altitude);
+
+		void Error_Handler(void);
 
 		//made functions to read and set each register, might be a bit bloated
 		uint8_t read_ctrl_reg_1(void);

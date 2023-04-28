@@ -48,20 +48,17 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
   instance->decodeHeartbeat(instance->_mavlinkReceived);
 
 
+  HAL_UART_Receive_DMA(instance->_huart_mavlink, instance->_receiveBuffer_1, instance->MAVLINK_BUFFER_SIZE);
 
   instance->_bufferIndex = 0;
 
 }
 
 void MavlinkControl::update_RX(void){
-	//HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, MAVLINK_BUFFER_SIZE);
-	//HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_2, RX_BUFFER_SIZE);
-	//HAL_UART_Receive_DMA(_huart_mavlink, _receiveBuffer_1, RX_BUFFER_SIZE);
 
+	HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, MAVLINK_BUFFER_SIZE);
 
-
-	//this->readFlightTime();
-
+	
 }
 
 
@@ -70,63 +67,18 @@ void MavlinkControl::update_RX(void){
 
 void MavlinkControl::update_TX(void){
 
-	this->sendAltitude();
 
-	if(HAL_GetTick() % 500 == 0){
+	if(HAL_GetTick() % 100 == 0){
 
 		this->heartbeat();
 
 
-	}
-
-}
-
-void MavlinkControl::process_header(void){
-
-
-	//First get the header so we know what size the message is.
-	//Mavlinkv2 headers are 6 bytes long and contain the fields defined in the header struct (see .h file).
-	//first check the header for value 0xFD
-
-	//NOT EVEN SURE IF I NEED THIS LATER
-
-
-	if(_receiveBuffer_1[0] == 0xFD){
-		//printf("CHECKING IF LEN IS OK %d \r\n", _tempBuffer[1]);
-
-
-		_mavlink_received_header.magic = _receiveBuffer_1[0];
-		_mavlink_received_header.len = _receiveBuffer_1[1];
-		_mavlink_received_header.incompat_flags = _receiveBuffer_1[2];
-		_mavlink_received_header.compat_flags = _receiveBuffer_2[3];
-		_mavlink_received_header.seq = _receiveBuffer_1[4];
-		_mavlink_received_header.sysid = _receiveBuffer_1[5];
-		_mavlink_received_header.msgid = _receiveBuffer_1[6] | _receiveBuffer_1[7] | _receiveBuffer_1[8];
-
-
-
-	}else if(_receiveBuffer_1[0] == 0xFE){
-
-		_receiveBuffer_2 = _receiveBuffer_1;
-
-		_mavlink_received_header.magic = _receiveBuffer_1[0];
-		_mavlink_received_header.len = _receiveBuffer_1[1];
-		_mavlink_received_header.seq = _receiveBuffer_1[2];
-		_mavlink_received_header.sysid = _receiveBuffer_1[3];
-		_mavlink_received_header.compid = _receiveBuffer_1[4];
-		_mavlink_received_header.msgid = _receiveBuffer_1[5];
-
+	}else if(HAL_GetTick() % 203 == 0){
+		this->sendAltitude();
 
 	}
-
-
-
-
-
 }
 
-
-//NOT SURE IF THIS IS EVEN USEFUL, FELT CUTE MIGHT DELETE LATER
 MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader(){
 
 	return _mavlink_received_header;
@@ -140,20 +92,27 @@ void MavlinkControl::heartbeat(void){
 	_bufferLength = mavlink_msg_heartbeat_encode(
 			_mavlink_system.sysid, _mavlink_system.compid, &_mavlinkSend,
 			&_mavlink_heartbeat);
+
+	//Check and see if you need the pack or encode function. 
 	mavlink_msg_heartbeat_pack(_mavlink_system.sysid, _mavlink_system.compid,
 			&_mavlinkSend, MAV_TYPE_GROUND_ROVER, MAV_AUTOPILOT_GENERIC,
 			MAV_MODE_FLAG_SAFETY_ARMED, 0, MAV_STATE_STANDBY);
 	mavlink_msg_to_send_buffer(_bufferPackedforUart, &_mavlinkSend);
 
-	if( HAL_UART_Transmit(_huart_mavlink, _bufferPackedforUart, _bufferLength, 100) != HAL_OK){
-		printf("NOT ABLE TO TRANSMIT MAVLINK PACKAGE \r\n");
+	if(HAL_UART_Transmit_IT(_huart_mavlink,_bufferPackedforUart, _bufferLength) != HAL_OK){
+
+				printf("NOT ABLE TO TRANSMIT MAVLINK PACKAGE \r\n");
+
 	}
+
 
 }
 
 void MavlinkControl::sendTestMessage(void){
 
 	float testValue = 122.0f;
+
+	_mavlink_battery.battery_remaining = 50;
 
 	// mavlink_msg_vfr_hud_pack function below repacks the value to a hud message. These can be configured on the QgroundControl app.
 	//The hud message can contain values such as ground speed, altitude, etc... autocomplete will give you an overview
@@ -164,6 +123,8 @@ void MavlinkControl::sendTestMessage(void){
 	if( HAL_UART_Transmit(_huart_mavlink, _bufferPackedforUart, _TX_bufferLength, 100) != HAL_OK){
 		printf("NOT ABLE TO TRANSMIT MAVLINK PACKAGE \r\n");
 	}
+
+
 
 }
 
@@ -179,6 +140,8 @@ void MavlinkControl::decodeHeartbeat(mavlink_message_t receivedMessage){
 
 }
 
+
+//doesn't work, never receives a proper message 
 void MavlinkControl::readFlightTime(mavlink_message_t receivedMessage) {
 
 	if(receivedMessage.msgid == MAVLINK_MSG_ID_SYS_STATUS){
@@ -217,3 +180,16 @@ uint32_t MavlinkControl::getFlightTime(void){
 
 	return this->_flight_time;
 }
+
+
+void MavlinkControl::Error_Handler(void){
+
+	for (uint8_t i = 0; i < 30; i++){		/* Toggle LED signal for error */
+		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
+		HAL_Delay(50);
+		printf("Problem with mavlink \r\n");
+
+	}
+
+}
+

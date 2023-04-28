@@ -5,6 +5,7 @@
 #include "altimeter.h"
 
 #include "main.h"
+#include <stdio.h>
 #include <bitset>
 #include <cstdint>
 #include <functional>
@@ -14,7 +15,6 @@ class MavlinkControl{
 
 	// This is a class that implements some basic functionalities from the Mavlink V2 library.
 	// Enter small breakdown of how the mavlink protocol works here.
-
 
 	private:
 
@@ -28,21 +28,20 @@ class MavlinkControl{
 
 		static const uint16_t MAVLINK_BUFFER_SIZE = 280;
 
-		//__IO prefix is a type qualifier that specifies that the variable is accessed by both the CPU
-		//and external devices (such as DMA)
-		__IO uint32_t _receivedChars = 0;
-
 		uint8_t _bufferSelector = 0;
 		uint16_t _bufferLength = 0;
-		//separate buffers for receiving/sending mavlink messages, here's where the info comes after encoding/decoding
+		
+		//-----MAVLINK MESSAGES------ 
+		//separate buffers for receiving/sending general mavlink messages, these are decoded further into 
+		//more "specialized messages" like the ones below.
+		//A complete list can be found in the docs @ mavlink.io
+
+		//seperate "general" messages for sending and receiving. 
 		mavlink_message_t _mavlinkReceived;
 		mavlink_message_t _mavlinkSend;
 
-		//to send multiple messages in a stream, use a switch case perhaps?
-		//This is the "nextBufferSendToMavlinkBus" variable in Gio's code
-
+		//Mavlink status type messages
 		mavlink_sys_status_t _system_status;
-
 		mavlink_status_t _status;
 		mavlink_system_t _mavlink_system = {
 
@@ -51,7 +50,7 @@ class MavlinkControl{
 
 		};
 
-
+		//Mavlink heartbeat message. This is sent periodically to make connection with the Herelink Controller
 		mavlink_heartbeat_t _mavlink_heartbeat = {
 				0, 		//custom mode = none
 				MAV_TYPE_GROUND_ROVER,
@@ -59,10 +58,28 @@ class MavlinkControl{
 				MAV_MODE_FLAG_SAFETY_ARMED,
 				MAV_STATE_STANDBY
 		};
+		//Mavlink battery status message is used for sending the percentage of fluid left. 
+		// "-1" means the autopilot doesn't take this into account
+		mavlink_battery_status_t _mavlink_battery = { 
+			-1, 	
+			-1,	
+			INT16_MAX,													//battery temp (INT16_MAX for unknown)
+			{ 10000, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX,
+			INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX },	//Battery voltage of cells 1 to 10
+			-1,															//Battery current
+			MAV_COMP_ID_BATTERY, MAV_BATTERY_FUNCTION_ALL, MAV_BATTERY_TYPE_LIPO,
+			69,															//remaining battery energy. This is the value you need, test and see if all the rest is actually necessary 
+			0,															//remaining battery time. 0 is N/A
+			MAV_BATTERY_CHARGE_STATE_OK,
+			{ 0 },														//Battery voltages for cells 11 to 14. 
+			MAV_BATTERY_MODE_AUTO_DISCHARGING, 							//Battery Mode
+			0									
+		};
 
+
+
+		//flight information message used for debugging, never receives this type of message though. 
         mavlink_flight_information_t flight_info;
-
-
 
 	public:
 		//buffers for receiving data
@@ -111,6 +128,7 @@ class MavlinkControl{
 
 		void readFlightTime(mavlink_message_t receivedMessage);
 		void decodeHeartbeat(mavlink_message_t receivedMessage);
+		bool checkConnection(void);
 
 		uint32_t getFlightTime(void);
 
@@ -119,4 +137,8 @@ class MavlinkControl{
 		void update(void);
 		void update_TX(void);
 		void update_RX(void);
+
+		void Error_Handler(void);
+
+
 };

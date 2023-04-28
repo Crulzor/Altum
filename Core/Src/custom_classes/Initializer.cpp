@@ -16,11 +16,8 @@ void Initializer::init_Configs(void){
 
 
 	this->initDMA();
-
 	this->initTIM_1();
-
 	this->initTIM_2();
-
 	this->initTIM_3();
 	this->initTIM_4();
 	this->initTIM_8();

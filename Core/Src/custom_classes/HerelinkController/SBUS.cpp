@@ -15,8 +15,9 @@ void SBUS::update(void){
 
 
 	HAL_UARTEx_ReceiveToIdle_DMA(this->_huart_sbus, this->_sbus_buffer, SBUS_PACKET_SIZE);
-	this->readSBUS();
 
+
+	this->readSBUS();
 
 
 
@@ -118,11 +119,13 @@ bool SBUS::readSBUS(void){
 		LSB = _sbus_buffer[22] << 3;
 		this->_channels[15] = (MSB| LSB)  & 0x07FF;
 
-		_channels[16] = _sbus_buffer[23] & 0x001 ? 2047 : 0;
+		if(_channels[16] == (_sbus_buffer[23] & 0x001 ? 2047 : 0)){
+			return 1;
+
+		}else return 0;
 
 
 
-		return 1;
 
 
 }
@@ -463,3 +466,16 @@ bool SBUS::home_button(void){
 
 	  return false;
 }
+
+
+void SBUS::Error_Handler(void){
+
+	for (uint8_t i = 0; i < 30; i++){		/* Toggle LED signal for error */
+		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
+		HAL_Delay(100);
+		printf("Problem with sbus class \r\n");
+
+	}
+
+}
+

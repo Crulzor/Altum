@@ -17,12 +17,13 @@ class SBUS{
 		static const uint8_t SBUS_PACKET_SIZE = 25;
 		static const uint8_t SBUS_START_BYTE = 0x0f;
 		static const uint8_t SBUS_END_BYTE = 0x04;
-		static const uint8_t SBUS_NUM_CHANNELS = 16;
+		static const uint8_t SBUS_NUM_CHANNELS = 17;
 
 		static const uint8_t _debounceTime = 40;
 
 
 	public:
+		SBUS();
 		SBUS(UART_HandleTypeDef *huart_sbus);
 		void update(void);
 		bool readSBUS(void);
@@ -39,6 +40,7 @@ class SBUS{
 		bool home_button(void);
 		bool home_button_long(void);
 
+		void Error_Handler(void);
 
 		//Keeping these public for debugging purposes for now.
 		uint8_t _sbus_buffer[SBUS_PACKET_SIZE] = {0};

@@ -70,18 +70,16 @@ void Components::init_ADC_1(void){
 		  ADC_MultiModeTypeDef multimode = {0};
 		  ADC_ChannelConfTypeDef sConfig = {0};
 
-		  /** Common config
-		  */
 		  hadc1_ptr->Instance = ADC1;
 		  hadc1_ptr->Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
 		  hadc1_ptr->Init.Resolution = ADC_RESOLUTION_12B;
 		  hadc1_ptr->Init.DataAlign = ADC_DATAALIGN_RIGHT;
 		  hadc1_ptr->Init.GainCompensation = 0;
-		  hadc1_ptr->Init.ScanConvMode = ADC_SCAN_ENABLE;		// Enable scanning mode
-		  hadc1_ptr->Init.EOCSelection = ADC_EOC_SEQ_CONV;		// Use end of sequence conversion
+		  hadc1_ptr->Init.ScanConvMode = ADC_SCAN_DISABLE;
+		  hadc1_ptr->Init.EOCSelection = ADC_EOC_SINGLE_CONV;
 		  hadc1_ptr->Init.LowPowerAutoWait = DISABLE;
 		  hadc1_ptr->Init.ContinuousConvMode = DISABLE;
-		  hadc1_ptr->Init.NbrOfConversion = 3;
+		  hadc1_ptr->Init.NbrOfConversion = 1;
 		  hadc1_ptr->Init.DiscontinuousConvMode = DISABLE;
 		  hadc1_ptr->Init.ExternalTrigConv = ADC_SOFTWARE_START;
 		  hadc1_ptr->Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
@@ -92,6 +90,29 @@ void Components::init_ADC_1(void){
 		  hadc1_ptr->Init.Oversampling.RightBitShift = ADC_RIGHTBITSHIFT_8;
 		  hadc1_ptr->Init.Oversampling.TriggeredMode = ADC_TRIGGEREDMODE_SINGLE_TRIGGER;
 		  hadc1_ptr->Init.Oversampling.OversamplingStopReset = ADC_REGOVERSAMPLING_CONTINUED_MODE;
+
+		  /** Common config
+		  */
+//		  hadc1_ptr->Instance = ADC1;
+//		  hadc1_ptr->Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+//		  hadc1_ptr->Init.Resolution = ADC_RESOLUTION_12B;
+//		  hadc1_ptr->Init.DataAlign = ADC_DATAALIGN_RIGHT;
+//		  hadc1_ptr->Init.GainCompensation = 0;
+//		  hadc1_ptr->Init.ScanConvMode = ADC_SCAN_ENABLE;		// Enable scanning mode
+//		  hadc1_ptr->Init.EOCSelection = ADC_EOC_SEQ_CONV;		// Use end of sequence conversion
+//		  hadc1_ptr->Init.LowPowerAutoWait = DISABLE;
+//		  hadc1_ptr->Init.ContinuousConvMode = DISABLE;
+//		  hadc1_ptr->Init.NbrOfConversion = 3;
+//		  hadc1_ptr->Init.DiscontinuousConvMode = DISABLE;
+//		  hadc1_ptr->Init.ExternalTrigConv = ADC_SOFTWARE_START;
+//		  hadc1_ptr->Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+//		  hadc1_ptr->Init.DMAContinuousRequests = DISABLE;
+//		  hadc1_ptr->Init.Overrun = ADC_OVR_DATA_PRESERVED;
+//		  hadc1_ptr->Init.OversamplingMode = ENABLE;
+//		  hadc1_ptr->Init.Oversampling.Ratio = ADC_OVERSAMPLING_RATIO_256;
+//		  hadc1_ptr->Init.Oversampling.RightBitShift = ADC_RIGHTBITSHIFT_8;
+//		  hadc1_ptr->Init.Oversampling.TriggeredMode = ADC_TRIGGEREDMODE_SINGLE_TRIGGER;
+//		  hadc1_ptr->Init.Oversampling.OversamplingStopReset = ADC_REGOVERSAMPLING_CONTINUED_MODE;
 		  if (HAL_ADC_Init(hadc1_ptr) != HAL_OK)
 		  {
 		    this->Error_Handler();
@@ -112,48 +133,49 @@ void Components::init_ADC_1(void){
 		  */
 
 		  //SAMPLING TIME ORIGINEEL OP 47 CYCLES. MISSCHIEN NOG AANPASSEN
-
-
-		  //KANAAL VOOR DE SELECTOR POT
-		  sConfig.Channel = ADC_CHANNEL_11;
-		  sConfig.Rank = ADC_REGULAR_RANK_1;
-		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
-		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
-		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
-		  sConfig.Offset = 0;
-		  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
-		  {
-		    this->Error_Handler();
-		    printf("ADC 1 HAL_ADC_ConfigChannel NOT ok");
-		  }
-
-
 		  //KANAAL VOOR DE PUSH POT
-		  sConfig.Channel = ADC_CHANNEL_14;
-		  sConfig.Rank = ADC_REGULAR_RANK_3;
-		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
-		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
-		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
-		  sConfig.Offset = 0;
-		  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
-		  {
-		    this->Error_Handler();
-		    printf("ADC 1 HAL_ADC_ConfigChannel Vopamp1 NOT ok");
-		  }
 
-		  //KANAAL VOOR DE FLUID POT
-		  sConfig.Channel = ADC_CHANNEL_12;
-		  sConfig.Rank = ADC_REGULAR_RANK_4;
-		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
-		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
-		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
-		  sConfig.Offset = 0;
-		  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
-		  {
-		    this->Error_Handler();
-		    printf("ADC 1 HAL_ADC_ConfigChannel Vopamp1 NOT ok");
-		  }
-
+//
+//		  //KANAAL VOOR DE SELECTOR POT
+//		  sConfig.Channel = ADC_CHANNEL_11;
+//		  sConfig.Rank = ADC_REGULAR_RANK_2;
+//		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+//		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+//		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+//		  sConfig.Offset = 0;
+//		  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
+//		  {
+//		    this->Error_Handler();
+//		    printf("ADC 1 HAL_ADC_ConfigChannel NOT ok");
+//		  }
+//
+//
+//		  //KANAAL VOOR DE FLUID POT
+//		  sConfig.Channel = ADC_CHANNEL_12;
+//		  sConfig.Rank = ADC_REGULAR_RANK_3;
+//		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+//		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+//		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+//		  sConfig.Offset = 0;
+//		  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
+//		  {
+//		    this->Error_Handler();
+//		    printf("ADC 1 HAL_ADC_ConfigChannel Vopamp1 NOT ok");
+//		  }
+//
+//
+//		  //KANAAL VOOR DE PUSH POT
+//		  sConfig.Channel = ADC_CHANNEL_14;
+//		  sConfig.Rank = ADC_REGULAR_RANK_4;
+//		  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+//		  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+//		  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+//		  sConfig.Offset = 0;
+//		  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
+//		  {
+//		    this->Error_Handler();
+//		    printf("ADC 1 HAL_ADC_ConfigChannel Vopamp1 NOT ok");
+//		  }
 
 }
 
@@ -230,6 +252,8 @@ void Components::init_ADC_5(void){
 	  ADC_ChannelConfTypeDef sConfig = {0};
 
 
+
+
 	  /** Common config
 	  */
 	  hadc5_ptr->Instance = ADC5;
@@ -275,19 +299,31 @@ void Components::init_ADC_5(void){
 
 	  }
 
-	  //selector motor (current)
-	  sConfig.Channel = ADC_CHANNEL_VOPAMP5;
+//	  //selector motor (current)
+//	  sConfig.Channel = ADC_CHANNEL_VOPAMP5;
+//	  sConfig.Rank = ADC_REGULAR_RANK_2;
+//	  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+//	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+//	  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+//	  if (HAL_ADC_ConfigChannel(hadc5_ptr, &sConfig) != HAL_OK)
+//	  {
+//	    this->Error_Handler();
+//	    printf("problem with ADC5 config channel");
+//
+//	  }
+
+	  //KANAAL VOOR DE FLUID POT
+	  sConfig.Channel = ADC_CHANNEL_12;
 	  sConfig.Rank = ADC_REGULAR_RANK_2;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
 	  sConfig.OffsetNumber = ADC_OFFSET_NONE;
-	  if (HAL_ADC_ConfigChannel(hadc5_ptr, &sConfig) != HAL_OK)
+	  sConfig.Offset = 0;
+	  if (HAL_ADC_ConfigChannel(hadc1_ptr, &sConfig) != HAL_OK)
 	  {
-	    this->Error_Handler();
-	    printf("problem with ADC5 config channel");
-
+		this->Error_Handler();
+		printf("ADC 1 HAL_ADC_ConfigChannel Vopamp1 NOT ok");
 	  }
-
 
 
 
@@ -637,7 +673,7 @@ void Components::init_OA_5(void){
 
 ADC_HandleTypeDef* Components::get_ADC_1(void){
 
-	return hadc1_ptr;
+	return &hadc1;
 }
 
 ADC_HandleTypeDef* Components::get_ADC_2(void){
