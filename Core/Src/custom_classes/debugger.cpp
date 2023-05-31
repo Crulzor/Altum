@@ -33,20 +33,23 @@ void Debugger::displayDebugInfo(void){
 
 
 		printf("home press: %d \r\n", this->_controller->_sbus._channels[9]);
+		printf("shoulder press: %d \r\n", this->_controller->_sbus._channels[11]);
+
 
 		printf("LedPWM: %d\r\n", this->_controller->_convertor.get_LEDPWM());
 		printf("selectorPWM: %d\r\n", this->_controller->_convertor.get_selectorPWM());
 		printf("push motor PWM: %d \r\n", this->_controller->_convertor.get_pushPWM());
 		printf("fluid motor PWM: %d \r\n", this->_controller->_convertor.get_fluidPWM());
-		printf("fluid amount to apply %d \r\n", this->_controller->_convertor.get_fluidAmount());
+		printf("next fluid position: %d \r\n", this->_controller->_convertor._fluidPosition);
 		printf("cleaner motor PWM: %d \r\n", this->_controller->_convertor.get_cleanerMotorPWM());
 		printf("\r\n");
 
-		//printf("battery voltage: %d \r\n", this->_controller->_convertor.get_battery_voltage());
+		printf("battery voltage: %d \r\n", this->_controller->_convertor.get_battery_voltage());
 		printf("selector position %d \r\n", this->_controller->_convertor.get_selector_position());
 		printf("fluid position %d \r\n", this->_controller->_convertor.get_fluidPosition());
 		printf("push position %d \r\n", this->_controller->_convertor.get_pushPosition());
-		printf("squaremaker ON/OFF %d \r\n", this->_controller->_convertor._trigger);
+
+
 
 		printf("\r\n");
 

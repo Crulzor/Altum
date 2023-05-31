@@ -124,6 +124,8 @@ void Initializer::initTIM_1(void){
 
 
 		HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+
 
 
 }
@@ -221,7 +223,8 @@ void Initializer::initTIM_3(void){
 	  HAL_TIM_MspPostInit(&htim3);
 	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0);
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 0);
 
 
 }
@@ -298,6 +301,8 @@ void Initializer::initTIM_4(void){
 	  HAL_TIM_MspPostInit(&htim4);
 	  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 	  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, 0);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, 0);
 
 
 }
@@ -381,7 +386,8 @@ void Initializer::initTIM_8(void){
 	  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_3);
       HAL_TIMEx_PWMN_Start(&htim8, TIM_CHANNEL_4);
 
-
+  	__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 0);
+  	__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 0);
 
 
 }
@@ -636,8 +642,7 @@ void Initializer::initI2C2(void){
 
 void Initializer::initDMA(void){
 
-
-	  /* DMA controller clock enable */
+	 /* DMA controller clock enable */
 	  __HAL_RCC_DMAMUX1_CLK_ENABLE();
 	  __HAL_RCC_DMA1_CLK_ENABLE();
 	  __HAL_RCC_DMA2_CLK_ENABLE();
@@ -655,6 +660,12 @@ void Initializer::initDMA(void){
 	  /* DMA1_Channel4_IRQn interrupt configuration */
 	  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
 	  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
+	  /* DMA1_Channel5_IRQn interrupt configuration */
+	  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
+	  /* DMA1_Channel6_IRQn interrupt configuration */
+	  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
 	  /* DMA2_Channel1_IRQn interrupt configuration */
 	  HAL_NVIC_SetPriority(DMA2_Channel1_IRQn, 0, 0);
 	  HAL_NVIC_EnableIRQ(DMA2_Channel1_IRQn);

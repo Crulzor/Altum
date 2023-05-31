@@ -5,18 +5,18 @@ mavlink_sha256.h:192:21:void mavlink_sha256_final_48(mavlink_sha256_ctx*, uint8_
 mavlink_helpers.h:429:25:uint16_t mavlink_msg_to_send_buffer(uint8_t*, const mavlink_message_t*)	6
 mavlink_msg_heartbeat.h:321:20:void mavlink_msg_heartbeat_decode(const mavlink_message_t*, mavlink_heartbeat_t*)	1
 mavlink_helpers.h:286:25:uint16_t mavlink_finalize_message(mavlink_message_t*, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)	13
-MavlinkControl.cpp:9:1:MavlinkControl::MavlinkControl()	1
-MavlinkControl.cpp:11:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*, Altimeter*)	1
-MavlinkControl.cpp:22:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*)	1
-MavlinkControl.cpp:57:6:void MavlinkControl::update_RX()	1
-MavlinkControl.cpp:82:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	1
-MavlinkControl.cpp:89:6:void MavlinkControl::heartbeat()	2
-MavlinkControl.cpp:111:6:void MavlinkControl::sendTestMessage()	3
-MavlinkControl.cpp:131:6:void MavlinkControl::decodeHeartbeat(mavlink_message_t)	2
-MavlinkControl.cpp:145:6:void MavlinkControl::readFlightTime(mavlink_message_t)	2
-MavlinkControl.cpp:29:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	58
-MavlinkControl.cpp:24:6:void MavlinkControl::uartRxCallback(UART_HandleTypeDef*, uint16_t)	1
-MavlinkControl.cpp:160:6:void MavlinkControl::sendAltitude()	4
-MavlinkControl.cpp:68:6:void MavlinkControl::update_TX()	3
-MavlinkControl.cpp:179:10:uint32_t MavlinkControl::getFlightTime()	1
-MavlinkControl.cpp:185:6:void MavlinkControl::Error_Handler()	2
+MavlinkControl.cpp:9:1:MavlinkControl::MavlinkControl()	2
+MavlinkControl.cpp:11:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*, Altimeter*, Convertor*)	2
+MavlinkControl.cpp:21:1:MavlinkControl::MavlinkControl(UART_HandleTypeDef*)	2
+MavlinkControl.cpp:61:6:void MavlinkControl::update_RX()	1
+MavlinkControl.cpp:78:34:MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader()	1
+MavlinkControl.cpp:85:6:void MavlinkControl::heartbeat()	1
+MavlinkControl.cpp:106:6:void MavlinkControl::sendTestMessage()	3
+MavlinkControl.cpp:127:6:void MavlinkControl::decodeHeartbeat(mavlink_message_t)	2
+MavlinkControl.cpp:141:6:void MavlinkControl::readFlightTime(mavlink_message_t)	2
+MavlinkControl.cpp:33:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	58
+MavlinkControl.cpp:156:6:void MavlinkControl::sendAltitude()	2
+MavlinkControl.cpp:175:6:void MavlinkControl::sendBattery()	2
+MavlinkControl.cpp:68:6:void MavlinkControl::update_TX()	1
+MavlinkControl.cpp:195:10:uint32_t MavlinkControl::getFlightTime()	1
+MavlinkControl.cpp:201:6:void MavlinkControl::Error_Handler()	2

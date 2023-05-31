@@ -1,19 +1,19 @@
 ../Core/Src/custom_classes/HerelinkController/altimeter.cpp:3:1:Altimeter::Altimeter(I2C_HandleTypeDef*)	16	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:71:6:bool Altimeter::whoAmI()	24	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:121:7:float Altimeter::process_altitude(float)	0	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:230:9:uint8_t Altimeter::read_ctrl_reg_1()	24	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:236:9:uint8_t Altimeter::read_status_reg()	24	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:242:9:uint8_t Altimeter::read_data_reg()	24	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:248:7:float Altimeter::get_altitude()	0	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:253:6:bool Altimeter::write_to_register(uint8_t, uint8_t)	32	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:64:6:bool Altimeter::whoAmI()	24	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:114:7:float Altimeter::process_altitude(float)	0	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:223:9:uint8_t Altimeter::read_ctrl_reg_1()	24	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:229:9:uint8_t Altimeter::read_status_reg()	24	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:235:9:uint8_t Altimeter::read_data_reg()	24	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:241:7:float Altimeter::get_altitude()	0	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:246:6:bool Altimeter::write_to_register(uint8_t, uint8_t)	32	static
 ../Core/Src/custom_classes/HerelinkController/altimeter.cpp:9:6:void Altimeter::init_altimeter()	48	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:200:6:void Altimeter::set_mode_altimeter()	8	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:214:6:void Altimeter::set_mode_active()	8	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:262:6:void Altimeter::toggle_one_shot()	8	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:80:7:float Altimeter::read_altitude()	32	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:287:6:void Altimeter::set_offset(float)	0	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:292:7:float Altimeter::get_offset()	0	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:297:6:void Altimeter::Error_Handler()	16	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:193:6:void Altimeter::set_mode_altimeter()	8	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:207:6:void Altimeter::set_mode_active()	8	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:256:6:void Altimeter::toggle_one_shot()	8	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:73:7:float Altimeter::read_altitude()	32	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:281:6:void Altimeter::set_offset(float)	0	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:286:7:float Altimeter::get_offset()	0	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:291:6:void Altimeter::Error_Handler()	16	static
 c:\st\stm32cubeide_1.11.2\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003\tools\arm-none-eabi\include\c++\10.3.1\bitset:1197:2:std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::bitset<_Nb>::to_string() const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; unsigned int _Nb = 8]	24	static
 c:\st\stm32cubeide_1.11.2\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003\tools\arm-none-eabi\include\c++\10.3.1\bitset:1413:7:void std::bitset<_Nb>::_M_copy_to_string(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, _CharT, _CharT) const [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>; unsigned int _Nb = 32]	24	static
-../Core/Src/custom_classes/HerelinkController/altimeter.cpp:147:7:float Altimeter::debug_altitude()	160	static
+../Core/Src/custom_classes/HerelinkController/altimeter.cpp:140:7:float Altimeter::debug_altitude()	160	static

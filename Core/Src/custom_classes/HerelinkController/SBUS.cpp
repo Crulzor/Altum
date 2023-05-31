@@ -7,17 +7,16 @@ SBUS::SBUS(UART_HandleTypeDef *huart_sbus){
 
 
 
-
 }
 
 void SBUS::update(void){
 
+	if(HAL_UARTEx_ReceiveToIdle_DMA(this->_huart_sbus, this->_sbus_buffer, SBUS_PACKET_SIZE) == HAL_OK){
+		this->readSBUS();
 
 
-	HAL_UARTEx_ReceiveToIdle_DMA(this->_huart_sbus, this->_sbus_buffer, SBUS_PACKET_SIZE);
+	}
 
-
-	this->readSBUS();
 
 
 
@@ -98,6 +97,7 @@ bool SBUS::readSBUS(void){
 		thirdByte = _sbus_buffer[16] << 10;
 		this->_channels[10] = (MSB | LSB | thirdByte) & 0x07FF;
 
+		//SHOULDER BUTTON
 		MSB = _sbus_buffer[16] >> 1;
 		LSB = _sbus_buffer[17] << 7;
 		this->_channels[11] = (MSB | LSB) & 0x07FF;
@@ -122,7 +122,11 @@ bool SBUS::readSBUS(void){
 		if(_channels[16] == (_sbus_buffer[23] & 0x001 ? 2047 : 0)){
 			return 1;
 
-		}else return 0;
+		}else {
+
+			printf("something wrong with SBUS \r\n");
+			return 0;
+		}
 
 
 
@@ -467,6 +471,51 @@ bool SBUS::home_button(void){
 	  return false;
 }
 
+bool SBUS::shoulder_button(void){
+    static uint8_t debounce_state = 0;
+	  static uint8_t debounce_counter = 0;
+
+	  bool button_pressed = (_channels[11] > 1000);
+
+	  switch (debounce_state) {
+		case 0:  // button released
+		  if (button_pressed) {
+			debounce_state = 1;
+			debounce_counter = 0;
+		  }
+		  break;
+
+		case 1:  // button pressed, waiting for debounce
+		  if (!button_pressed) {
+			debounce_state = 0;
+		  } else if (++debounce_counter >= _debounceTime) {
+			debounce_state = 2;
+		  }
+		  break;
+
+		case 2:  // button pressed and debounced
+		  if (!button_pressed) {
+			debounce_state = 0;
+			return true;
+		  }
+		  break;
+	  }
+
+	  return false;
+
+}
+
+bool SBUS::shoulder_button_long(void){
+
+
+	if(_channels[11] < 500){
+		return false;
+	}else if(_channels[11] > 500){
+		return true;
+	}
+}
+
+
 
 void SBUS::Error_Handler(void){
 
@@ -474,7 +523,6 @@ void SBUS::Error_Handler(void){
 		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
 		HAL_Delay(100);
 		printf("Problem with sbus class \r\n");
-
 	}
 
 }

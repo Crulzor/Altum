@@ -289,8 +289,8 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Core/Src/custom_classes/HerelinkController/HerelinkController.h \
  ../Core/Src/custom_classes/HerelinkController/MavlinkControl.h \
  ../Core/Src/custom_classes/HerelinkController/altimeter.h \
- ../Core/Src/custom_classes/HerelinkController/SBUS.h \
  ../Core/Src/custom_classes/HerelinkController/Convertor.h \
+ ../Core/Src/custom_classes/HerelinkController/SBUS.h \
  ../Core/Src/custom_classes/HerelinkController/../handlers.h \
  ../Core/Inc/../../Pid_Controller/pid_controller.h \
  ../Core/Src/custom_classes/handlers.h
@@ -587,8 +587,8 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Core/Src/custom_classes/HerelinkController/HerelinkController.h:
 ../Core/Src/custom_classes/HerelinkController/MavlinkControl.h:
 ../Core/Src/custom_classes/HerelinkController/altimeter.h:
-../Core/Src/custom_classes/HerelinkController/SBUS.h:
 ../Core/Src/custom_classes/HerelinkController/Convertor.h:
+../Core/Src/custom_classes/HerelinkController/SBUS.h:
 ../Core/Src/custom_classes/HerelinkController/../handlers.h:
 ../Core/Inc/../../Pid_Controller/pid_controller.h:
 ../Core/Src/custom_classes/handlers.h:

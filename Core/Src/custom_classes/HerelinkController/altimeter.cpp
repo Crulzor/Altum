@@ -57,13 +57,6 @@ void Altimeter::init_altimeter(void){
 
 	}
 
-	//Some print statements to check the initialization. Delete this later.
-	printf("\r\n");
-	printf("Checking registers to see if everything is initialized correctly \r\n");
-	printf("Ctrl reg1 after samplerate set: %d \r\n", this->read_ctrl_reg_1());
-	printf("Status reg: %d \r\n", this->read_status_reg());
-	printf("Flag data reg: %d \r\n", this->read_data_reg());
-	printf("WhoAmI register: %d \r\n", this->_whoAmI);
 
 
 }
@@ -255,6 +248,7 @@ bool Altimeter::write_to_register(uint8_t adress, uint8_t value){
 	if(	HAL_I2C_Mem_Write(_i2c, _altimeter_address, adress, I2C_MEMADD_SIZE_8BIT, &value, 1, 100) != HAL_OK){
 
 		return false;
+
 	}
 
 }
@@ -300,6 +294,7 @@ void Altimeter::Error_Handler(void){
 		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
 		HAL_Delay(50);
 		printf("Problem with altimeter class \r\n");
+
 
 	}
 

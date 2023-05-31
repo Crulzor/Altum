@@ -286,8 +286,8 @@ Core/Src/custom_classes/debugger.o: \
  ../Core/Inc/../../Mavlink_v2/common/../minimal/./mavlink_msg_protocol_version.h \
  ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h \
  ../Core/Src/custom_classes/HerelinkController/altimeter.h \
- ../Core/Src/custom_classes/HerelinkController/SBUS.h \
  ../Core/Src/custom_classes/HerelinkController/Convertor.h \
+ ../Core/Src/custom_classes/HerelinkController/SBUS.h \
  ../Core/Src/custom_classes/HerelinkController/../Initializer.h \
  c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h \
  ../Core/Src/custom_classes/HerelinkController/../handlers.h \
@@ -582,8 +582,8 @@ Core/Src/custom_classes/debugger.o: \
 ../Core/Inc/../../Mavlink_v2/common/../minimal/./mavlink_msg_protocol_version.h:
 ../Core/Inc/../../Mavlink_v2/common/../mavlink_get_info.h:
 ../Core/Src/custom_classes/HerelinkController/altimeter.h:
-../Core/Src/custom_classes/HerelinkController/SBUS.h:
 ../Core/Src/custom_classes/HerelinkController/Convertor.h:
+../Core/Src/custom_classes/HerelinkController/SBUS.h:
 ../Core/Src/custom_classes/HerelinkController/../Initializer.h:
 c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h:
 ../Core/Src/custom_classes/HerelinkController/../handlers.h:

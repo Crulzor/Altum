@@ -1,30 +1,33 @@
 Convertor.cpp:3:1:Convertor::Convertor(SBUS*, Initializer*, Components*, Altimeter*)	1
-Convertor.cpp:16:6:void Convertor::ledOFF()	1
-Convertor.cpp:79:6:void Convertor::updateLED()	5
-Convertor.cpp:99:6:void Convertor::actuatorControl(int16_t, TIM_HandleTypeDef*, uint32_t, uint32_t)	22
-Convertor.cpp:22:6:void Convertor::testSelector()	3
-Convertor.cpp:112:6:void Convertor::updateCleanerMotor()	2
-Convertor.cpp:131:6:void Convertor::updateSelector(int16_t)	2
-Convertor.cpp:146:6:void Convertor::updatePushMotor()	3
-Convertor.cpp:250:6:void Convertor::updateFluidMotor()	3
-Convertor.cpp:269:6:void Convertor::updateFluidAmount()	5
-Convertor.cpp:282:6:void Convertor::setAltitudeOffset()	7
-Convertor.cpp:313:9:int16_t Convertor::get_selectorPWM()	1
-Convertor.cpp:320:9:int16_t Convertor::get_fluidPWM()	1
-Convertor.cpp:326:9:int16_t Convertor::get_pushPWM()	1
-Convertor.cpp:333:9:int16_t Convertor::get_cleanerMotorPWM()	1
-Convertor.cpp:340:9:int16_t Convertor::get_LEDPWM()	1
-Convertor.cpp:360:9:int16_t Convertor::get_selector_position()	1
-Convertor.cpp:165:6:void Convertor::makeSquare()	10
-Convertor.cpp:214:6:void Convertor::updateSelectorPosition()	4
-Convertor.cpp:365:9:int16_t Convertor::get_fluidPosition()	1
-Convertor.cpp:372:9:int16_t Convertor::get_pushPosition()	1
-Convertor.cpp:378:9:int16_t Convertor::get_LEDCurrent()	1
-Convertor.cpp:383:9:int16_t Convertor::get_fluidCurrent()	1
-Convertor.cpp:389:9:int16_t Convertor::get_pushCurrent()	1
-Convertor.cpp:395:9:int16_t Convertor::get_selectorCurrent()	1
-Convertor.cpp:400:9:int16_t Convertor::get_fluidAmount()	1
-Convertor.cpp:421:6:void Convertor::Error_Handler()	2
-Convertor.cpp:39:10:uint16_t Convertor::getADC_NO_DMA(ADC_HandleTypeDef*, uint32_t)	2
-Convertor.cpp:64:6:void Convertor::getADC()	1
-Convertor.cpp:405:6:void Convertor::process()	1
+Convertor.cpp:19:6:void Convertor::ledOFF()	1
+Convertor.cpp:68:6:void Convertor::updateLED()	5
+Convertor.cpp:88:6:void Convertor::actuatorControl(int16_t, TIM_HandleTypeDef*, uint32_t, uint32_t)	22
+Convertor.cpp:100:6:void Convertor::stopCleanerMotor()	1
+Convertor.cpp:106:6:void Convertor::updateCleanerMotor()	2
+Convertor.cpp:128:6:void Convertor::updateSelector()	18
+Convertor.cpp:193:6:void Convertor::moveSelector(int16_t)	2
+Convertor.cpp:208:6:void Convertor::updatePushMotor()	3
+Convertor.cpp:296:6:void Convertor::updateFluidAmount()	5
+Convertor.cpp:309:6:void Convertor::setAltitudeOffset()	7
+Convertor.cpp:339:6:void Convertor::setSleepMode()	2
+Convertor.cpp:353:9:int16_t Convertor::get_selectorPWM()	1
+Convertor.cpp:360:9:int16_t Convertor::get_fluidPWM()	1
+Convertor.cpp:366:9:int16_t Convertor::get_pushPWM()	1
+Convertor.cpp:373:9:int16_t Convertor::get_cleanerMotorPWM()	1
+Convertor.cpp:380:9:int16_t Convertor::get_LEDPWM()	1
+Convertor.cpp:385:9:int16_t Convertor::get_battery_voltage()	1
+Convertor.cpp:400:9:int16_t Convertor::get_selector_position()	1
+Convertor.cpp:226:6:void Convertor::updateSelectorPosition()	1
+Convertor.cpp:405:9:int16_t Convertor::get_fluidPosition()	1
+Convertor.cpp:239:6:void Convertor::updateFluidPosition()	6
+Convertor.cpp:273:6:void Convertor::updateFluidMotor()	5
+Convertor.cpp:412:9:int16_t Convertor::get_pushPosition()	1
+Convertor.cpp:418:9:int16_t Convertor::get_LEDCurrent()	1
+Convertor.cpp:423:9:int16_t Convertor::get_fluidCurrent()	1
+Convertor.cpp:429:9:int16_t Convertor::get_pushCurrent()	1
+Convertor.cpp:435:9:int16_t Convertor::get_selectorCurrent()	1
+Convertor.cpp:440:9:int16_t Convertor::get_fluidAmount()	1
+Convertor.cpp:472:6:void Convertor::Error_Handler()	2
+Convertor.cpp:27:10:uint16_t Convertor::getADC_NO_DMA(ADC_HandleTypeDef*, uint32_t)	2
+Convertor.cpp:52:6:void Convertor::getADC()	1
+Convertor.cpp:445:6:void Convertor::process()	2

@@ -8,6 +8,9 @@ Convertor::Convertor(SBUS *sbus, Initializer *init, Components* components, Alti
 	this->_altimeter = altimeter;
 
 	this->_ledPWM = 0;
+	_pidSelector.setPoint = _cleanerPos;
+	PIDControllerInit(&_pidSelector);
+
 
 
 }
@@ -19,22 +22,7 @@ void Convertor::ledOFF(void){
 
 
 }
-void Convertor::testSelector(void){
 
-	//puts the ALTUM in either cleaner position or in sensor position.
-	this->_selectorPWM = this->_sbus->getRightX();
-
-	float cleanerPos = 110;
-	float probePos = 960;
-	if(_selectorPWM > 0){
-
-		this->actuatorControl(_selectorPWM, this->_timers->get_selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3);
-	}else if(_selectorPWM < 0){
-
-		this->actuatorControl(_selectorPWM, this->_timers->get_selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3 );
-
-	}
-}
 
 uint16_t Convertor::getADC_NO_DMA(ADC_HandleTypeDef *hadc, uint32_t Channel){
 
@@ -67,6 +55,7 @@ void Convertor::getADC(void){
 	ADC_1_Buffer[0] = this->getADC_NO_DMA(_components->get_ADC_1(), ADC_CHANNEL_11);
 	ADC_1_Buffer[1] = this->getADC_NO_DMA(_components->get_ADC_1(), ADC_CHANNEL_14);
 	ADC_1_Buffer[2] = this->getADC_NO_DMA(_components->get_ADC_1(), ADC_CHANNEL_12);
+	ADC_1_Buffer[3] = this->getADC_NO_DMA(_components->get_ADC_1(), ADC_CHANNEL_1);
 
     //HAL_ADC_Start_DMA(_components->get_ADC_1(), (uint32_t *)&ADC_1_Buffer, 3);
     HAL_ADC_Start_DMA(_components->get_ADC_2(), (uint32_t*)&ADC_2_Buffer, 2);
@@ -108,6 +97,11 @@ void Convertor::actuatorControl(int16_t pwm_input, TIM_HandleTypeDef *tim, uint3
 	}
 }
 
+void Convertor::stopCleanerMotor(void){
+
+	__HAL_TIM_SET_COMPARE(_timers->get_cleanerMotor_Timer(), TIM_CHANNEL_3, 0);
+
+}
 
 void Convertor::updateCleanerMotor(void){
 
@@ -123,12 +117,80 @@ void Convertor::updateCleanerMotor(void){
 
 	}
 
+}
+
+
+// this function updates the selector based on SBUS input values
+// it detects different SBUS input values and sets the `_indexer` and `_pidSelector.setPoint` accordingly.
+// It uses debounce triggering to prevent unwanted toggling,
+// Based on the `_indexer`, the `_pidSelector.setPoint` is set to specific positions like `_cleanerPos`, `_probePos`, `_squarePosA`, and `_squarePosB`.
+// If none of the conditions match, `_pidSelector.setPoint` is set to `_cleanerPos` as the default value.
+void Convertor::updateSelector(void){
+
+	static bool debounceTrigger = 0;
+	float tolerance = 5.0f;
+
+	if(_sbus->getRightX() < -750 && debounceTrigger == 0){
+
+		debounceTrigger = 1;
+		_indexer = 0;
+
+	}else if(_sbus->getRightX() > 750 && debounceTrigger == 0){
+
+		debounceTrigger = 1;
+		_indexer = 1;
+
+	}else if(_sbus->getRightY() < -750 && debounceTrigger == 0){
+
+		debounceTrigger = 1;
+		_indexer = 2;
+	}else if ((_sbus->getRightY() == 0 && _sbus->getRightX()==0) && debounceTrigger == 1){
+
+		debounceTrigger = 0;
+	}
+
+	switch(_indexer){
+
+
+		case 0:
+			_pidSelector.setPoint = _cleanerPos;
+
+			break;
+
+		case 1:
+			_pidSelector.setPoint = _probePos;
+
+			break;
+
+		case 2:
+
+
+			if(_pidSelector.measurement <= (_squarePosA + tolerance)
+					&& _pidSelector.measurement
+							>= (_squarePosA - tolerance)){
+				_pidSelector.setPoint = _squarePosB;
+			}
+			_indexer = 3;
+			break;
+		case 3:
+			if(_pidSelector.measurement <= (_squarePosB + tolerance) && _pidSelector.measurement >= (_squarePosB - tolerance)){
+				_pidSelector.setPoint = _squarePosA;
+
+
+			}
+			_indexer = 2;
+			break;
+		default:
+			_pidSelector.setPoint = _cleanerPos;
+
+
+	}
 
 
 }
 
 
-void Convertor::updateSelector(int16_t pwm){
+void Convertor::moveSelector(int16_t pwm){
 
 
 	if(pwm > 0){
@@ -161,96 +223,48 @@ void Convertor::updatePushMotor(void){
 
 }
 
-//test to see if the 2 functions updating the selector don't mess with eachother
-void Convertor::makeSquare(void){
+void Convertor::updateSelectorPosition(void){
 
-	//not sure what button/joystick to use yet... Gio used the right joystick down, so I've implemented it like this
-	//maybe shoulder button? dunno
 
-	static bool trigger = 0;
-	static bool debounceTrigger = 0;
-	float tolerance = 5.0f;
-
-	if(_sbus->getRightY() < -750 && debounceTrigger == 0){
-
-		debounceTrigger = 1;
-		trigger = !trigger;
-		_trigger = !trigger;
-
-	}else if (_sbus->getRightY() > -50 && debounceTrigger == 1){
-
-		debounceTrigger = 0;
-	}
-
-	switch(trigger){
-
-		case 0:
-			_pidSelector.setPoint = _cleanerPos;
-
-		case 1:
-			if((_pidSelector.measurement <= (_squarePosA + tolerance)) && (_pidSelector.measurement >= (_squarePosA + tolerance))){
-
-				_pidSelector.setPoint = _squarePosB;
-				_pidSelector.measurement = this->get_selector_position();
-				PIDControllerUpdate(&_pidSelector);
-				_selectorPWM = (int16_t) _pidSelector.out;
-				this->updateSelector(_selectorPWM);
-
-			}else if((_pidSelector.measurement <= (_squarePosB + tolerance)) && (_pidSelector.measurement >= (_squarePosB + tolerance))){
-				_pidSelector.setPoint = _squarePosA;
-				_pidSelector.measurement = this->get_selector_position();
-				PIDControllerUpdate(&_pidSelector);
-				_selectorPWM = (int16_t) _pidSelector.out;
-				this->updateSelector(_selectorPWM);
-			}
-
-	}
+		_pidSelector.measurement = this->get_selector_position();
+		PIDControllerUpdate(&_pidSelector);
+		_selectorPWM =(int16_t) _pidSelector.out;
+		this->moveSelector(_selectorPWM);
 
 
 
 
 }
 
-void Convertor::updateSelectorPosition(void){
-
-	//Using pidcontroller to be sure selector keeps its position
-	static bool debounceTrigger = 0;
-	float tolerance = 5.0f;
-
-	if(_sbus->getRightX() < -750 && debounceTrigger == 0){
-
-		debounceTrigger = 1;
-		_position = !_position;
-
-	}else if(_sbus->getRightX() > 750 && debounceTriger == 0){
-
-		debounceTrigger = 1;
-		_position = !_position;
-
-	}else if (_sbus->getRightX() == 0 && debounceTrigger == 1){
-
-		debounceTrigger = 0;
-	}
-
-	switch(_position){
-		case 0:
-			_pidSelector.setPoint = _cleanerPos;
-			_pidSelector.measurement = this->get_selector_position();
-			PIDControllerUpdate(&_pidSelector);
-			_selectorPWM =(int16_t) _pidSelector.out;
-			this->updateSelector(_selectorPWM);
-			break;
-
-		case 1:
-			_pidSelector.setPoint = _probePos;
-			_pidSelector.measurement = this->get_selector_position();
-			PIDControllerUpdate(&_pidSelector);
-			_selectorPWM =(int16_t) _pidSelector.out;
-			this->updateSelector(_selectorPWM);
-			break;
+void Convertor::updateFluidPosition(void){
+    uint16_t long_press = 5000;
+    static uint16_t timer = 0;  // Declare timer as static to preserve its value
 
 
-	}
+    if(_sbus->shoulder_button() &&( _fluidPosition < 950)){
+
+    	_fluidPosition += _fluidAmount;
+    }
+
+    if(_sbus->shoulder_button_long()){
+
+        if(++timer <= long_press){
+
+        }
+
+        if(timer == 300){
+        	_fluidPosition = this->get_fluidPosition();
+        }
+
+        if(timer == 599){
+			_fluidPosition = 50;
+        	timer = 0;
+
+        }
+
+    }else {
+    	timer = 0;
+    }
 
 
 
@@ -258,18 +272,22 @@ void Convertor::updateSelectorPosition(void){
 
 void Convertor::updateFluidMotor(void){
 
-	//currently basic implementation for fluid motor
-	//simple movement with jogwheel for debug now, fix buttons and fluidpercentage later.
+	uint8_t tolerance = 2;
+	uint8_t biggerTolerance = 20;
 
-	this->_fluidPWM = this->_sbus->getJogWheel();
 
-	if(_fluidPWM > 0){
+	if((this->get_fluidPosition() <= (_fluidPosition + tolerance)) && (this->get_fluidPosition() >= (_fluidPosition - tolerance)) ){
 
-		this->actuatorControl(_fluidPWM, this->_timers->get_fluidMotor_Timer() , TIM_CHANNEL_2, TIM_CHANNEL_1);
+		this->actuatorControl(0, this->_timers->get_fluidMotor_Timer(), TIM_CHANNEL_2, TIM_CHANNEL_1);
 
-	}else if(_fluidPWM < 0){
+	}else if(this->get_fluidPosition() < (_fluidPosition )){
 
-		this->actuatorControl(_fluidPWM, this->_timers->get_fluidMotor_Timer(), TIM_CHANNEL_2, TIM_CHANNEL_1);
+		this->actuatorControl(300, this->_timers->get_fluidMotor_Timer(), TIM_CHANNEL_2, TIM_CHANNEL_1);
+
+	}else if(this->get_fluidPosition() > (_fluidPosition)){
+
+		this->actuatorControl(-300, this->_timers->get_fluidMotor_Timer(), TIM_CHANNEL_2, TIM_CHANNEL_1);
+
 	}
 
 
@@ -280,10 +298,10 @@ void Convertor::updateFluidAmount(void){
 
 	if(this->_sbus->D_button() && (_fluidAmount < 100)){
 
-		_fluidAmount += 10;
+		_fluidAmount += 5;
 	}else if(_sbus->C_button() && (_fluidAmount > 0)){
 
-		_fluidAmount -= 10;
+		_fluidAmount -= 5;
 	}
 
 }
@@ -318,6 +336,19 @@ void Convertor::setAltitudeOffset(void){
 
 }
 
+void Convertor::setSleepMode(void){
+
+	static uint8_t counter = 0;
+
+
+	if(this->_sbus->home_button()){
+		_sleepToggle = !_sleepToggle;
+	}
+
+
+}
+
+
 
 int16_t Convertor::get_selectorPWM(void){
 
@@ -351,21 +382,21 @@ int16_t Convertor::get_LEDPWM(void){
 	return _ledPWM;
 }
 
-//int16_t Convertor::get_battery_voltage(void){
-//
-//	uint16_t batteryInteger = ADC_1_Buffer[0];
-//
-//	float supplyVoltage = 3.3;
-//	float adcRange = 4095; //because 12 bits
-//	float resistorTop = 96000.0; 	// not 100k ohm because 1% res and with this factor it's apparently 0.1V accurate
-//	float resistorBottom = 9500.0;
-//	float resistorTotal = resistorTop + resistorBottom;
-//
-//	uint16_t batteryValue = (uint16_t) ((supplyVoltage * (float)batteryInteger * resistorTotal) / (adcRange * resistorBottom) * 10.0);
-//	return batteryValue;
-//
-//
-//}
+int16_t Convertor::get_battery_voltage(void){
+
+	uint16_t batteryInteger = ADC_1_Buffer[3];
+
+	float supplyVoltage = 3.3;
+	float adcRange = 4095; //because 12 bits
+	float resistorTop = 96000.0; 	// not 100k ohm because 1% res and with this factor it's apparently 0.1V accurate
+	float resistorBottom = 9500.0;
+	float resistorTotal = resistorTop + resistorBottom;
+
+	uint16_t batteryValue = (uint16_t) ((supplyVoltage * (float)batteryInteger * resistorTotal) / (adcRange * resistorBottom) * 10.0);
+	return batteryValue;
+
+
+}
 int16_t Convertor::get_selector_position(void){
 
 	return ADC_1_Buffer[0] / 4.095;
@@ -413,16 +444,27 @@ int16_t Convertor::get_fluidAmount(void){
 
 void Convertor::process(void){
 
-	this->updateLED();
-	this->updateSelectorPosition();
-	//this->makeSquare();
-	//this->testSelector();
-	this->updatePushMotor();
-	this->updateFluidMotor();
-	this->updateCleanerMotor();
-	this->getADC();
-	this->updateFluidAmount();
-	this->setAltitudeOffset();
+	//Hier een case maken om de servos in "sleep mode" te zetten
+	this->setSleepMode();
+	if(_sleepToggle == 1){
+		this->updateCleanerMotor();
+		this->updateLED();
+		this->updateFluidPosition();
+		this->updateSelector();
+		this->updateSelectorPosition();
+		this->updatePushMotor();
+		this->updateFluidMotor();
+		this->getADC();
+		this->updateFluidAmount();
+		//this->setAltitudeOffset();
+
+	}else if(_sleepToggle == 0){
+
+		this->getADC();
+		this->updateSelectorPosition();
+
+	};
+
 
 }
 

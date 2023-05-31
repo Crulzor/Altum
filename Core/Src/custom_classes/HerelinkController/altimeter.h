@@ -38,6 +38,17 @@ class Altimeter{
 		float _moving_avg = 0;
 		float _tempArray[5] = {0};
 
+		//made functions to read and set each register, might be a bit bloated
+		uint8_t read_ctrl_reg_1(void);
+		uint8_t read_status_reg(void);
+		uint8_t read_data_reg(void);
+		void toggle_one_shot(void);
+		void set_mode_altimeter(void);
+		void set_mode_active(void);
+
+		//function to write to specific register
+		bool write_to_register(uint8_t adress, uint8_t value);
+
 
 	public:
 		//Constructor
@@ -53,20 +64,10 @@ class Altimeter{
 		float get_offset(void);
 		bool whoAmI(void);
 		void set_offset(float offset);
-		void toggle_one_shot(void);
-		void set_mode_altimeter(void);
-		void set_mode_active(void);
+
 		float process_altitude(float altitude);
 
 		void Error_Handler(void);
-
-		//made functions to read and set each register, might be a bit bloated
-		uint8_t read_ctrl_reg_1(void);
-		uint8_t read_status_reg(void);
-		uint8_t read_data_reg(void);
-
-
-		bool write_to_register(uint8_t adress, uint8_t value);
 
 		//for debugging purposes
 		uint8_t _status_reg_data = 0;

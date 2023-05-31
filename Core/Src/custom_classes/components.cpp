@@ -163,7 +163,7 @@ void Components::init_ADC_1(void){
 //		    printf("ADC 1 HAL_ADC_ConfigChannel Vopamp1 NOT ok");
 //		  }
 //
-//
+
 //		  //KANAAL VOOR DE PUSH POT
 //		  sConfig.Channel = ADC_CHANNEL_14;
 //		  sConfig.Rank = ADC_REGULAR_RANK_4;

@@ -39,6 +39,8 @@ class SBUS{
 		bool D_button(void);
 		bool home_button(void);
 		bool home_button_long(void);
+		bool shoulder_button(void);
+		bool shoulder_button_long(void);
 
 		void Error_Handler(void);
 

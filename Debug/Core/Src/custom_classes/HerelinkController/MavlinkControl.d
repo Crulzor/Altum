@@ -283,7 +283,15 @@ Core/Src/custom_classes/HerelinkController/MavlinkControl.o: \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
- ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
+ ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
+ ../Core/Src/custom_classes/HerelinkController/Convertor.h \
+ ../Core/Src/custom_classes/HerelinkController/SBUS.h \
+ ../Core/Src/custom_classes/HerelinkController/../Initializer.h \
+ c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h \
+ ../Core/Src/custom_classes/HerelinkController/../handlers.h \
+ ../Core/Src/custom_classes/HerelinkController/../components.h \
+ ../Core/Src/custom_classes/HerelinkController/../handlers.h \
+ ../Core/Inc/../../Pid_Controller/pid_controller.h
 ../Core/Src/custom_classes/HerelinkController/MavlinkControl.h:
 ../Core/Inc/../../Mavlink_v2/common/mavlink.h:
 ../Core/Inc/../../Mavlink_v2/common/version.h:
@@ -570,3 +578,11 @@ Core/Src/custom_classes/HerelinkController/MavlinkControl.o: \
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
+../Core/Src/custom_classes/HerelinkController/Convertor.h:
+../Core/Src/custom_classes/HerelinkController/SBUS.h:
+../Core/Src/custom_classes/HerelinkController/../Initializer.h:
+c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h:
+../Core/Src/custom_classes/HerelinkController/../handlers.h:
+../Core/Src/custom_classes/HerelinkController/../components.h:
+../Core/Src/custom_classes/HerelinkController/../handlers.h:
+../Core/Inc/../../Pid_Controller/pid_controller.h:

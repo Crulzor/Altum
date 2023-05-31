@@ -285,8 +285,8 @@ Core/Src/custom_classes/HerelinkController/HerelinkController.o: \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
- ../Core/Src/custom_classes/HerelinkController/SBUS.h \
  ../Core/Src/custom_classes/HerelinkController/Convertor.h \
+ ../Core/Src/custom_classes/HerelinkController/SBUS.h \
  ../Core/Src/custom_classes/HerelinkController/../Initializer.h \
  c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h \
  ../Core/Src/custom_classes/HerelinkController/../handlers.h \
@@ -580,8 +580,8 @@ Core/Src/custom_classes/HerelinkController/HerelinkController.o: \
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
-../Core/Src/custom_classes/HerelinkController/SBUS.h:
 ../Core/Src/custom_classes/HerelinkController/Convertor.h:
+../Core/Src/custom_classes/HerelinkController/SBUS.h:
 ../Core/Src/custom_classes/HerelinkController/../Initializer.h:
 c:\users\bartc\stm32cubeide\workspace_2\altum\core\inc\main.h:
 ../Core/Src/custom_classes/HerelinkController/../handlers.h:

@@ -3,6 +3,7 @@
 #include "../../Mavlink_v2/mavlink_types.h"
 
 #include "altimeter.h"
+#include "Convertor.h"
 
 #include "main.h"
 #include <stdio.h>
@@ -20,8 +21,8 @@ class MavlinkControl{
 
 
 		UART_HandleTypeDef* _huart_mavlink;
-		I2C_HandleTypeDef* _altimeter_i2c;
 		Altimeter* _altimeter;
+		Convertor* _convertor;
 
 		//pointer to the class instance itself. Used in callback functions.
         static MavlinkControl* instancePtr;
@@ -38,7 +39,8 @@ class MavlinkControl{
 
 		//seperate "general" messages for sending and receiving. 
 		mavlink_message_t _mavlinkReceived;
-		mavlink_message_t _mavlinkSend;
+		mavlink_message_t _mavlinkSend_1;
+		mavlink_message_t _mavlinkSend_2;
 
 		//Mavlink status type messages
 		mavlink_sys_status_t _system_status;
@@ -61,19 +63,19 @@ class MavlinkControl{
 		//Mavlink battery status message is used for sending the percentage of fluid left. 
 		// "-1" means the autopilot doesn't take this into account
 		mavlink_battery_status_t _mavlink_battery = { 
-			-1, 	
-			-1,	
+			100, 														//Current consumed
+			130,															//Energy consumed
 			INT16_MAX,													//battery temp (INT16_MAX for unknown)
 			{ 10000, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX,
 			INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX },	//Battery voltage of cells 1 to 10
-			-1,															//Battery current
-			MAV_COMP_ID_BATTERY, MAV_BATTERY_FUNCTION_ALL, MAV_BATTERY_TYPE_LIPO,
+			120,															//Battery current
+			MAV_COMP_ID_BATTERY, MAV_BATTERY_FUNCTION_ALL, MAV_BATTERY_TYPE_LIPO,	//id, function, type
 			69,															//remaining battery energy. This is the value you need, test and see if all the rest is actually necessary 
 			0,															//remaining battery time. 0 is N/A
 			MAV_BATTERY_CHARGE_STATE_OK,
-			{ 0 },														//Battery voltages for cells 11 to 14. 
+			{ 0, 0, 0, 0 },														//Battery voltages for cells 11 to 14. 
 			MAV_BATTERY_MODE_AUTO_DISCHARGING, 							//Battery Mode
-			0									
+			0															//fault bitmask								
 		};
 
 
@@ -90,6 +92,8 @@ class MavlinkControl{
 
 		//buffers for sending data
 		uint8_t _bufferPackedforUart[MAVLINK_BUFFER_SIZE] = {0};
+		uint8_t _bufferPackedforUart_2[MAVLINK_BUFFER_SIZE] = {0};
+
 		uint16_t _TX_bufferLength;
 
 		//Var for flight time. Used for testing purposes right now
@@ -117,7 +121,7 @@ class MavlinkControl{
 
 		MavlinkControl();
 		MavlinkControl(UART_HandleTypeDef* huart);
-		MavlinkControl(UART_HandleTypeDef* huart, Altimeter* altimeter);
+		MavlinkControl(UART_HandleTypeDef* huart, Altimeter* altimeter, Convertor* convertor);
 
 		mavlink_header_t getMavlinkHeader(void);
 		uint8_t returnTestFunction(void);
@@ -125,6 +129,7 @@ class MavlinkControl{
 		void heartbeat(void);
 		void sendTestMessage(void);
 		void sendAltitude(void);
+		void sendBattery(void);
 
 		void readFlightTime(mavlink_message_t receivedMessage);
 		void decodeHeartbeat(mavlink_message_t receivedMessage);

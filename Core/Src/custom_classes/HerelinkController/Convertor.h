@@ -31,15 +31,20 @@ class Convertor{
 		void getADC(void);
 		uint16_t getADC_NO_DMA(ADC_HandleTypeDef *hadc, uint32_t Channel);
 
-		void updateSelector(int16_t pwm);
+		void moveSelector(int16_t pwm);
+		void updateSelector(void);
 		void updateLED(void);
 		void updatePushMotor(void);
 		void updateFluidMotor(void);
 		void updateCleanerMotor(void);
+		void stopCleanerMotor(void);
 		void updateFluidAmount(void);
 		void setAltitudeOffset(void);
 		void makeSquare(void);
 		void updateSelectorPosition(void);
+		void resetFluidPosition(void);
+		void updateFluidPosition(void);
+		void setSleepMode(void);
 
 		void testSelector(void);
 		void ledOFF(void);
@@ -73,17 +78,19 @@ class Convertor{
 
 
 		void process(void);
+		bool _position = 0;
 
 
 		//public buffer for now for debugging purposes.
 
-		uint32_t ADC_1_Buffer[3] = {0};
+		uint32_t ADC_1_Buffer[4] = {0};
 		uint32_t ADC_2_Buffer[2] = {0};
 		uint32_t ADC_5_Buffer[2] = {0};
 
 		//for debugging purposes
-		bool _trigger = 0;
-		bool _debounceTrigger = 1;
+		//bool _trigger = 0;
+		uint16_t _fluidPosition = 120;
+		uint16_t _fluidAmount = 20;
 
 	private:
 		//SBUS and configuration objects to fetch necessary handlers
@@ -91,11 +98,12 @@ class Convertor{
 		Initializer *_timers;
 		Components *_components;
 		Altimeter* _altimeter;
+		//PIDController object, .Kp, Ki & Kd influence the "agressiveness" and overshoot of the controller
 		PIDController _pidSelector = {
 
-				.Kp = 20.0f,
+				.Kp = 40.0f,
 				.Ki = 100.0f,
-				.Kd = 0.0f,
+				.Kd = 5.0f,
 				.tau = 0.5f,
 				.limMin = -1000.0f,
 				.limMax = 1000.0f,
@@ -105,22 +113,22 @@ class Convertor{
 				.accuracy = 1.0f
 		};
 
-
-
-
 		//private variables
+		bool _sleepToggle = 0;
+		bool _fluidToggler = 0;
+		bool _debounceTrigger = 1;
+		uint8_t _indexer = 0;
+		uint16_t _timer = 0;
 		int16_t _ledPWM = 0;
 		int16_t _cleanerMotorPWM = 0;
 		int16_t _selectorPWM = 0;
 		int16_t _pushMotorPWM = 0;
 		int16_t _fluidPWM = 0;
-		float _squarePosA = 80.0f;
-		float _squarePosB = 150.0f;
+		float _squarePosA = 110.0f;
+		float _squarePosB = 200.0f;
 		float _cleanerPos = 110.0f;
-		float _probePos = 930.0f;
-		bool _position;
+		float _probePos = 980.0f;
 
-		int8_t _fluidAmount = 0;
 
 
 

@@ -25,6 +25,7 @@
 #include <string>
 #include "stm32g4xx_it.h"
 
+
 #include "../../Mavlink_v2/common/mavlink.h"
 #include "custom_classes/Initializer.h"
 #include "custom_classes/components.h"
@@ -46,38 +47,34 @@ int main(void){
 	HAL_Init();
 	HAL_Delay(100);
 
-
 	//Initialize clock/DMA/... configurations and components.
 	Initializer init(&huart1, &huart2);
 	init.init_Configs();
+	HAL_Delay(500);
 	Components components;
 	components.init_Components();
-	HAL_Delay(100);
 
 
 	//HerelinkController object contains all sbus, altimeter & mavlink functionality. ctrl + click to expand
 	HerelinkController controller(&huart2, &huart1, &init, &components);
+
 	Debugger debugger(&controller);
-	HAL_Delay(1000);
 
 	printf("\r\n sanity check \r \n");
+	HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
 
-	//initialize MPL3115A2 sensor configurations
-
+	HAL_Delay(1000);
 	/* Main loop */
 	while (1){
 
-			//Keeping it full speed for now
-			//HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
 			controller.update();
 
-			//all the printf functions in the debugtger class can cause problems while restarting the controller
-			//or the PCB, so leave it commented when not debugging
+			/*
+			all the printf functions in the debugger-class can cause problems while restarting the controller
+			or the PCB, so leave it commented when not debugging
+			*/
 
-			debugger.displayDebugInfo();
-			//debugger.displayMavlink_header();
 			//debugger.displaySBUS_channels();
-			//debugger.displayMavlink_RAW();
 
 	}
 
@@ -87,6 +84,18 @@ int main(void){
 }
 
 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 
 void Error_Handler(void){
@@ -94,9 +103,8 @@ void Error_Handler(void){
 
 	for (uint8_t i = 0; i < 30; i++){		/* Toggle LED signal for error */
 		HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
-		printf("MESSAGE FROM MAIN ERROR HANDLER. Resetting system \r\n");
+		printf("MESSAGE FROM MAIN ERROR HANDLER \r\n");
 		HAL_Delay(1000);
-		NVIC_SystemReset();
 
 	}
 
