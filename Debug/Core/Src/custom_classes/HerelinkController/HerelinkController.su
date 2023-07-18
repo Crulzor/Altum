@@ -1,6 +1,9 @@
 ../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:5:1:HerelinkController::HerelinkController()	8	static
 ../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:8:1:HerelinkController::HerelinkController(UART_HandleTypeDef*, UART_HandleTypeDef*, Initializer*, Components*)	32	static
-../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:15:11:Altimeter HerelinkController::getAltimeter()	16	static
-../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:20:16:MavlinkControl HerelinkController::getMavlink()	8	static
-../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:26:6:SBUS HerelinkController::getSbus()	16	static
-../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:31:6:void HerelinkController::update()	16	static
+../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:19:6:void HerelinkController::setMotorSpeed(int)	0	static
+../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:24:6:void HerelinkController::setSquareSize(int)	0	static
+../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:30:6:void HerelinkController::setLedIntensity(int)	0	static
+../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:36:11:Altimeter HerelinkController::getAltimeter()	16	static
+../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:41:16:MavlinkControl HerelinkController::getMavlink()	8	static
+../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:47:6:SBUS HerelinkController::getSbus()	16	static
+../Core/Src/custom_classes/HerelinkController/HerelinkController.cpp:52:6:void HerelinkController::update()	16	static

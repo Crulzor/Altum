@@ -73,8 +73,8 @@ int main(void){
 			all the printf functions in the debugger-class can cause problems while restarting the controller
 			or the PCB, so leave it commented when not debugging
 			*/
+			//debugger.displayDebugInfo();
 
-			//debugger.displaySBUS_channels();
 
 	}
 

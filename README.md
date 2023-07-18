@@ -8,9 +8,12 @@ For my bachelor thesis/internship I improved the already existing prototype and 
 
 # Table of Contents
 
-
-
-
+1. [Quick start Guide + setup](./README.md#quick-start-guide--setup)
+2. [Uploading the firmware](#uploading-the-firmware)
+3. [Setting up the pins](#setting-up-the-pins)
+4. [Clock configuration](#clock-configuration)
+5. [Components configuration](#components-configuration)
+6. [Codebase](#codebase)
 
 ## Quick start-guide + setup
 
@@ -626,9 +629,6 @@ void Convertor::updateSelectorPosition(void){
 		PIDControllerUpdate(&_pidSelector);
 		_selectorPWM =(int16_t) _pidSelector.out;
 		this->moveSelector(_selectorPWM);
-
-
-
 
 }
 

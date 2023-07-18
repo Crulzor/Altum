@@ -20,22 +20,39 @@ class HerelinkController{
 		//functions for setting the motor speed & the square cleaner size
 		void setMotorSpeed(int speed);
 		void setSquareSize(int size);
+		void setLedIntensity(int intensity);
 
-		// NEEDS TO BE A VALUE BETWEEN 100 & 950
-		void setSyringeStart(int start);
-
-		//This function contains the sequence in which the functions of the subclasses are called. The order IS important
+		//This function contains the sequence in which the functions of the subclasses are called. 
+		//The order IS important keep it as is or work with threads in the future. 
 		void update(void);
 
-		//some getters
+		//Altimeter object contains the implementation of the MPL3115A2
+		Altimeter _altimeter;
+
+		//Mavlink object that contains the implementation for receiving/sending Mavlink messages
+		MavlinkControl _mavlink;
+
+		//SBUS object that contains the implementation for the SBUS protocol
+		SBUS _sbus;
+		
+		//This object is responsible for converting the raw values of the other objects and/or ADC's 
+		//To useful signals/values
+		Convertor _convertor;
+
+		//some getters for the objects 
 		SBUS getSbus(void);
 		MavlinkControl getMavlink(void);
 		Altimeter getAltimeter(void);
 
-		Altimeter _altimeter;
-		MavlinkControl _mavlink;
-		Convertor _convertor;
-		SBUS _sbus;
+
+
+		//THESE VALUES CAN BE CHANGED BY THE END USER IF HE WANTS TO 
+
+		int _maxRPM = 100; //This is a percentage, keep it between 1-100
+		float _squareSize = 200.0f;	//end point of the square. Maximum value should be 400 
+		int _ledIntensity = 1000;	//SHOULD BE SOMEWHERE BETWEEN 750 AND 1000!!!
+
+
 
 
 

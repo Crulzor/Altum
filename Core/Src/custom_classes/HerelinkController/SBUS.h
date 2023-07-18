@@ -19,7 +19,7 @@ class SBUS{
 		static const uint8_t SBUS_END_BYTE = 0x04;
 		static const uint8_t SBUS_NUM_CHANNELS = 17;
 
-		static const uint8_t _debounceTime = 40;
+		static const uint8_t _debounceTime = 20;
 
 
 	public:

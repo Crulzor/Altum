@@ -15,7 +15,8 @@
 class MavlinkControl{
 
 	// This is a class that implements some basic functionalities from the Mavlink V2 library.
-	// Enter small breakdown of how the mavlink protocol works here.
+	// In the documentation you can find more info about the Mavlink protocol. Currently I use DMA
+	// To send/Receive messages. 
 
 	private:
 
@@ -47,7 +48,7 @@ class MavlinkControl{
 		mavlink_status_t _status;
 		mavlink_system_t _mavlink_system = {
 
-				255,		//system id
+				1,		//system id
 				1		//comonent id (MAV_COMPONENT value)
 
 		};
@@ -60,26 +61,7 @@ class MavlinkControl{
 				MAV_MODE_FLAG_SAFETY_ARMED,
 				MAV_STATE_STANDBY
 		};
-		//Mavlink battery status message is used for sending the percentage of fluid left. 
-		// "-1" means the autopilot doesn't take this into account
-		mavlink_battery_status_t _mavlink_battery = { 
-			100, 														//Current consumed
-			130,															//Energy consumed
-			INT16_MAX,													//battery temp (INT16_MAX for unknown)
-			{ 10000, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX,
-			INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX },	//Battery voltage of cells 1 to 10
-			120,															//Battery current
-			MAV_COMP_ID_BATTERY, MAV_BATTERY_FUNCTION_ALL, MAV_BATTERY_TYPE_LIPO,	//id, function, type
-			69,															//remaining battery energy. This is the value you need, test and see if all the rest is actually necessary 
-			0,															//remaining battery time. 0 is N/A
-			MAV_BATTERY_CHARGE_STATE_OK,
-			{ 0, 0, 0, 0 },														//Battery voltages for cells 11 to 14. 
-			MAV_BATTERY_MODE_AUTO_DISCHARGING, 							//Battery Mode
-			0															//fault bitmask								
-		};
-
-
-
+	
 		//flight information message used for debugging, never receives this type of message though. 
         mavlink_flight_information_t flight_info;
 
@@ -126,21 +108,22 @@ class MavlinkControl{
 		mavlink_header_t getMavlinkHeader(void);
 		uint8_t returnTestFunction(void);
 
+		//Functions for sending data over Mavlink. See documentation for detailed explanation. 
+		//The heartbeat function should always be sent periodically to mantain the connection. 
 		void heartbeat(void);
 		void sendTestMessage(void);
 		void sendAltitude(void);
 		void sendBattery(void);
+		void sendFluids(void);
 
+		//Functions for receving mavlink messages. See documentation for detailed explanation. 
+		//Currently not much is being read except the header of the mavlink mssges in the debugger class. 
 		void readFlightTime(mavlink_message_t receivedMessage);
 		void decodeHeartbeat(mavlink_message_t receivedMessage);
-		bool checkConnection(void);
 
 		uint32_t getFlightTime(void);
 
-		void process_header(void);
-
-		void update(void);
-		void update_TX(void);
+		//Function that uses DMA to read the Mavlink Messages. 
 		void update_RX(void);
 
 		void Error_Handler(void);

@@ -8,6 +8,7 @@ Convertor::Convertor(SBUS *sbus, Initializer *init, Components* components, Alti
 	this->_altimeter = altimeter;
 
 	this->_ledPWM = 0;
+	this->_fluidPosition = this->get_fluidPosition();
 	_pidSelector.setPoint = _cleanerPos;
 	PIDControllerInit(&_pidSelector);
 
@@ -26,6 +27,8 @@ void Convertor::ledOFF(void){
 
 uint16_t Convertor::getADC_NO_DMA(ADC_HandleTypeDef *hadc, uint32_t Channel){
 
+	//Function that configures the ADC channel and then reads it via polling instead of DMA. 
+
 	ADC_ChannelConfTypeDef sConfig = { 0 };
 	sConfig.Channel = Channel; // ADC_CHANNEL_VOPAMP1; example. switching channels. Better to use built in function ch scanning and dma adc to minmize overhead.
 	sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -34,8 +37,6 @@ uint16_t Convertor::getADC_NO_DMA(ADC_HandleTypeDef *hadc, uint32_t Channel){
 	sConfig.OffsetNumber = ADC_OFFSET_NONE;
 	sConfig.Offset = 0;
 
-	// Do the fully config here and use local ADC_ChannelConfTypeDef sConfig.
-	//it didn’t work when global (maybe because pointer misused in different adcs).
 	if (HAL_ADC_ConfigChannel(hadc, &sConfig) != HAL_OK) {
 		Error_Handler();
 	}
@@ -67,10 +68,8 @@ void Convertor::getADC(void){
 
 void Convertor::updateLED(void){
 
-
-
-	if(_sbus->B_button() && _ledPWM < 1000) {
-		_ledPWM += 250;
+	if(_sbus->B_button() && _ledPWM < _max_led_intensity) {
+		_ledPWM += (_max_led_intensity / 4);
         __HAL_TIM_SET_COMPARE(_timers->get_LED_Timer(), TIM_CHANNEL_1, _ledPWM);
 
 
@@ -106,47 +105,75 @@ void Convertor::stopCleanerMotor(void){
 void Convertor::updateCleanerMotor(void){
 
 	this->_cleanerMotorPWM = 0;
-	this->_cleanerMotorPWM = this->_sbus->getRightY();
+	this->_cleanerMotorPWM = (this->_sbus->getRightY()) /100 * _maxPercentage;
 
 	if(_cleanerMotorPWM > 10){
 		__HAL_TIM_SET_COMPARE(_timers->get_cleanerMotor_Timer(), TIM_CHANNEL_3, abs(_cleanerMotorPWM));
 
+
+
 	}else{
 
 		__HAL_TIM_SET_COMPARE(_timers->get_cleanerMotor_Timer(), TIM_CHANNEL_3, 0);
-
 	}
 
 }
 
+void Convertor::updateCleanerMotor(int16_t PWM){
+
+	this->_cleanerMotorPWM = PWM;
+
+	if(_cleanerMotorPWM > 10){
+		__HAL_TIM_SET_COMPARE(_timers->get_cleanerMotor_Timer(), TIM_CHANNEL_3, abs(_cleanerMotorPWM));
+
+
+
+	}else{
+
+		__HAL_TIM_SET_COMPARE(_timers->get_cleanerMotor_Timer(), TIM_CHANNEL_3, 0);
+	}
+
+}
+
+
+void Convertor::updateSelector(void){
 
 // this function updates the selector based on SBUS input values
 // it detects different SBUS input values and sets the `_indexer` and `_pidSelector.setPoint` accordingly.
 // It uses debounce triggering to prevent unwanted toggling,
 // Based on the `_indexer`, the `_pidSelector.setPoint` is set to specific positions like `_cleanerPos`, `_probePos`, `_squarePosA`, and `_squarePosB`.
 // If none of the conditions match, `_pidSelector.setPoint` is set to `_cleanerPos` as the default value.
-void Convertor::updateSelector(void){
 
 	static bool debounceTrigger = 0;
 	float tolerance = 5.0f;
 
+
 	if(_sbus->getRightX() < -750 && debounceTrigger == 0){
+		this->updateCleanerMotor(0);
 
 		debounceTrigger = 1;
 		_indexer = 0;
 
 	}else if(_sbus->getRightX() > 750 && debounceTrigger == 0){
+		this->updateCleanerMotor(0);
 
 		debounceTrigger = 1;
 		_indexer = 1;
 
-	}else if(_sbus->getRightY() < -750 && debounceTrigger == 0){
+	}else if((_sbus->getRightY() > 20 && debounceTrigger == 0) && (_pidSelector.measurement == _cleanerPos) ){
 
 		debounceTrigger = 1;
 		_indexer = 2;
-	}else if ((_sbus->getRightY() == 0 && _sbus->getRightX()==0) && debounceTrigger == 1){
+
+	}else if (_sbus->getRightY() == 0  && _sbus->getRightY() == 0 && debounceTrigger == 1){
+		this->updateCleanerMotor(0);
 
 		debounceTrigger = 0;
+		if(_indexer == 2 || _indexer == 3){
+
+			_indexer = 0;
+
+		}
 	}
 
 	switch(_indexer){
@@ -159,11 +186,10 @@ void Convertor::updateSelector(void){
 
 		case 1:
 			_pidSelector.setPoint = _probePos;
-
 			break;
 
 		case 2:
-
+			this->updateCleanerMotor(this->_sbus->getRightY());
 
 			if(_pidSelector.measurement <= (_squarePosA + tolerance)
 					&& _pidSelector.measurement
@@ -173,14 +199,16 @@ void Convertor::updateSelector(void){
 			_indexer = 3;
 			break;
 		case 3:
-			if(_pidSelector.measurement <= (_squarePosB + tolerance) && _pidSelector.measurement >= (_squarePosB - tolerance)){
+			this->updateCleanerMotor(this->_sbus->getRightY());
+
+			if(_pidSelector.measurement <= (_squarePosB + tolerance)
+					&& _pidSelector.measurement >= (_squarePosB - tolerance)){
 				_pidSelector.setPoint = _squarePosA;
-
-
 			}
 			_indexer = 2;
 			break;
 		default:
+
 			_pidSelector.setPoint = _cleanerPos;
 
 
@@ -192,6 +220,7 @@ void Convertor::updateSelector(void){
 
 void Convertor::moveSelector(int16_t pwm){
 
+//low level function for controlling the selector actuator with the PIDController. 
 
 	if(pwm > 0){
 
@@ -206,9 +235,7 @@ void Convertor::moveSelector(int16_t pwm){
 }
 
 void Convertor::updatePushMotor(void){
-
-	//currently basic implementation for push motor
-
+	//Checks the y-axis of the left joystick and adjusts the push motor accordingly
 
 	this->_pushMotorPWM = this->_sbus->getLeftY();
 
@@ -223,8 +250,23 @@ void Convertor::updatePushMotor(void){
 
 }
 
-void Convertor::updateSelectorPosition(void){
+void Convertor::updateFluidMotorJogWheel(void){
 
+	float fluidPWM = this->_sbus->getJogWheel();
+
+	if(fluidPWM > 950 && (_fluidPosition < 950)){
+
+		_fluidPosition += 0.05;
+
+	}else if(fluidPWM < -950 && (_fluidPosition > 5)){
+
+	 	_fluidPosition -= 0.05;
+	}
+
+}
+
+void Convertor::updateSelectorPosition(void){
+	//moves the selector towards the position determined by the PIDController
 
 		_pidSelector.measurement = this->get_selector_position();
 		PIDControllerUpdate(&_pidSelector);
@@ -237,11 +279,17 @@ void Convertor::updateSelectorPosition(void){
 }
 
 void Convertor::updateFluidPosition(void){
+
+	//Fluid acutator is implemented as follows: 
+	// 1 short press on the shoulder button: apply fluidamount
+	// 1 long press on the shoulder button:: move the actuator to it's "reset position"
+	// 1 short press during reset -> reapply fluidamount to stop the reset process. 
+
+
     uint16_t long_press = 5000;
     static uint16_t timer = 0;  // Declare timer as static to preserve its value
 
-
-    if(_sbus->shoulder_button() &&( _fluidPosition < 950)){
+	if(_sbus->shoulder_button() &&( _fluidPosition < 950)){
 
     	_fluidPosition += _fluidAmount;
     }
@@ -266,15 +314,13 @@ void Convertor::updateFluidPosition(void){
     	timer = 0;
     }
 
-
-
 }
 
 void Convertor::updateFluidMotor(void){
 
-	uint8_t tolerance = 2;
-	uint8_t biggerTolerance = 20;
+	//Checks the fluidposition and moves the actuator accordingly. 
 
+	uint8_t tolerance = 2;
 
 	if((this->get_fluidPosition() <= (_fluidPosition + tolerance)) && (this->get_fluidPosition() >= (_fluidPosition - tolerance)) ){
 
@@ -295,11 +341,12 @@ void Convertor::updateFluidMotor(void){
 
 void Convertor::updateFluidAmount(void){
 
+	//Set fluidamount (increments of the fluid actuator)
 
 	if(this->_sbus->D_button() && (_fluidAmount < 100)){
 
 		_fluidAmount += 5;
-	}else if(_sbus->C_button() && (_fluidAmount > 0)){
+	}else if(_sbus->C_button() && (_fluidAmount > 5)){
 
 		_fluidAmount -= 5;
 	}
@@ -307,7 +354,8 @@ void Convertor::updateFluidAmount(void){
 }
 
 void Convertor::setAltitudeOffset(void){
-
+	//Set the altitude offset or reset it. 
+	
 	static uint8_t counter = 0;
 
 
@@ -338,11 +386,14 @@ void Convertor::setAltitudeOffset(void){
 
 void Convertor::setSleepMode(void){
 
+	//used to switch between the two main loops in the process function. 
+
 	static uint8_t counter = 0;
 
 
 	if(this->_sbus->home_button()){
 		_sleepToggle = !_sleepToggle;
+		_fluidPosition = this->get_fluidPosition();
 	}
 
 
@@ -382,7 +433,7 @@ int16_t Convertor::get_LEDPWM(void){
 	return _ledPWM;
 }
 
-int16_t Convertor::get_battery_voltage(void){
+uint16_t Convertor::get_battery_voltage(void){
 
 	uint16_t batteryInteger = ADC_1_Buffer[3];
 
@@ -393,7 +444,10 @@ int16_t Convertor::get_battery_voltage(void){
 	float resistorTotal = resistorTop + resistorBottom;
 
 	uint16_t batteryValue = (uint16_t) ((supplyVoltage * (float)batteryInteger * resistorTotal) / (adcRange * resistorBottom) * 10.0);
-	return batteryValue;
+	float voltageNormalized = (batteryValue - 111) / (float)(126 - 111) * 100.0;
+
+	
+	return voltageNormalized;
 
 
 }
@@ -444,24 +498,28 @@ int16_t Convertor::get_fluidAmount(void){
 
 void Convertor::process(void){
 
-	//Hier een case maken om de servos in "sleep mode" te zetten
+	//Start in sleep mode, because it's safer. 
 	this->setSleepMode();
+
 	if(_sleepToggle == 1){
-		this->updateCleanerMotor();
+		//this->updateCleanerMotor();
 		this->updateLED();
-		this->updateFluidPosition();
 		this->updateSelector();
 		this->updateSelectorPosition();
 		this->updatePushMotor();
-		this->updateFluidMotor();
 		this->getADC();
 		this->updateFluidAmount();
+		this->updateFluidMotor();
+		this->updateFluidMotorJogWheel();
+		this->updateFluidPosition();
+
 		//this->setAltitudeOffset();
 
 	}else if(_sleepToggle == 0){
 
-		this->getADC();
 		this->updateSelectorPosition();
+		this->updateFluidPosition();
+		this->getADC();
 
 	};
 

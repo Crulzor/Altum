@@ -479,7 +479,7 @@ bool SBUS::shoulder_button(void){
 
 	  switch (debounce_state) {
 		case 0:  // button released
-		  if (button_pressed) {
+ 		  if (button_pressed) {
 			debounce_state = 1;
 			debounce_counter = 0;
 		  }

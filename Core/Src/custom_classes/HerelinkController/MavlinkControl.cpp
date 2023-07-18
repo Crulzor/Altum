@@ -12,27 +12,17 @@ MavlinkControl::MavlinkControl(UART_HandleTypeDef* huart, Altimeter* altimeter, 
 : _huart_mavlink(huart), _altimeter(altimeter), _convertor(convertor)  {
 
 	  instancePtr = this;
-		HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, MAVLINK_BUFFER_SIZE);
+		//HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, MAVLINK_BUFFER_SIZE);
 
 
 
 }
 
 MavlinkControl::MavlinkControl(UART_HandleTypeDef* huart): _huart_mavlink(huart){}
-//
-//void MavlinkControl::uartRxCallback(UART_HandleTypeDef *huart, uint16_t Size) {
-//  // Call the overridden function with the instancePtr as the first argument
-//	if(HAL_UARTEx_ReceiveToIdle_DMA(_huart_mavlink, _receiveBuffer_1, MAVLINK_BUFFER_SIZE) == HAL_OK){
-//
-//
-//		HAL_UARTEx_RxEventCallback(instancePtr->_huart_mavlink, Size);
-//		printf("testing callback function \r\n");
-//	}
-//}
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
 
-  // Access the instance of the class using the static member variable
+  //Access the instance of the class using the static member variable
   MavlinkControl* instance = MavlinkControl::instancePtr;
 
 //  instance->process_header();
@@ -65,16 +55,6 @@ void MavlinkControl::update_RX(void){
 }
 
 
-void MavlinkControl::update_TX(void){
-
-		//this->sendAltitude();
-		//small delay because it won't send otherwise
-		this->sendBattery();
-
-
-}
-
-
 MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader(){
 
 	return _mavlink_received_header;
@@ -83,7 +63,7 @@ MavlinkControl::mavlink_header_t MavlinkControl::getMavlinkHeader(){
 
 
 void MavlinkControl::heartbeat(void){
-
+	//Encode the information and send it periodically to maintain connection. 
 
 	_bufferLength = mavlink_msg_heartbeat_encode(
 			_mavlink_system.sysid, _mavlink_system.compid, &_mavlinkSend_1,
@@ -98,19 +78,15 @@ void MavlinkControl::heartbeat(void){
 	HAL_UART_Transmit_DMA(_huart_mavlink,_bufferPackedforUart, _bufferLength);
 
 
-
-
-
 }
 
 void MavlinkControl::sendTestMessage(void){
 
 	float testValue = 122.0f;
 
-	_mavlink_battery.battery_remaining = 50;
 
 	//mavlink_msg_battery_status_encode(_mavlink_system.sysid, _mavlink_system.compid, &_mavlinkSend_2, &_mavlink_battery);
-	_TX_bufferLength = mavlink_msg_sys_status_pack(_mavlink_system.sysid, _mavlink_system.compid, &_mavlinkSend_2,-1,-1,-1,-1,-1, 69, 70,-1,-1,-1,-1,-1,-1,-1,-1,-1);
+	_TX_bufferLength = mavlink_msg_sys_status_pack(_mavlink_system.sysid, _mavlink_system.compid, &_mavlinkSend_2,-1,-1,-1,-1,-1, 69, 50,-1,-1,-1,-1,-1,-1,-1,-1,-1);
 
 	// mavlink_msg_vfr_hud_pack function below repacks the value to a hud message. These can be configured on the QgroundControl app.
 	//The hud message can contain values such as ground speed, altitude, etc... autocomplete will give you an overview
@@ -119,8 +95,6 @@ void MavlinkControl::sendTestMessage(void){
 	//mavlink_msg_vfr_hud_pack(_mavlink_system.sysid, _mavlink_system.compid,&_mavlinkSend_1, testValue, 0.0f,0,0,0,0);
 	mavlink_msg_to_send_buffer(_bufferPackedforUart, &_mavlinkSend_2);
 	HAL_UART_Transmit_DMA(_huart_mavlink,_bufferPackedforUart,_TX_bufferLength );
-
-
 
 
 }
@@ -133,7 +107,6 @@ void MavlinkControl::decodeHeartbeat(mavlink_message_t receivedMessage){
 		mavlink_msg_heartbeat_decode(&receivedMessage, &_received_heartbeat);
 
 	}
-
 
 }
 
@@ -148,7 +121,6 @@ void MavlinkControl::readFlightTime(mavlink_message_t receivedMessage) {
         _flight_time = status.onboard_control_sensors_present;
 
 	}
-
 
 
 }
@@ -169,26 +141,58 @@ void MavlinkControl::sendAltitude(void){
 
 	
 	 HAL_UART_Transmit_DMA(_huart_mavlink, _bufferPackedforUart, _TX_bufferLength);
-
+	
 
 }
 
 void MavlinkControl::sendBattery(void){
+	// Ok, so for some reason (probably because of the firmware inside the HerelinkController or the Mavlink dialect of the Qground app)
+	// I can't send the battery data with the battery_status_pack function. So I'm sending battery info with 
+	// The system status function.
+
+	uint16_t batteryRemaining = _convertor->get_battery_voltage();
+
+	_TX_bufferLength = mavlink_msg_sys_status_pack(
+    	_mavlink_system.sysid,      // System ID
+    	_mavlink_system.compid,     // Component ID
+		&_mavlinkSend_2,            // MAVLink message container
+		-1,                         // Onboard control system health (-1: unknown, 0: not ok, 1: ok)
+		-1,                         // Onboard sensor health (-1: unknown, 0: not ok, 1: ok)
+		-1,                         // Onboard GPS health (-1: unknown, 0: not ok, 1: ok)
+		-1,                         // Onboard power system health (-1: unknown, 0: not ok, 1: ok)
+		-1,                         // Onboard communication system health (-1: unknown, 0: not ok, 1: ok)
+		-1,           // Remaining battery (0-100%, -1: autopilot does not estimate the remaining battery)
+		batteryRemaining,           // Current battery (0-100%, -1: autopilot does not measure the current battery)
+		-1,                         // Battery energy consumed (-1: autopilot does not provide energy consumption estimate)
+		-1,                         // Battery voltage (mV) (-1: autopilot does not measure the voltage)
+		-1,                         // Battery current (cA) (-1: autopilot does not measure the current)
+		-1,                         // Battery drop rate (cA/s) (-1: autopilot does not measure the current drop rate)
+		-1,                         // Battery remaining time (minutes) (-1: autopilot does not estimate the remaining battery time)
+		-1,                         // Battery remaining capacity (mAh) (-1: autopilot does not estimate the remaining battery capacity)
+		-1,                         // Battery charging state (0: not charging, 1: charging)
+		-1,                         // Battery mode (0: power source is connected, 1: power source is disconnected)
+		-1                          // Fault/health indications (for future use)
+);
+
+
+	mavlink_msg_to_send_buffer(_bufferPackedforUart, &_mavlinkSend_2);
+	HAL_UART_Transmit_DMA(_huart_mavlink,_bufferPackedforUart,_TX_bufferLength);
+
+
+
+}
+
+void MavlinkControl::sendFluids(void){
+
 	float fluidPosition = _convertor->get_fluidPosition();
 	float fluidPercentage = fluidPosition / 10;
 	int16_t fluidAmount = _convertor->get_fluidAmount();
 
 
-	_mavlink_battery.battery_remaining = (uint8_t)fluidPercentage;
-	_mavlink_battery.energy_consumed = (int)(_convertor->_fluidAmount * 10);
 
 	_TX_bufferLength = mavlink_msg_vfr_hud_pack(_mavlink_system.sysid, _mavlink_system.compid, &_mavlinkSend_1, 0, 0, 0, fluidPercentage,0,fluidAmount);
-	// mavlink_msg_battery_status_encode(_mavlink_system.sysid, _mavlink_system.compid, &_mavlinkSend, &_mavlink_battery);
 	mavlink_msg_to_send_buffer(_bufferPackedforUart_2, &_mavlinkSend_1);
 	HAL_UART_Transmit_DMA(_huart_mavlink, _bufferPackedforUart_2, _TX_bufferLength);
-	
-
-
 
 }
 
