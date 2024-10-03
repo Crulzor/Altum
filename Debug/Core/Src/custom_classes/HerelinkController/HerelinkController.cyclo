@@ -1,9 +1,9 @@
 HerelinkController.cpp:5:1:HerelinkController::HerelinkController()	1
 HerelinkController.cpp:8:1:HerelinkController::HerelinkController(UART_HandleTypeDef*, UART_HandleTypeDef*, Initializer*, Components*)	1
-HerelinkController.cpp:19:6:void HerelinkController::setMotorSpeed(int)	1
-HerelinkController.cpp:24:6:void HerelinkController::setSquareSize(int)	1
-HerelinkController.cpp:30:6:void HerelinkController::setLedIntensity(int)	1
-HerelinkController.cpp:36:11:Altimeter HerelinkController::getAltimeter()	1
-HerelinkController.cpp:41:16:MavlinkControl HerelinkController::getMavlink()	1
-HerelinkController.cpp:47:6:SBUS HerelinkController::getSbus()	1
-HerelinkController.cpp:52:6:void HerelinkController::update()	4
+HerelinkController.cpp:22:6:void HerelinkController::setMotorSpeed(int)	1
+HerelinkController.cpp:27:6:void HerelinkController::setSquareSize(int)	1
+HerelinkController.cpp:33:6:void HerelinkController::setLedIntensity(int)	1
+HerelinkController.cpp:39:11:Altimeter HerelinkController::getAltimeter()	1
+HerelinkController.cpp:44:16:MavlinkControl HerelinkController::getMavlink()	1
+HerelinkController.cpp:50:6:SBUS HerelinkController::getSbus()	1
+HerelinkController.cpp:55:6:void HerelinkController::update()	4

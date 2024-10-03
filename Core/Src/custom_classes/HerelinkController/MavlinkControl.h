@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Mavlink_v2/common/mavlink.h"
 #include "../../Mavlink_v2/mavlink_types.h"
+#include "../../Mavlink_v2/mavlink_helpers.h"
 
 #include "altimeter.h"
 #include "Convertor.h"
@@ -33,7 +34,7 @@ class MavlinkControl{
 		uint8_t _bufferSelector = 0;
 		uint16_t _bufferLength = 0;
 		
-		//-----MAVLINK MESSAGES------ 
+		//-----MAVLINK MESSAGES------ //
 		//separate buffers for receiving/sending general mavlink messages, these are decoded further into 
 		//more "specialized messages" like the ones below.
 		//A complete list can be found in the docs @ mavlink.io
@@ -42,6 +43,7 @@ class MavlinkControl{
 		mavlink_message_t _mavlinkReceived;
 		mavlink_message_t _mavlinkSend_1;
 		mavlink_message_t _mavlinkSend_2;
+		
 
 		//Mavlink status type messages
 		mavlink_sys_status_t _system_status;

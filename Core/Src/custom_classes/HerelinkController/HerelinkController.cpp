@@ -6,7 +6,10 @@ HerelinkController::HerelinkController(){};
 
 
 HerelinkController::HerelinkController(UART_HandleTypeDef *huart_sbus, UART_HandleTypeDef *huart_mavlink, Initializer *init, Components *components)
-	:_altimeter(&hi2c2), _sbus(huart_sbus), _convertor(&this->_sbus, init, components, &this->_altimeter), _mavlink(huart_mavlink, &this->_altimeter, &this->_convertor){
+	:_altimeter(&hi2c2),
+	 _sbus(huart_sbus),
+	 _convertor(&this->_sbus, init, components, &this->_altimeter),
+	 _mavlink(huart_mavlink, &this->_altimeter, &this->_convertor) {
 
 	//_altimeter.init_altimeter();
 

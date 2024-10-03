@@ -35,6 +35,11 @@ void Debugger::displayDebugInfo(void){
 		printf("home press: %d \r\n", this->_controller->_sbus._channels[9]);
 		printf("shoulder press: %d \r\n", this->_controller->_sbus._channels[11]);
 
+		printf("A press: %d \r\n", this->_controller->_sbus._channels[5]);
+		printf("B press: %d \r\n", this->_controller->_sbus._channels[6]);
+		printf("C press: %d \r\n", this->_controller->_sbus._channels[7]);
+		printf("B press: %d \r\n", this->_controller->_sbus._channels[6]);
+
 
 		printf("LedPWM: %d\r\n", this->_controller->_convertor.get_LEDPWM());
 		printf("selectorPWM: %d\r\n", this->_controller->_convertor.get_selectorPWM());
@@ -48,6 +53,7 @@ void Debugger::displayDebugInfo(void){
 		printf("selector position %d \r\n", this->_controller->_convertor.get_selector_position());
 		printf("fluid position %d \r\n", this->_controller->_convertor.get_fluidPosition());
 		printf("push position %d \r\n", this->_controller->_convertor.get_pushPosition());
+		printf("Toggle lock %d \r\n", this->_controller->_convertor.get_sleepToggle());
 
 
 

@@ -66,31 +66,32 @@ bool SBUS::readSBUS(void){
 		LSB = _sbus_buffer[7] << 4;
 		this->_channels[4] = (MSB | LSB) & 0x07FF;
 
-		//BUTTON A
+		//BUTTON A - CHANNEL 6
 		MSB = _sbus_buffer[7] >> 7;
 		LSB = _sbus_buffer[8] << 1;
 		thirdByte = _sbus_buffer[9] << 9;
 		this->_channels[5] = (MSB | LSB | thirdByte) & 0x07FF;
 
-		//BUTTON B
+		//BUTTON B - CHANNEL 7
 		MSB = _sbus_buffer[9] >> 2;
 		LSB = _sbus_buffer[10] << 6;
 		this->_channels[6] = (MSB | LSB) & 0x07FF;
 
-		//BUTTON C
+		//BUTTON C - CHANNEL 8
 		MSB = _sbus_buffer[10] >> 5;
 		LSB = _sbus_buffer[11] << 3;
 		this->_channels[7] = (MSB | LSB) & 0x07FF;
 
-		//BUTTON D
+		//BUTTON D - CHANNEL 9
 		MSB = _sbus_buffer[12];
 		LSB = _sbus_buffer[13] << 8;
 		this->_channels[8] = (MSB | LSB) & 0x07FF;
 
-		//BUTTON HOME
+		//BUTTON HOME - CHANNEL - 10
 		MSB = _sbus_buffer[13] >> 3;
 		LSB = _sbus_buffer[14] << 5;
 		this->_channels[9] = (MSB | LSB) & 0x07FF;
+
 
 		MSB = _sbus_buffer[14] >> 6;
 		LSB = _sbus_buffer[15] << 2;
@@ -300,8 +301,7 @@ bool SBUS::B_button(void){
 	  static uint8_t debounce_state = 0;
 	  static uint8_t debounce_counter = 0;
 
-	  bool button_pressed = (_channels[6] > 1000
-			  );
+	  bool button_pressed = (_channels[6] > 1000);
 
 	  switch (debounce_state) {
 	    case 0:  // button released

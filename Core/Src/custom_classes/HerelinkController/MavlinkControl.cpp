@@ -115,7 +115,6 @@ void MavlinkControl::decodeHeartbeat(mavlink_message_t receivedMessage){
 void MavlinkControl::readFlightTime(mavlink_message_t receivedMessage) {
 
 	if(receivedMessage.msgid == MAVLINK_MSG_ID_SYS_STATUS){
-		printf("inside read flight time function \r\n");
 		mavlink_sys_status_t status;
 		mavlink_msg_sys_status_decode(&receivedMessage,&status);
         _flight_time = status.onboard_control_sensors_present;

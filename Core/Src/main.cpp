@@ -37,6 +37,7 @@
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
+void testFunction(void);
 
 
 int main(void){
@@ -47,34 +48,62 @@ int main(void){
 	HAL_Init();
 	HAL_Delay(100);
 
+
 	//Initialize clock/DMA/... configurations and components.
 	Initializer init(&huart1, &huart2);
+
 	init.init_Configs();
-	HAL_Delay(500);
 	Components components;
 	components.init_Components();
-
+	//HAL_GPIO_TogglePin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+	HAL_Delay(500);
 
 	//HerelinkController object contains all sbus, altimeter & mavlink functionality. ctrl + click to expand
 	HerelinkController controller(&huart2, &huart1, &init, &components);
-
 	Debugger debugger(&controller);
 
-	printf("\r\n sanity check \r \n");
-	HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin);
+	HAL_Delay(500);
 
-	HAL_Delay(1000);
+	printf("\r\n sanity check \r \n");
+	//set camera pin to block 5v.
+
+	uint32_t timeout_start = HAL_GetTick();	//get the current time
+	uint32_t timeout_duration = 13000;	//timeout in milliseconds
+	//HAL_GPIO_TogglePin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+    GPIO_PinState PA4_pin_state = HAL_GPIO_ReadPin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+
+    if(PA4_pin_state == GPIO_PIN_RESET)
+    {
+    	HAL_GPIO_TogglePin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+    }
+
 	/* Main loop */
 	while (1){
 
 			controller.update();
 
 			/*
-			all the printf functions in the debugger-class can cause problems while restarting the controller
-			or the PCB, so leave it commented when not debugging
+			all the printf functions in the debugger-class can cause problems while restarting the Herelink controller
+			so leave it commented when not debugging
 			*/
-			//debugger.displayDebugInfo();
+			debugger.displayDebugInfo();
+			HAL_GPIO_TogglePin(gled_pc14_GPIO_Port, gled_pc14_Pin); //signal led
 
+
+			if(HAL_GetTick() - timeout_start == timeout_duration)
+			{
+				HAL_GPIO_TogglePin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+				HAL_Delay(500);
+				HAL_GPIO_TogglePin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+				HAL_Delay(500);
+				HAL_GPIO_TogglePin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+				HAL_Delay(500);
+				HAL_GPIO_TogglePin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
+
+
+
+			}
+			PA4_pin_state = HAL_GPIO_ReadPin(PA4_GPIO_GPIO_Port, PA4_GPIO_Pin);
 
 	}
 
@@ -83,6 +112,12 @@ int main(void){
 // END OF MAIN
 }
 
+void testFunction(void)
+{
+
+
+
+}
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {

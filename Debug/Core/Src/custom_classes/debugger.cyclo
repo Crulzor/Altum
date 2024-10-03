@@ -1,6 +1,6 @@
 debugger.cpp:3:1:Debugger::Debugger(HerelinkController*)	1
 debugger.cpp:11:6:void Debugger::displayDebugInfo()	2
-debugger.cpp:103:6:void Debugger::displaySBUS_channels()	3
-debugger.cpp:119:6:void Debugger::displayMavlink_RAW()	3
-debugger.cpp:137:6:void Debugger::displayAltitude()	1
-debugger.cpp:147:6:void Debugger::debugADC()	1
+debugger.cpp:109:6:void Debugger::displaySBUS_channels()	3
+debugger.cpp:125:6:void Debugger::displayMavlink_RAW()	3
+debugger.cpp:143:6:void Debugger::displayAltitude()	1
+debugger.cpp:153:6:void Debugger::debugADC()	1

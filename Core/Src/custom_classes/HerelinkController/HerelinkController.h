@@ -53,13 +53,4 @@ class HerelinkController{
 		int _ledIntensity = 1000;	//SHOULD BE SOMEWHERE BETWEEN 750 AND 1000!!!
 
 
-
-
-
-
-
-
-
-
-
 };

@@ -76,6 +76,8 @@ void Error_Handler(void);
 #define ADC_BATT_GPIO_Port GPIOA
 #define SHUNT_MOTOR_Pin GPIO_PIN_1
 #define SHUNT_MOTOR_GPIO_Port GPIOA
+#define PA4_GPIO_Pin GPIO_PIN_4
+#define PA4_GPIO_GPIO_Port GPIOA
 #define led_tim16_1_Pin GPIO_PIN_6
 #define led_tim16_1_GPIO_Port GPIOA
 #define SHUNT_LIN3_Pin GPIO_PIN_0

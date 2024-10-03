@@ -93,6 +93,7 @@ class Convertor{
 		int16_t get_pushCurrent(void);
 		int16_t get_selectorCurrent(void);
 		int16_t get_fluidAmount(void);
+		int16_t get_sleepToggle(void);
 
 		//Getter for the battery voltage
 		uint16_t get_battery_voltage(void);
@@ -118,6 +119,7 @@ class Convertor{
 		float _squarePosB = 200.0f;
 
 
+		bool _sleepToggle = 0;
 
 
 
@@ -143,7 +145,6 @@ class Convertor{
 		};
 
 		//private variables
-		bool _sleepToggle = 0;
 		bool _fluidToggler = 0;
 		bool _debounceTrigger = 1;
 		uint8_t _indexer = 0;

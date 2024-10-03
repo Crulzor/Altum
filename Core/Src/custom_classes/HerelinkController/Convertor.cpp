@@ -67,6 +67,7 @@ void Convertor::getADC(void){
 }
 
 void Convertor::updateLED(void){
+uint16_t hard_led_pwm = 250;
 
 	if(_sbus->B_button() && _ledPWM < _max_led_intensity) {
 		_ledPWM += (_max_led_intensity / 4);
@@ -80,13 +81,16 @@ void Convertor::updateLED(void){
 
 	}
 
+	//__HAL_TIM_SET_COMPARE(_timers->get_LED_Timer(), TIM_CHANNEL_1, 250);
+
+
 }
 
 
 //LOW LEVEL FUNCTION FOR CONTROLLING ACTUATOR PWM
 void Convertor::actuatorControl(int16_t pwm_input, TIM_HandleTypeDef *tim, uint32_t channelTimPlus, uint32_t channelTimMin){
 
-	if (pwm_input >= 0) { //if joystick is up then pwm is positive and will drive plus forward cahnnel of h bridge.
+	if (pwm_input >= 0) { //if joystick is up then pwm is positive and will drive plus forward channel of h bridge.
 		__HAL_TIM_SET_COMPARE(tim, channelTimPlus, abs(pwm_input));
 		__HAL_TIM_SET_COMPARE(tim, channelTimMin, 0);
 
@@ -144,8 +148,10 @@ void Convertor::updateSelector(void){
 // Based on the `_indexer`, the `_pidSelector.setPoint` is set to specific positions like `_cleanerPos`, `_probePos`, `_squarePosA`, and `_squarePosB`.
 // If none of the conditions match, `_pidSelector.setPoint` is set to `_cleanerPos` as the default value.
 
+	//New functionality: when the right joystick is
+
 	static bool debounceTrigger = 0;
-	float tolerance = 5.0f;
+	float tolerance = 10.0f;
 
 
 	if(_sbus->getRightX() < -750 && debounceTrigger == 0){
@@ -169,7 +175,7 @@ void Convertor::updateSelector(void){
 		this->updateCleanerMotor(0);
 
 		debounceTrigger = 0;
-		if(_indexer == 2 || _indexer == 3){
+		if( _indexer == 2 || _indexer == 3){
 
 			_indexer = 0;
 
@@ -177,7 +183,6 @@ void Convertor::updateSelector(void){
 	}
 
 	switch(_indexer){
-
 
 		case 0:
 			_pidSelector.setPoint = _cleanerPos;
@@ -191,19 +196,20 @@ void Convertor::updateSelector(void){
 		case 2:
 			this->updateCleanerMotor(this->_sbus->getRightY());
 
-			if(_pidSelector.measurement <= (_squarePosA + tolerance)
-					&& _pidSelector.measurement
-							>= (_squarePosA - tolerance)){
+			if(_pidSelector.measurement <= (_squarePosA + tolerance) && _pidSelector.measurement >= (_squarePosA - tolerance)){
+
 				_pidSelector.setPoint = _squarePosB;
+
 			}
 			_indexer = 3;
 			break;
 		case 3:
 			this->updateCleanerMotor(this->_sbus->getRightY());
 
-			if(_pidSelector.measurement <= (_squarePosB + tolerance)
-					&& _pidSelector.measurement >= (_squarePosB - tolerance)){
+			if(_pidSelector.measurement <= (_squarePosB + tolerance) && _pidSelector.measurement >= (_squarePosB - tolerance)){
+
 				_pidSelector.setPoint = _squarePosA;
+
 			}
 			_indexer = 2;
 			break;
@@ -225,6 +231,7 @@ void Convertor::moveSelector(int16_t pwm){
 	if(pwm > 0){
 
 		this->actuatorControl(pwm, this->_timers->get_selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3);
+
 	}else if(pwm < 0){
 
 		this->actuatorControl(pwm, this->_timers->get_selector_Timer(), TIM_CHANNEL_4,  TIM_CHANNEL_3 );
@@ -269,12 +276,12 @@ void Convertor::updateSelectorPosition(void){
 	//moves the selector towards the position determined by the PIDController
 
 		_pidSelector.measurement = this->get_selector_position();
+
 		PIDControllerUpdate(&_pidSelector);
+
 		_selectorPWM =(int16_t) _pidSelector.out;
+
 		this->moveSelector(_selectorPWM);
-
-
-
 
 }
 
@@ -297,11 +304,12 @@ void Convertor::updateFluidPosition(void){
     if(_sbus->shoulder_button_long()){
 
         if(++timer <= long_press){
-
+			//do nothing
         }
 
         if(timer == 300){
         	_fluidPosition = this->get_fluidPosition();
+
         }
 
         if(timer == 599){
@@ -312,6 +320,7 @@ void Convertor::updateFluidPosition(void){
 
     }else {
     	timer = 0;
+
     }
 
 }
@@ -445,7 +454,6 @@ uint16_t Convertor::get_battery_voltage(void){
 
 	uint16_t batteryValue = (uint16_t) ((supplyVoltage * (float)batteryInteger * resistorTotal) / (adcRange * resistorBottom) * 10.0);
 	float voltageNormalized = (batteryValue - 111) / (float)(126 - 111) * 100.0;
-
 	
 	return voltageNormalized;
 
@@ -496,13 +504,20 @@ int16_t Convertor::get_fluidAmount(void){
 	return _fluidAmount;
 }
 
+
+int16_t Convertor::get_sleepToggle(void){
+
+	return _sleepToggle;
+
+}
+
 void Convertor::process(void){
 
 	//Start in sleep mode, because it's safer. 
 	this->setSleepMode();
 
 	if(_sleepToggle == 1){
-		//this->updateCleanerMotor();
+		//this->updateCleanerMotor();			//Function is being called in other logic
 		this->updateLED();
 		this->updateSelector();
 		this->updateSelectorPosition();

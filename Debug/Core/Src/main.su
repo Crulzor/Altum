@@ -1,3 +1,4 @@
-../Core/Src/main.cpp:42:5:int main()	2752	static
-../Core/Src/main.cpp:87:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	0	static
-../Core/Src/main.cpp:101:6:void Error_Handler()	16	static
+../Core/Src/main.cpp:43:5:int main()	2768	static
+../Core/Src/main.cpp:115:6:void testFunction()	0	static
+../Core/Src/main.cpp:122:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	0	static
+../Core/Src/main.cpp:136:6:void Error_Handler()	16	static

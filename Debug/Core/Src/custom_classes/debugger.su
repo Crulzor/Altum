@@ -1,6 +1,6 @@
 ../Core/Src/custom_classes/debugger.cpp:3:1:Debugger::Debugger(HerelinkController*)	0	static
 ../Core/Src/custom_classes/debugger.cpp:11:6:void Debugger::displayDebugInfo()	8	static
-../Core/Src/custom_classes/debugger.cpp:103:6:void Debugger::displaySBUS_channels()	24	static
-../Core/Src/custom_classes/debugger.cpp:119:6:void Debugger::displayMavlink_RAW()	24	static
-../Core/Src/custom_classes/debugger.cpp:137:6:void Debugger::displayAltitude()	8	static
-../Core/Src/custom_classes/debugger.cpp:147:6:void Debugger::debugADC()	0	static
+../Core/Src/custom_classes/debugger.cpp:109:6:void Debugger::displaySBUS_channels()	24	static
+../Core/Src/custom_classes/debugger.cpp:125:6:void Debugger::displayMavlink_RAW()	24	static
+../Core/Src/custom_classes/debugger.cpp:143:6:void Debugger::displayAltitude()	8	static
+../Core/Src/custom_classes/debugger.cpp:153:6:void Debugger::debugADC()	0	static
